@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "254713862614",
+    "firebase_url": "https://asterius-app.firebaseio.com",
+    "project_id": "asterius-app",
+    "storage_bucket": "asterius-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254713862614:android:31dca840d624fc2b",
+        "android_client_info": {
+          "package_name": "com.asterius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254713862614-fvsfk8ut1lcb6rapn2bl08dmh54qjfkr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe-JJPHECYoM9EjDeI85fYRMvsITEBV5I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
