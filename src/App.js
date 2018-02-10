@@ -26,16 +26,15 @@ export default class App extends Component {
     }
     return (
       <View style={styles.container}>
-        {/*<Text>Banananana</Text>*/}
-        <Router />
+        <StatusBar
+          backgroundColor="#000"
+          barStyle="light-content"
+        />
+        <Router/>
       </View>
     );
   }
 }
-/* To reload the physical device:
-adb shell input text "RR"
-*/
-
 
 const styles = StyleSheet.create({
   container: {

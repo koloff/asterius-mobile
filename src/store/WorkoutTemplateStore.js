@@ -60,6 +60,7 @@ export default class WorkoutTemplateStore {
   }
 
   @computed get workoutDurationText() {
+    console.log('COMPUTING');
     let minutes = 0;
     minutes += 5; // warmup
 

@@ -16,6 +16,7 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 
 import tweakerStore from '../../store/tweakerStore';
 import MusclesModelStore from '../../store/MusclesModelStore';
+import WorkoutTemplateStore from '../../store/WorkoutTemplateStore';
 
 import MusclesModel from '../muscles/MusclesModel';
 import ExerciseWithMuscles from '../exercises/ExerciseWithMuscles';
@@ -28,9 +29,9 @@ export default class Tweaker extends Component {
     renderMain: false
   };
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     this.workoutTemplateStore = this.props.navigation.state.params.workoutTemplateStore;
+    console.log(this.workoutTemplateStore instanceof WorkoutTemplateStore);
     tweakerStore.reset(this.workoutTemplateStore);
   }
 
@@ -74,12 +75,12 @@ export default class Tweaker extends Component {
             </View>
 
             {/*<TouchableOpacity*/}
-              {/*style={{padding: 10}}*/}
-              {/*onPress={() => {*/}
-                {/*this.props.navigation.goBack()*/}
-              {/*}}*/}
+            {/*style={{padding: 10}}*/}
+            {/*onPress={() => {*/}
+            {/*this.props.navigation.goBack()*/}
+            {/*}}*/}
             {/*>*/}
-              {/*<Ionicons name='md-checkmark' size={37} color='#FF8F00'/>*/}
+            {/*<Ionicons name='md-checkmark' size={37} color='#FF8F00'/>*/}
             {/*</TouchableOpacity>*/}
           </View>
 

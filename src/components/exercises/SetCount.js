@@ -17,6 +17,7 @@ export default class SetCount extends React.Component {
   }
 
   getSetsCount() {
+    console.log(tweakerStore.workoutTemplateStore);
     return tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id) ? tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id).sets : 0;
   }
 

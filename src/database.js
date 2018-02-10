@@ -14,7 +14,7 @@ function childAdded(path, callback) {
 
 function childRemoved(path, callback) {
   const ref = firebase.database().ref(path);
-  ref.on('child_removed\t', callback);
+  ref.on('child_removed', callback);
   return ref;
 }
 

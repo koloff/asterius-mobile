@@ -4,40 +4,22 @@ import {observer} from 'mobx-react';
 import {gs} from "../../globals";
 
 import MusclesModelStore from "../../store/MusclesModelStore";
-import MusclesModel from '../muscles/MusclesModel';
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
 
-@observer
-class MiniWorkoutExercise extends React.Component {
-  render() {
-    return (
-      <View style={{width: '100%', marginBottom: 3}}>
-        <Text numberOfLines={2} ellipsizeMode={'tail'} style={[gs.text, {fontSize: 10, color: '#999'}]}>
-          <Text style={{color: '#FF8F00'}}>{this.props.exerciseStore.sets}×</Text> {this.props.exerciseStore.details.info.name.toUpperCase()}
-        </Text>
-      </View>
-    )
-  }
-}
+import MiniWorkoutTitle from './MiniWorkoutTitle';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 // props: workout<Workout>
+
+// @withNavigation
 @observer
-@withNavigation
 export default class MiniWorkout extends React.Component {
   state = {
-    modalVisible: false,
-    mounted: false
+    modalVisible: false
   };
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({mounted: true})
-    });
-  }
 
   openModal() {
     this.setState({modalVisible: true});
@@ -47,8 +29,7 @@ export default class MiniWorkout extends React.Component {
     this.setState({modalVisible: false});
   }
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     this.workoutTemplateStore = this.props.workoutTemplateStore;
     this.musclesModelStore = new MusclesModelStore(this.workoutTemplateStore);
   }
@@ -57,42 +38,59 @@ export default class MiniWorkout extends React.Component {
   @observer
   render() {
     return (
-      <Animated.View style={{
-        // marginTop: 5,
-        // marginBottom: 5,
-        padding: 5,
-        opacity: this.props.transitionFromStart ? this.props.animation : 1,
-      }}>
+      <View style={{paddingLeft: 5, paddingRight: 5, paddingBottom: 15}}>
         <ElevatedView elevation={3} style={{
           borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth
+          borderWidth: StyleSheet.hairlineWidth,
+          backgroundColor: '#101010',
         }}>
+
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              width: '100%',
+              borderColor: '#222',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              // backgroundColor: 'red',
+              backgroundColor: '#151515',
+            }}
+            onPress={() => {
+              this.props.navigation.navigate('Tweaker', {workoutTemplateStore: this.props.workoutTemplateStore})
+            }}>
+
+            <View style={{padding: 4, paddingLeft: 10, flex: 1, width: '100%', alignItems: 'center'}}>
+              <Text style={[gs.text, {
+                fontSize: 13,
+                color: '#bbb'
+              }]}>{this.props.workoutTemplateStore.name}</Text>
+              <Text style={[gs.text, {
+                fontSize: 10,
+                color: '#999',
+                top: -2
+              }]}>Estimated {this.workoutTemplateStore.workoutDurationText}</Text>
+            </View>
+          </TouchableOpacity>
 
 
           <View style={{
             flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 0,
-            paddingRight: 7,
-            backgroundColor: '#131313',
-            borderWidth: 0,
-            borderColor: '#171717'
+            padding: 0
           }}>
-            {this.state.mounted ? <MusclesModel
-              musclesModelStore={this.musclesModelStore}
-              touchable={false}
-              scalable={false}
-              width={200}
-            /> :  <ActivityIndicator style={{width: 200, height: 205}} size="large" color="#555" />}
 
-            <View style={{flex: 1, paddingLeft: 14}}>
-              {this.workoutTemplateStore.exercises.map((exerciseStore) => {
-                return (
-                  <MiniWorkoutExercise key={exerciseStore.id} exerciseStore={exerciseStore}/>
-                )
-              })}
+            <View style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
+              <Text style={[gs.text, {color: '#ccc', fontSize: 8, textAlign: 'left'}]}>
+                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>31 Jan 2018</Text>
+              </Text>
             </View>
+
+            <TouchableOpacity style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
+              <Text style={[gs.text, {color: '#FF9800', fontSize: 8, textAlign: 'right'}]}>
+                <Ionicons name={'ios-play'} size={8}/>&nbsp;
+                PERFORM ON{'\n'}<Text style={{fontSize: 14}}>8 Feb 2018</Text>
+              </Text>
+            </TouchableOpacity>
+
 
           </View>
         </ElevatedView>
@@ -123,7 +121,7 @@ export default class MiniWorkout extends React.Component {
         </Modal>
 
 
-      </Animated.View>
+      </View>
     )
   }
 }
