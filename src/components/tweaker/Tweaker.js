@@ -4,7 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  Animated, Easing, TouchableOpacity, ActivityIndicator
+  Animated, Easing, TouchableOpacity, ActivityIndicator, Modal, Button, TextInput, TouchableNativeFeedback
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,18 +21,23 @@ import WorkoutTemplateStore from '../../store/WorkoutTemplateStore';
 import MusclesModel from '../muscles/MusclesModel';
 import ExerciseWithMuscles from '../exercises/ExerciseWithMuscles';
 import ExerciseInWorkoutInTweaker from "../exercises/ExerciseInWorkoutInTweaker";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 @withNavigation
 @observer
 export default class Tweaker extends Component {
   state = {
-    renderMain: false
+    renderMain: false,
+    editingName: false,
+    name: '',
+    modalVisible: false
   };
 
   componentWillMount() {
     this.workoutTemplateStore = this.props.navigation.state.params.workoutTemplateStore;
-    console.log(this.workoutTemplateStore instanceof WorkoutTemplateStore);
     tweakerStore.reset(this.workoutTemplateStore);
+    this.setState({name: this.workoutTemplateStore.name})
   }
 
   componentDidMount() {
@@ -44,52 +49,133 @@ export default class Tweaker extends Component {
   @observer
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View>
-              <TouchableOpacity
-                style={{padding: 10, paddingBottom: 7, paddingRight: 21}}
-                onPress={() => {
-                  this.props.navigation.goBack()
-                }}
-              >
-                <Ionicons name='ios-arrow-back' size={37} color='#ddd'/>
-              </TouchableOpacity>
-            </View>
-            <View style={{
-              // alignSelf: 'center',
-              // alignItems: 'center',
-              top: 7,
-            }}>
+      <View style={styles.container}>
+        <View style={[styles.header, {}]}>
+          <View>
+            <TouchableOpacity
+              style={{padding: 10, paddingBottom: 7, paddingRight: 21}}
+              onPress={() => {
+                this.props.navigation.goBack()
+              }}
+            >
+              <Ionicons name='ios-arrow-back' size={37} color='#ddd'/>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            justifyContent: 'center'
+          }}>
+            {!this.state.editingName && <View style={{flexDirection: 'row'}}>
               <Text style={[gs.text, {color: '#ddd', fontSize: 15}]}>
-                {/*Push pull legs workout 1*/}
                 {tweakerStore.workoutTemplateStore.name}
               </Text>
-              <View>
-                <Text style={[gs.text, {
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({editingName: true})
+                }}
+                style={{
+                  padding: 5,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                <FontAwesome name={'edit'} color={'#ddd'} size={16}/>
+              </TouchableOpacity>
+            </View>}
+            {this.state.editingName && <View style={{
+              maxWidth: 200,
+              flexDirection: 'row'
+            }}>
+              <TextInput
+                style={[gs.text, {
                   fontSize: 12,
-                  color: '#999'
-                }]}>Estimated {tweakerStore.workoutTemplateStore.workoutDurationText}</Text>
-              </View>
-            </View>
-
-            {/*<TouchableOpacity*/}
-            {/*style={{padding: 10}}*/}
-            {/*onPress={() => {*/}
-            {/*this.props.navigation.goBack()*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*<Ionicons name='md-checkmark' size={37} color='#FF8F00'/>*/}
-            {/*</TouchableOpacity>*/}
+                  height: 30,
+                  borderColor: '#ddd',
+                  borderWidth: 1,
+                  padding: 0,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+                  marginRight: 10,
+                }]}
+                onChangeText={(text) => this.setState({name: text})}
+                value={this.state.name}
+              />
+              <TouchableNativeFeedback
+                onPress={() => {
+                  this.workoutTemplateStore.rename(this.state.name);
+                  this.setState({editingName: false})
+                }}
+                style={{
+                  padding: 5,
+                  paddingLeft: 7,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                <MaterialIcons
+                  name={'done'}
+                  color={'#ddd'}
+                  size={27}
+                  onPress={() => {
+                    console.log('press');
+                  }}/>
+              </TouchableNativeFeedback>
+            </View>}
+            <Text style={[gs.text, {
+              fontSize: 12,
+              color: '#999'
+            }]}>Estimated {tweakerStore.workoutTemplateStore.workoutDurationText}</Text>
           </View>
 
-
-          {this.state.renderMain ? <TweakerMainView/>
-            : <ActivityIndicator style={{top: '50%', marginTop: -100}} size="large" color="#777"/>}
-
-
+          <TouchableOpacity
+            style={[{
+              position: 'absolute',
+              right: 0,
+              width: 40,
+              height: '100%',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingRight: 15
+            }]}
+            onPress={() => {
+              this.setState({modalVisible: true});
+            }}>
+            <Ionicons name={'md-trash'} size={25} color={'#ccc'}/>
+          </TouchableOpacity>
         </View>
+
+
+        {this.state.renderMain ? <TweakerMainView/>
+          : <ActivityIndicator style={{top: '50%', marginTop: -100}} size="large" color="#777"/>}
+
+
+        <Modal
+          visible={this.state.modalVisible}
+          transparent={true}
+          animationType={'fade'}
+          onRequestClose={() =>
+            this.setState({modalVisible: false})}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.innerContainer}>
+              <Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>
+              <View style={{flexDirection: 'row', paddingTop: 10}}>
+                <View style={{marginRight: 10}}><Button
+                  color={'red'}
+                  onPress={() => {
+                    tweakerStore.workoutTemplateStore.removeWorkout();
+                    this.props.navigation.goBack();
+                    this.setState({modalVisible: false})
+                  }}
+                  title="Delete"
+                /></View>
+                <View><Button
+                  onPress={() => this.setState({modalVisible: false})}
+                  title="Close"
+                /></View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+
       </View>
     );
 
@@ -260,8 +346,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c0c0c'
   },
   header: {
-    backgroundColor: 'rgba(51,51,51, 0.15)',
+    backgroundColor: '#151515',
     flexDirection: 'row',
+    width: '100%',
     // justifyContent: 'space-between',
     // alignItems: 'center'
   },
@@ -280,5 +367,13 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     alignSelf: 'center'
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.9)',
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
 });

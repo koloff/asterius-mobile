@@ -25,7 +25,10 @@ export default class WorkoutsScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.wrapper}>
+      <View style={{
+        backgroundColor: '#0c0c0c',
+        flex: 1
+      }}>
 
         <Image
           style={{
@@ -109,7 +112,7 @@ export default class WorkoutsScreen extends React.Component {
                 textMonthFontSize: 16,
                 textDayHeaderFontSize: 13
               }}
-              maxDate={'2018-02-09'}
+              maxDate={'2018-02-13'}
               firstDay={1}
               disableMonthChange={true}
               markedDates={{
@@ -128,9 +131,41 @@ export default class WorkoutsScreen extends React.Component {
 
         </View>
 
+
+        <MiniWorkoutsList navigation={this.props.navigation}/>
+      </View>
+    )
+  }
+}
+
+@observer
+class MiniWorkoutsList extends React.Component {
+
+  state = {
+    mounted: false
+  };
+
+  componentWillMount() {
+    this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
+    this.workoutsTemplatesStore.listenChildAdded();
+    this.workoutsTemplatesStore.listenChildRemoved();
+  }
+
+  _renderItem = ({item, index}) => {
+    console.log(index);
+    return <Observer>{() =>
+      <MiniWorkoutInList navigation={this.props.navigation} workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workout}/>}</Observer>
+  };
+
+  render() {
+    return (
+      <View style={{flex: 1}}>
         <View style={{flexDirection: 'row', padding: 15, height: 90}}>
           <ElevatedView style={{flex: 1, marginRight: 7}}>
             <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Generate');
+              }}
               style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -163,7 +198,11 @@ export default class WorkoutsScreen extends React.Component {
                 backgroundColor: '#151515',
                 borderColor: '#222',
                 borderWidth: StyleSheet.hairlineWidth
-              }}>
+              }}
+              onPress={() => {
+                this.workoutsTemplatesStore.addWorkout();
+              }}
+            >
               <View style={{marginRight: 10}}>
                 <Ionicons size={26} color={'#ccc'} name={'md-add'}/>
               </View>
@@ -176,9 +215,9 @@ export default class WorkoutsScreen extends React.Component {
           </ElevatedView>
         </View>
 
-        <View style={[styles.myWorkouts, {
-          padding: 30, paddingTop: 0, paddingBottom: 0
-        }]}>
+        <View style={{
+          flex: 1, justifyContent: 'center', padding: 30, paddingTop: 0, paddingBottom: 0
+        }}>
           {/*<LinearGradient*/}
           {/*colors={['rgba(0,0,0,0.3)', 'transparent']}*/}
           {/*style={{*/}
@@ -191,8 +230,6 @@ export default class WorkoutsScreen extends React.Component {
           {/*}}*/}
           {/*/>*/}
 
-          <MiniWorkoutsList navigation={this.props.navigation}/>
-
 
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.4)']}
@@ -204,54 +241,19 @@ export default class WorkoutsScreen extends React.Component {
               height: 6,
             }}
           />
-        </View>
+          <FlatList
+            style={{
+              // borderColor: '#555',
+              // // borderBottomWidth: StyleSheet.hairlineWidth,
+              // borderTopWidth: StyleSheet.hairlineWidth
+            }}
+            data={Mobx.toJS(this.workoutsTemplatesStore.workouts)}
+            keyExtractor={(item) => item.key}
+            renderItem={this._renderItem}
+          />
 
+        </View>
       </View>
     )
   }
 }
-
-@observer
-class MiniWorkoutsList extends React.Component {
-
-  state = {
-    mounted: false
-  };
-
-  componentWillMount() {
-    this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
-  }
-
-  _renderItem = ({item, index}) => {
-    console.log(index);
-    return <Observer>{() =>
-      <MiniWorkoutInList navigation={this.props.navigation} workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workout}/>}</Observer>
-  };
-
-  render() {
-    return (
-      <FlatList
-        style={{
-          // borderColor: '#555',
-          // // borderBottomWidth: StyleSheet.hairlineWidth,
-          // borderTopWidth: StyleSheet.hairlineWidth
-        }}
-        data={Mobx.toJS(this.workoutsTemplatesStore.workouts)}
-        keyExtractor={(item) => item.key}
-        renderItem={this._renderItem}
-      />
-    )
-  }
-}
-
-
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: '#0c0c0c',
-    flex: 1
-  },
-  myWorkouts: {
-    flex: 1,
-    justifyContent: 'center'
-  }
-});

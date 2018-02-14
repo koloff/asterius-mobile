@@ -11,6 +11,7 @@ import WorkoutsScreen from './components/workouts/WorkoutsScreen';
 import ProgressScreen from "./components/progress/ProgressScreen";
 import EatScreen from "./components/eat/EatScreen";
 import SettingsScreen from "./components/settings/SettingsScreen";
+import GenerateStack from './components/generate/GenerateStack';
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -92,6 +93,9 @@ const MainNavigator = StackNavigator({
   Tweaker: {
     screen: Tweaker,
     path: 'tweaker/:workoutTemplateStore'
+  },
+  Generate: {
+    screen: GenerateStack
   }
 }, {
   headerMode: 'none',

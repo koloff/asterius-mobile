@@ -49,10 +49,9 @@ async function save(path, data) {
   })
 }
 
-async function push(path, data) {
+async function remove(path) {
   return new Promise((resolve, reject) => {
-    const parsedData = JSON.parse(JSON.stringify(data));
-    firebase.database().ref(path).push(parsedData)
+    firebase.database().ref(path).remove()
       .then((success) => {
         return resolve(success);
       })
@@ -63,4 +62,24 @@ async function push(path, data) {
   })
 }
 
-export default {get, save, push, watch, childAdded, childChanged, childRemoved};
+
+
+async function push(path, data) {
+  return new Promise((resolve, reject) => {
+    const parsedData = JSON.parse(JSON.stringify(data));
+
+    const ref = firebase.database().ref(path).push();
+    let resPath = ref.path;
+    let resKey = ref.key;
+    ref.set(parsedData, (err) => {
+      if (err) {
+        return reject(err);
+      } else {
+        return resolve({path: resPath, key: resKey});
+      }
+    })
+
+  })
+}
+
+export default {get, save, push, remove, watch, childAdded, childChanged, childRemoved};

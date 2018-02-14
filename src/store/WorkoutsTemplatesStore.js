@@ -9,16 +9,34 @@ export default class WorkoutsTemplatesStore {
   @observable workouts = [];
 
   constructor() {
+    //todo
     this.path = `/workoutsTemplates/${authStore.uid}`;
+  }
 
+  listenChildAdded() {
     database.childAdded(this.path, (snap) => {
-      let workout = {workout: new WorkoutTemplateStore(snap.val()), key: snap.key};
+      console.log(snap.key);
+      console.log(this.path + snap.key);
+      let workout = {
+        workout: new WorkoutTemplateStore(snap.val(), snap.key, this.path + '/' + snap.key),
+        key: snap.key
+      };
       this.workouts.unshift(workout);
     });
+  }
 
+  listenChildRemoved() {
     database.childRemoved(this.path, (snap) => {
       let index = this.workouts.findIndex((item) => item.key === snap.key);
       this.workouts.splice(index, 1);
     })
+  }
+
+  async addWorkout() {
+    try {
+      let {key, path} = await database.push(this.path, {name: 'Custom workout'});
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

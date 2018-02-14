@@ -17,8 +17,8 @@ export default class SetCount extends React.Component {
   }
 
   getSetsCount() {
-    console.log(tweakerStore.workoutTemplateStore);
-    return tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id) ? tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id).sets : 0;
+    return tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id) ?
+      tweakerStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(this.props.id).sets : 0;
   }
 
   render() {
@@ -33,8 +33,11 @@ export default class SetCount extends React.Component {
           minimumTrackTintColor={'#616161'}
           style={{flex: 1, height: 30}}
           value={this.state.initialSets}
+          onSlidingComplete={(val) => {
+            tweakerStore.workoutTemplateStore.setExerciseSetsFinish(this.props.id, val);
+          }}
           onValueChange={(val) => {
-            tweakerStore.workoutTemplateStore.setExerciseSets(this.props.id, val);
+            tweakerStore.workoutTemplateStore.setExerciseSetsImmediate(this.props.id, val);
           }}
         />
 

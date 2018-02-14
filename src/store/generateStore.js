@@ -5,10 +5,13 @@ import {extendObservable} from "mobx";
 import _ from 'lodash';
 
 import MusclesModelStore from "./MusclesModelStore";
+import WorkoutTemplateStore from "./WorkoutTemplateStore";
+import WorkoutsTemplatesStore from "./WorkoutsTemplatesStore";
 
 
 class GenerateStore {
   musclesModelStore;
+  workoutsTemplatesStore;
 
   @observable generating = false;
   @observable generated = false;
@@ -30,6 +33,9 @@ class GenerateStore {
   async init() {
     return new Promise((resolve) => {
       this.musclesModelStore = new MusclesModelStore();
+      this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
+      this.workoutsTemplatesStore.listenChildRemoved();
+
       extendObservable(this, {
         userParameters: _.clone(this.defaultUserParameters, true),
         workouts: [],
@@ -119,19 +125,19 @@ class GenerateStore {
           ]
         };
 
-
-        // generating and generated are managed in the Generate component
-        this.workouts = res.workouts;
-
+        this.workouts = [];
         if (authStore.isAnonymous) {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
 
+
+        //todo
         for (let i = 0; i < res.workouts.length; i++) {
-          await database.push(`/workoutsTemplates/${authStore.uid}`, this.workouts[i]);
+          let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, res.workouts[i]);
+          this.workoutsTemplatesStore.workouts.push({workout: new WorkoutTemplateStore(res.workouts[i], ref.key, ref.path), key: ref.key});
         }
 
-        return resolve(res.workouts);
+        return resolve();
       }
       catch (err) {
         console.log(err);

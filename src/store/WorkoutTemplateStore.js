@@ -1,13 +1,21 @@
 import {computed, observable} from 'mobx';
 import * as ec from '../algorithm/exercises/exercises-collection';
+import authStore from "./authStore";
+import database from "../database";
+import * as Mobx from "mobx";
 
 export default class WorkoutTemplateStore {
+  @observable path;
+  @observable key;
   @observable name = '';
   @observable exercises = [];
   @observable addedNewExercise = false;
 
-  constructor(workoutTemplate) {
+  constructor(workoutTemplate, key, path) {
+    console.log(workoutTemplate);
     this.setWorkout(workoutTemplate);
+    this.key = key;
+    this.path = path;
   }
 
   setWorkout(workoutTemplate) {
@@ -19,44 +27,8 @@ export default class WorkoutTemplateStore {
     }
   }
 
-
-  setAddedNewExercise(val) {
-    this.addedNewExercise = val;
-  }
-
-
   getWorkoutTemplateExerciseStore(id) {
     return this.exercises.find((ex) => ex.id === id)
-  }
-
-
-  setExerciseSets(id, sets) {
-    if (!this.getWorkoutTemplateExerciseStore(id)) {
-      this.exercises.push(new WorkoutTemplateExerciseStore(this, id, sets, this.exercises.length - 1));
-      this.setAddedNewExercise(true);
-    } else {
-      // not in workoutTemplate
-      if (sets === 0) {
-        let index = this.getWorkoutTemplateExerciseStore(id).index;
-        this.exercises.splice(index, 1);
-      } else {
-        this.getWorkoutTemplateExerciseStore(id).setSets(sets);
-      }
-    }
-  }
-
-  moveExerciseUp(id) {
-    let exerciseStore = this.getWorkoutTemplateExerciseStore(id);
-    let index = exerciseStore.index;
-    this.exercises.splice(index, 1);
-    this.exercises.splice(index - 1, 0, exerciseStore);
-  }
-
-  moveExerciseDown(id) {
-    let exerciseStore = this.getWorkoutTemplateExerciseStore(id);
-    let index = exerciseStore.index;
-    this.exercises.splice(index, 1);
-    this.exercises.splice(index + 1, 0, exerciseStore);
   }
 
   @computed get workoutDurationText() {
@@ -78,12 +50,76 @@ export default class WorkoutTemplateStore {
       return `${leftMinutes} min`;
     }
   }
+
+  rename(name) {
+    this.name = name;
+    try {
+      console.log(this.path);
+      database.save(this.path + '/name', name);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async removeWorkout() {
+    return database.remove(this.path);
+  }
+
+  setAddedNewExercise(val) {
+    this.addedNewExercise = val;
+  }
+
+  getExercisesAsObject() {
+    return this.exercises.map((exStore) => {
+      return {id: exStore.id, sets: exStore.sets}
+    });
+  }
+
+
+  /* METHODS THAT UPDATE THE WORKOUT */
+
+  // on slider drag
+  setExerciseSetsImmediate(id, sets) {
+    if (!this.getWorkoutTemplateExerciseStore(id)) {
+      this.exercises.push(new WorkoutTemplateExerciseStore(this, id, sets, this.exercises.length - 1));
+      this.setAddedNewExercise(true);
+    } else {
+      this.getWorkoutTemplateExerciseStore(id).setSets(sets);
+    }
+  }
+
+  // on slider release
+  setExerciseSetsFinish(id, sets) {
+    if (sets === 0) {
+      let index = this.getWorkoutTemplateExerciseStore(id).index;
+      this.exercises.splice(index, 1);
+    }
+    console.log(Mobx.toJS(this.exercises));
+    database.save(`${this.path}/exercises`, this.getExercisesAsObject());
+  }
+
+
+  moveExerciseUp(id) {
+    let exerciseStore = this.getWorkoutTemplateExerciseStore(id);
+    let index = exerciseStore.index;
+    this.exercises.splice(index, 1);
+    this.exercises.splice(index - 1, 0, exerciseStore);
+    database.save(`${this.path}/exercises`, this.getExercisesAsObject());
+  }
+
+  moveExerciseDown(id) {
+    let exerciseStore = this.getWorkoutTemplateExerciseStore(id);
+    let index = exerciseStore.index;
+    this.exercises.splice(index, 1);
+    this.exercises.splice(index + 1, 0, exerciseStore);
+    database.save(`${this.path}/exercises`, this.getExercisesAsObject());
+  }
 }
 
 class WorkoutTemplateExerciseStore {
   workoutStore;
   id;
-  details;
+  @observable details;
 
   @observable sets;
 

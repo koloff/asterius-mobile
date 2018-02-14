@@ -9,7 +9,7 @@ import {
   Animated,
   ActivityIndicator, ScrollView
 } from 'react-native';
-import {observer, Observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import Swiper from 'react-native-swiper';
 import {gs} from "../../globals";
 import generateStore from "../../store/generateStore";
@@ -22,11 +22,15 @@ import MusclesModel from '../muscles/MusclesModel';
 import ParameterInputNumber from './ParameterInputNumber';
 import RadioButtons from "../RadioButtons";
 import ElevatedView from "../ElevatedView";
-import MiniWorkout from "../workouts/MiniWorkout";
+import MiniWorkoutGenerated from "../workouts/MiniWorkoutGenerated";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
+import {withNavigation} from "react-navigation";
+
+// todo change opacity to fromstart prop
 
 @observer
+@withNavigation
 export default class Generate extends React.Component {
   state = {
     slide: 0,
@@ -132,6 +136,7 @@ export default class Generate extends React.Component {
     </View>
   }
 
+  @observer
   render() {
     this.scale = this.props.opacity ? this.props.opacity.interpolate({
       inputRange: [0, 1],
@@ -141,7 +146,7 @@ export default class Generate extends React.Component {
       <Animated.View style={[styles.wrapper, {
         opacity: this.props.opacity || 1,
         transform: [{scale: this.scale}],
-        zIndex: this.props.isActive ? 200 : 1
+        zIndex: this.props.opacity ? (this.props.isActive ? 200 : 1) : 200
       }]}>
         <View style={{
           position: 'absolute',
@@ -150,10 +155,13 @@ export default class Generate extends React.Component {
         }}>
           <TouchableOpacity
             onPress={() => {
-              this.props.goBack()
+              this.props.opacity ? this.props.goBack() : this.props.navigation.goBack()
             }}>
             <Ionicons name={'md-close'} size={37} color={'#888'}/>
           </TouchableOpacity>
+
+
+
         </View>
 
         <Swiper
@@ -218,6 +226,7 @@ export default class Generate extends React.Component {
 
           <View style={{flex: 1, width: '100%', height: '100%', padding: 6, paddingTop: 100}}>
             {generateStore.generated && <GeneratedWorkoutsSlide
+              navigation={this.props.navigation}
               onWorkoutsReset={this.onWorkoutsReset.bind(this)}
               onTransition={this.props.onTransition}
             />}
@@ -270,47 +279,47 @@ const Slide2 = observer((props) => {
     marginTop: 23
   }]}>
     {/*<View style={{marginBottom: props.keyboardOpen ? 200 : 0}}>*/}
-      <Question text={'What are your units?'}/>
+    <Question text={'What are your units?'}/>
 
-      <RadioButtons
-        selected={generateStore.userParameters.measuringUnit}
-        onSelectedChange={(value) => {
-          generateStore.userParameters.measuringUnit = value
-        }}
-        optionStyle={styles.optionStyle}
-        style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
-      >
-        <View value={1}>
-          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-            Metric
-          </Text>
-          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-            CM and KG
-          </Text>
-        </View>
-
-        <View value={2}>
-          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-            Imperial
-          </Text>
-          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-            IN and LBS
-          </Text>
-        </View>
-      </RadioButtons>
-
-      <Question text={'What are your measurements?'}/>
-      <View style={{flexDirection: 'row'}}>
-        <ParameterInputNumber title={'Age'} unit={'YEARS'} value={generateStore.userParameters.age} onChangeText={(val) => {
-          generateStore.userParameters.age = val;
-        }}/>
-        <ParameterInputNumber title={'Height'} unit={generateStore.userParameters.measuringUnit === 1 ? 'CM' : 'IN'} value={generateStore.userParameters.height} onChangeText={(val) => {
-          generateStore.userParameters.height = val;
-        }}/>
-        <ParameterInputNumber title={'Weight'} unit={generateStore.userParameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={generateStore.userParameters.weight} onChangeText={(val) => {
-          generateStore.userParameters.weight = val;
-        }}/>
+    <RadioButtons
+      selected={generateStore.userParameters.measuringUnit}
+      onSelectedChange={(value) => {
+        generateStore.userParameters.measuringUnit = value
+      }}
+      optionStyle={styles.optionStyle}
+      style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
+    >
+      <View value={1}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+          Metric
+        </Text>
+        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+          CM and KG
+        </Text>
       </View>
+
+      <View value={2}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+          Imperial
+        </Text>
+        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+          IN and LBS
+        </Text>
+      </View>
+    </RadioButtons>
+
+    <Question text={'What are your measurements?'}/>
+    <View style={{flexDirection: 'row'}}>
+      <ParameterInputNumber title={'Age'} unit={'YEARS'} value={generateStore.userParameters.age} onChangeText={(val) => {
+        generateStore.userParameters.age = val;
+      }}/>
+      <ParameterInputNumber title={'Height'} unit={generateStore.userParameters.measuringUnit === 1 ? 'CM' : 'IN'} value={generateStore.userParameters.height} onChangeText={(val) => {
+        generateStore.userParameters.height = val;
+      }}/>
+      <ParameterInputNumber title={'Weight'} unit={generateStore.userParameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={generateStore.userParameters.weight} onChangeText={(val) => {
+        generateStore.userParameters.weight = val;
+      }}/>
+    </View>
     {/*</View>*/}
   </View>
 });
@@ -554,24 +563,23 @@ class GeneratedWorkoutsSlide extends React.Component {
     }, 600)
   }
 
+  @observer
   render() {
     return <View style={{paddingTop: 0, paddingBottom: 0, flex: 1, height: '100%'}}>
       <View style={{marginBottom: 60}}>
+
         <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
-          {generateStore.workouts.map((workout, index) => {
+          {generateStore.workoutsTemplatesStore.workouts.map((workoutRow, index) => {
             return (
-              <MiniWorkout
-                transitionFromStart={true}
+              <MiniWorkoutGenerated
                 animation={this.state.animations[index]}
-                onWorkoutStart={() => {
-                  this.props.onTransition('Register');
-                }}
-                key={index}
-                workout={workout}
+                key={workoutRow.key}
+                workoutTemplateStore={workoutRow.workout}
               />
             )
           })}
         </ScrollView>
+
         <LinearGradient
           colors={['rgba(0,0,0,0.5)', 'transparent']}
           style={{
@@ -628,7 +636,7 @@ class GeneratedWorkoutsSlide extends React.Component {
           justifyContent: 'center'
         }}
         onPress={async () => {
-          this.props.onTransition('Register');
+          this.props.opacity ?  this.props.onTransition('Register') : this.props.navigation.goBack();
         }}>
         <Text style={[gs.text, {color: 'rgba(255,143,0 ,1)', fontSize: 17, textAlign: 'center'}]}>
           <FontAwesome name='flag-checkered' size={17} color='rgba(255,143,0 ,1)'/>

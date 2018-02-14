@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Animated, Modal, Button, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Modal, Button} from 'react-native';
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
 
@@ -7,12 +7,7 @@ import MusclesModelStore from "../../store/MusclesModelStore";
 import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
 
-import MiniWorkoutTitle from './MiniWorkoutTitle';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-
-// props: workout<Workout>
 
 // @withNavigation
 @observer
@@ -96,29 +91,29 @@ export default class MiniWorkout extends React.Component {
         </ElevatedView>
 
 
-        <Modal
-          visible={this.state.modalVisible}
-          transparent={true}
-          animationType={'fade'}
-          onRequestClose={() => this.closeModal()}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.innerContainer}>
-              <Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>
-              <View style={{flexDirection: 'row', paddingTop: 10}}>
-                <View style={{marginRight: 10}}><Button
-                  color={'red'}
-                  onPress={() => this.closeModal()}
-                  title="Delete"
-                /></View>
-                <View><Button
-                  onPress={() => this.closeModal()}
-                  title="Close"
-                /></View>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        {/*<Modal*/}
+          {/*visible={false}*/}
+          {/*transparent={true}*/}
+          {/*animationType={'fade'}*/}
+          {/*onRequestClose={() => this.closeModal()}*/}
+        {/*>*/}
+          {/*<View style={styles.modalContainer}>*/}
+            {/*<View style={styles.innerContainer}>*/}
+              {/*<Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>*/}
+              {/*<View style={{flexDirection: 'row', paddingTop: 10}}>*/}
+                {/*<View style={{marginRight: 10}}><Button*/}
+                  {/*color={'red'}*/}
+                  {/*onPress={() => this.closeModal()}*/}
+                  {/*title="Delete"*/}
+                {/*/></View>*/}
+                {/*<View><Button*/}
+                  {/*onPress={() => this.closeModal()}*/}
+                  {/*title="Close"*/}
+                {/*/></View>*/}
+              {/*</View>*/}
+            {/*</View>*/}
+          {/*</View>*/}
+        {/*</Modal>*/}
 
 
       </View>
