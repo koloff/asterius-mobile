@@ -6,15 +6,12 @@ import * as Mobx from "mobx";
 
 export default class WorkoutTemplateStore {
   @observable path;
-  @observable key;
   @observable name = '';
   @observable exercises = [];
   @observable addedNewExercise = false;
 
-  constructor(workoutTemplate, key, path) {
-    console.log(workoutTemplate);
+  constructor(workoutTemplate, path) {
     this.setWorkout(workoutTemplate);
-    this.key = key;
     this.path = path;
   }
 
@@ -32,7 +29,6 @@ export default class WorkoutTemplateStore {
   }
 
   @computed get workoutDurationText() {
-    console.log('COMPUTING');
     let minutes = 0;
     minutes += 5; // warmup
 
@@ -54,7 +50,6 @@ export default class WorkoutTemplateStore {
   rename(name) {
     this.name = name;
     try {
-      console.log(this.path);
       database.save(this.path + '/name', name);
     } catch (err) {
       console.error(err);
@@ -94,7 +89,6 @@ export default class WorkoutTemplateStore {
       let index = this.getWorkoutTemplateExerciseStore(id).index;
       this.exercises.splice(index, 1);
     }
-    console.log(Mobx.toJS(this.exercises));
     database.save(`${this.path}/exercises`, this.getExercisesAsObject());
   }
 
@@ -117,7 +111,7 @@ export default class WorkoutTemplateStore {
 }
 
 class WorkoutTemplateExerciseStore {
-  workoutStore;
+  workoutTemplateStore;
   id;
   @observable details;
 

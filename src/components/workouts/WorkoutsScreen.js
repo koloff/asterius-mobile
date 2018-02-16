@@ -9,6 +9,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {withNavigation} from 'react-navigation';
 
 import {gs} from "../../globals";
+
+import workoutsLogsStore from '../../store/workoutsLogsStore';
 import MiniWorkoutInList from "./MiniWorkoutInList";
 
 import WorkoutsTemplatesStore from '../../store/WorkoutsTemplatesStore';
@@ -22,7 +24,11 @@ export default class WorkoutsScreen extends React.Component {
     tabBarLabel: 'WORKOUT',
   };
 
+  componentWillMount() {
+    workoutsLogsStore.init();
+  }
 
+  @observer
   render() {
     return (
       <View style={{
@@ -50,8 +56,9 @@ export default class WorkoutsScreen extends React.Component {
         }}></View>
 
         <View style={{
-          padding: 15,
+          padding: 30,
           paddingBottom: 0,
+          paddingTop: 15
           // borderColor: '#222',
           // borderBottomWidth: StyleSheet.hairlineWidth,
           // borderTopWidth: StyleSheet.hairlineWidth
@@ -59,7 +66,8 @@ export default class WorkoutsScreen extends React.Component {
 
           <ElevatedView elevation={4} style={{
             // borderColor: '#222',
-            height: 280,
+            height: 300,
+            justifyContent: 'center',
             // backgroundColor: 'red',
             // borderWidth: StyleSheet.hairlineWidth,
           }}>
@@ -67,6 +75,7 @@ export default class WorkoutsScreen extends React.Component {
               style={{
                 borderColor: '#222',
                 borderWidth: StyleSheet.hairlineWidth,
+                justifyContent: 'center'
               }}
               theme={{
                 'stylesheet.calendar.main': {
@@ -112,19 +121,15 @@ export default class WorkoutsScreen extends React.Component {
                 textMonthFontSize: 16,
                 textDayHeaderFontSize: 13
               }}
-              maxDate={'2018-02-13'}
+              maxDate={workoutsLogsStore.todayDateStr}
               firstDay={1}
               disableMonthChange={true}
-              markedDates={{
-                '2018-02-08': {marked: false, dotColor: 'rgba(255,143,0 ,1)', selected: true},
-                '2018-02-09': {marked: true, dotColor: 'rgba(255,143,0 ,1)', selected: false},
-                '2018-01-30': {marked: true, dotColor: 'rgba(255,143,0 ,1)'},
-                '2018-01-31': {marked: true, dotColor: 'rgba(255,143,0 ,1)'},
-                '2018-02-03': {marked: true, dotColor: 'rgba(255,143,0 ,1)'},
-                '2018-02-02': {marked: true, dotColor: 'rgba(255,143,0 ,1)'},
-              }}
+              markedDates={workoutsLogsStore.calendarData}
               onDayPress={(day) => {
-                console.log('day pressed', day)
+                if (!workoutsLogsStore.previousWorkoutLogs[day.dateString]) {
+                  workoutsLogsStore.selectedDateStr = day.dateString;
+                }
+
               }}
             />
           </ElevatedView>
@@ -151,12 +156,13 @@ class MiniWorkoutsList extends React.Component {
     this.workoutsTemplatesStore.listenChildRemoved();
   }
 
+  @observer
   _renderItem = ({item, index}) => {
-    console.log(index);
     return <Observer>{() =>
-      <MiniWorkoutInList navigation={this.props.navigation} workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workout}/>}</Observer>
+      <MiniWorkoutInList selectedDateStr={workoutsLogsStore.selectedDateStr} navigation={this.props.navigation} workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workout}/>}</Observer>
   };
 
+  @observer
   render() {
     return (
       <View style={{flex: 1}}>

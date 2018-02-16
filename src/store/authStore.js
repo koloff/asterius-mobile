@@ -36,7 +36,6 @@ class AuthStore {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(async (user) => {
         console.log('STATE CHANGE USER');
-        console.log(user.uid);
         if (user) {
           this.uid = user.uid;
 

@@ -36,6 +36,8 @@ class GenerateStore {
       this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
       this.workoutsTemplatesStore.listenChildRemoved();
 
+
+      // RESET
       extendObservable(this, {
         userParameters: _.clone(this.defaultUserParameters, true),
         workouts: [],

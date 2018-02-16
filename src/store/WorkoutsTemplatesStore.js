@@ -15,10 +15,8 @@ export default class WorkoutsTemplatesStore {
 
   listenChildAdded() {
     database.childAdded(this.path, (snap) => {
-      console.log(snap.key);
-      console.log(this.path + snap.key);
       let workout = {
-        workout: new WorkoutTemplateStore(snap.val(), snap.key, this.path + '/' + snap.key),
+        workout: new WorkoutTemplateStore(snap.val(), this.path + '/' + snap.key),
         key: snap.key
       };
       this.workouts.unshift(workout);

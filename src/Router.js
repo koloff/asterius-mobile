@@ -6,7 +6,7 @@ import {StackNavigator, TabBarBottom, TabNavigator} from 'react-navigation';
 
 import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
-
+import Log from './components/logs/Log';
 import WorkoutsScreen from './components/workouts/WorkoutsScreen';
 import ProgressScreen from "./components/progress/ProgressScreen";
 import EatScreen from "./components/eat/EatScreen";
@@ -89,6 +89,10 @@ const MainTabNavigator = TabNavigator({
 });
 
 const MainNavigator = StackNavigator({
+  Log: {
+    screen: Log,
+    path: 'log/:workoutLogDateStr'
+  },
   Main: {screen: MainTabNavigator},
   Tweaker: {
     screen: Tweaker,
@@ -117,9 +121,6 @@ const StartNavigator = StackNavigator({
     backgroundColor: '#101010',
   }
 });
-
-
-import Test from './components/Test';
 
 @observer
 export default class Router extends React.Component {

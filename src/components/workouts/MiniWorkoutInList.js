@@ -3,6 +3,8 @@ import {StyleSheet, View, Text, TouchableOpacity, Modal, Button} from 'react-nat
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
 
+import moment from 'moment';
+
 import MusclesModelStore from "../../store/MusclesModelStore";
 import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
@@ -11,24 +13,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 // @withNavigation
 @observer
-export default class MiniWorkout extends React.Component {
-  state = {
-    modalVisible: false
-  };
-
-  openModal() {
-    this.setState({modalVisible: true});
-  }
-
-  closeModal() {
-    this.setState({modalVisible: false});
-  }
+export default class MiniWorkoutInList extends React.Component {
 
   componentWillMount() {
     this.workoutTemplateStore = this.props.workoutTemplateStore;
     this.musclesModelStore = new MusclesModelStore(this.workoutTemplateStore);
   }
-
 
   @observer
   render() {
@@ -75,14 +65,19 @@ export default class MiniWorkout extends React.Component {
 
             <View style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
               <Text style={[gs.text, {color: '#ccc', fontSize: 8, textAlign: 'left'}]}>
-                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>31 Jan 2018</Text>
+                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>Not yet</Text>
               </Text>
             </View>
 
-            <TouchableOpacity style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Log', {workoutLogDateStr: this.props.selectedDateStr})
+              }}
+              style={{backgroundColor: '#151515', padding: 5, paddingLeft: 12}}>
               <Text style={[gs.text, {color: '#FF9800', fontSize: 8, textAlign: 'right'}]}>
                 <Ionicons name={'ios-play'} size={8}/>&nbsp;
-                PERFORM ON{'\n'}<Text style={{fontSize: 14}}>8 Feb 2018</Text>
+                PERFORM
+                ON{'\n'}<Text style={{fontSize: 14}}>{moment(this.props.selectedDateStr).format('D MMM YYYY')}</Text>
               </Text>
             </TouchableOpacity>
 
@@ -92,27 +87,27 @@ export default class MiniWorkout extends React.Component {
 
 
         {/*<Modal*/}
-          {/*visible={false}*/}
-          {/*transparent={true}*/}
-          {/*animationType={'fade'}*/}
-          {/*onRequestClose={() => this.closeModal()}*/}
+        {/*visible={false}*/}
+        {/*transparent={true}*/}
+        {/*animationType={'fade'}*/}
+        {/*onRequestClose={() => this.closeModal()}*/}
         {/*>*/}
-          {/*<View style={styles.modalContainer}>*/}
-            {/*<View style={styles.innerContainer}>*/}
-              {/*<Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>*/}
-              {/*<View style={{flexDirection: 'row', paddingTop: 10}}>*/}
-                {/*<View style={{marginRight: 10}}><Button*/}
-                  {/*color={'red'}*/}
-                  {/*onPress={() => this.closeModal()}*/}
-                  {/*title="Delete"*/}
-                {/*/></View>*/}
-                {/*<View><Button*/}
-                  {/*onPress={() => this.closeModal()}*/}
-                  {/*title="Close"*/}
-                {/*/></View>*/}
-              {/*</View>*/}
-            {/*</View>*/}
-          {/*</View>*/}
+        {/*<View style={styles.modalContainer}>*/}
+        {/*<View style={styles.innerContainer}>*/}
+        {/*<Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>*/}
+        {/*<View style={{flexDirection: 'row', paddingTop: 10}}>*/}
+        {/*<View style={{marginRight: 10}}><Button*/}
+        {/*color={'red'}*/}
+        {/*onPress={() => this.closeModal()}*/}
+        {/*title="Delete"*/}
+        {/*/></View>*/}
+        {/*<View><Button*/}
+        {/*onPress={() => this.closeModal()}*/}
+        {/*title="Close"*/}
+        {/*/></View>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</View>*/}
         {/*</Modal>*/}
 
 
@@ -120,19 +115,3 @@ export default class MiniWorkout extends React.Component {
     )
   }
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)',
-  },
-  innerContainer: {
-    alignItems: 'center',
-  },
-});
