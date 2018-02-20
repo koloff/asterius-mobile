@@ -20,22 +20,22 @@ export default class App extends Component {
     this.setState({isReady: true});
 
     // SEED DATA
-    database.save(`workoutsLogs/${authStore.uid}`, {
-      '2018-02-10': {
-        workoutTemplate: {
-          name: 'Workout A',
-          exercises: [
-            {id: 'reversePecDeck', sets: 3},
-            {id: 'highCableCrossover', sets: 3},
-            {id: 'ropePushdown', sets: 77},
-            {id: 'dumbbellShoulderPress', sets: 4},
-            {id: 'lowCableCrossover', sets: 3},
-            {id: 'dumbbellInclineBenchPress', sets: 4},
-            {id: 'seatedTricepsPress', sets: 3}
-          ]
-        }
-      },
-    })
+    // database.save(`workoutsLogs/${authStore.uid}`, {
+    //   '2018-02-10': {
+    //     workoutTemplate: {
+    //       name: 'Workout A',
+    //       exercises: [
+    //         {id: 'reversePecDeck', sets: 3},
+    //         {id: 'highCableCrossover', sets: 3},
+    //         {id: 'ropePushdown', sets: 77},
+    //         {id: 'dumbbellShoulderPress', sets: 4},
+    //         {id: 'lowCableCrossover', sets: 3},
+    //         {id: 'dumbbellInclineBenchPress', sets: 4},
+    //         {id: 'seatedTricepsPress', sets: 3}
+    //       ]
+    //     }
+    //   },
+    // })
 
   }
 

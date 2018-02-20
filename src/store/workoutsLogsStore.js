@@ -8,11 +8,15 @@ import exercisesLogsStore from "./exercisesLogsStore";
 
 const dotColor = 'rgba(255,143,0 ,1)';
 
+
+// module.hot.accept(() => { });
+
 class WorkoutsLogsStore {
   path;
   @observable todayDateStr;
   @observable selectedDateStr;
   // todo from db
+
   @observable previousWorkoutLogs = {
     '2018-01-29': {
       workoutTemplate: {
@@ -72,6 +76,7 @@ class WorkoutsLogsStore {
     },
   };
 
+
   //
   async init() {
     this.path = `workoutsLogs/${authStore.uid}`;
@@ -79,41 +84,6 @@ class WorkoutsLogsStore {
     this.selectedDateStr = this.todayDateStr;
     // this.previousWorkoutLogs = await database.get(this.path);
   }
-
-  async startNewWorkoutLog(dateStr, workoutTemplate) {
-    await database.save(`${this.path}/${dateStr}`, {
-      workoutTemplate: workoutTemplate
-    });
-    await this.addCurrentWorkoutLog(dateStr);
-  }
-
-  // due to lack of navigation events cannot keep track of which
-  // is the current workout log on screen todo change
-  @observable _openedWorkoutsLogs = [];
-
-  async addCurrentWorkoutLog(dateStr) {
-    let workoutLogStore = new WorkoutLogStore();
-    // async
-    await workoutLogStore.init(dateStr);
-    console.log(workoutLogStore);
-    this._openedWorkoutsLogs.push(workoutLogStore);
-  }
-
-
-  removeCurrentWorkoutLog() {
-    this._openedWorkoutsLogs.pop();
-  }
-
-  @computed get currentWorkoutLog() {
-    if (!this._openedWorkoutsLogs.length) {
-      return null;
-    }
-    return this._openedWorkoutsLogs[this._openedWorkoutsLogs.length - 1];
-  }
-
-
-  //////////////////////////////////
-
 
   @computed get calendarData() {
     let res = {};
@@ -123,14 +93,43 @@ class WorkoutsLogsStore {
     res[this.selectedDateStr] = {marked: false, selected: true};
     return res;
   }
+
+  async startNewWorkoutLog(dateStr, workoutTemplate) {
+    await database.save(`${this.path}/${dateStr}`,
+      // set the new workout in db
+      {
+        workoutTemplate: workoutTemplate
+      });
+    await this.addCurrentWorkoutLog(dateStr);
+  }
+
+  // due to lack of navigation events cannot keep track of which
+  // is the current workout log on screen todo change
+  @observable _openedWorkoutsLogs = [];
+  @observable currentWorkoutLog;
+
+  async addCurrentWorkoutLog(dateStr) {
+    let workoutLogStore = new WorkoutLogStore();
+    // async
+    await workoutLogStore.init(dateStr);
+    this._openedWorkoutsLogs.push(workoutLogStore);
+    this.currentWorkoutLog = workoutLogStore;
+  }
+
+  subtractCurrentWorkoutLog() {
+    this._openedWorkoutsLogs.pop();
+    this.currentWorkoutLog = this._openedWorkoutsLogs[this._openedWorkoutsLogs.length - 1];
+  }
 }
 
 class WorkoutLogStore {
   workoutTemplateStore;
   path;
+  dateStr;
 
   async init(workoutLogDateStr) {
     this.path = `workoutsLogs/${authStore.uid}/${workoutLogDateStr}`;
+    this.dateStr = workoutLogDateStr;
     try {
       let workoutTemplatePath = `${this.path}/workoutTemplate`;
       let workoutTemplate = await database.get(workoutTemplatePath);
@@ -140,11 +139,9 @@ class WorkoutLogStore {
     }
   }
 
-  // todo for each exercise in template get ex store
-  @computed get exercisesLogs() {
-    // console.log(this.workoutTemplateStore.exercises);
-    // return 1;
-    return this.workoutTemplateStore.exercises.map((workoutTemplateExerciseStore) => exercisesLogsStore.getExerciseLogs(workoutTemplateExerciseStore.id));
+  remove() {
+    // todo
+    // remove logs for each exercise
   }
 }
 

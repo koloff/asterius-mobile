@@ -6,7 +6,7 @@ import {StackNavigator, TabBarBottom, TabNavigator} from 'react-navigation';
 
 import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
-import Log from './components/logs/Log';
+import WorkoutLog from './components/logs/WorkoutLog';
 import WorkoutsScreen from './components/workouts/WorkoutsScreen';
 import ProgressScreen from "./components/progress/ProgressScreen";
 import EatScreen from "./components/eat/EatScreen";
@@ -89,8 +89,8 @@ const MainTabNavigator = TabNavigator({
 });
 
 const MainNavigator = StackNavigator({
-  Log: {
-    screen: Log,
+  WorkoutLog: {
+    screen: WorkoutLog,
     path: 'log/:workoutLogDateStr'
   },
   Main: {screen: MainTabNavigator},

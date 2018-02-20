@@ -1,17 +1,57 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, ScrollView} from 'react-native';
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
+import workoutsLogsStore from "../../store/workoutsLogsStore";
+import exercisesLogsStore from "../../store/exercisesLogsStore";
+import SetLog from './SetLog';
+import ExerciseLogsGraphic from "./ExerciseLogsGraphic";
 
+
+@observer
 export default class ExerciseLog extends React.Component {
 
-  componentWillMount() {
+  state = {
+    loading: true
+  };
+
+  async componentWillMount() {
+    this.currentWorkoutLogStore = workoutsLogsStore.currentWorkoutLog;
     this.id = this.props.id;
+    this.loadExerciseLog();
   }
 
+  async loadExerciseLog() {
+    this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.id);
+    await this.exerciseLogsStore.loadLogs();
+    this.currentWorkoutExerciseLogStore = this.exerciseLogsStore.getLog(this.currentWorkoutLogStore.dateStr);
+    this.setState({loading: false});
+  }
+
+
+  @observer
   render() {
     return (
-      <View><Button onPress={() => {}}></Button><Text style={[gs.text]}>{this.id}</Text></View>
+      <View style={{
+        backgroundColor: 'green'
+      }}>
+        {!this.state.loading && <View style={{}}>
+
+
+          <Text>{this.id} {this.currentWorkoutExerciseLogStore.sets.length}</Text>
+          <View style={{flexDirection: 'row'}}>
+            {this.currentWorkoutExerciseLogStore.sets.map((set) => {
+              if (!set.removed) {
+                return <SetLog key={set.index} exerciseLogSetStore={set}/>
+              }
+            })}
+          </View>
+
+          <ExerciseLogsGraphic id={this.id} />
+
+
+        </View>}
+      </View>
     )
   }
 }
