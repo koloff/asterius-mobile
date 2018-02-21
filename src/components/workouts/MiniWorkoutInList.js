@@ -84,33 +84,6 @@ export default class MiniWorkoutInList extends React.Component {
 
           </View>
         </ElevatedView>
-
-
-        {/*<Modal*/}
-        {/*visible={false}*/}
-        {/*transparent={true}*/}
-        {/*animationType={'fade'}*/}
-        {/*onRequestClose={() => this.closeModal()}*/}
-        {/*>*/}
-        {/*<View style={styles.modalContainer}>*/}
-        {/*<View style={styles.innerContainer}>*/}
-        {/*<Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>*/}
-        {/*<View style={{flexDirection: 'row', paddingTop: 10}}>*/}
-        {/*<View style={{marginRight: 10}}><Button*/}
-        {/*color={'red'}*/}
-        {/*onPress={() => this.closeModal()}*/}
-        {/*title="Delete"*/}
-        {/*/></View>*/}
-        {/*<View><Button*/}
-        {/*onPress={() => this.closeModal()}*/}
-        {/*title="Close"*/}
-        {/*/></View>*/}
-        {/*</View>*/}
-        {/*</View>*/}
-        {/*</View>*/}
-        {/*</Modal>*/}
-
-
       </View>
     )
   }

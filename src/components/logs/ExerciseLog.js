@@ -16,8 +16,9 @@ export default class ExerciseLog extends React.Component {
   };
 
   async componentWillMount() {
+    this.workoutTemplateExerciseStore = this.props.workoutTemplateExerciseStore;
     this.currentWorkoutLogStore = workoutsLogsStore.currentWorkoutLog;
-    this.id = this.props.id;
+    this.id = this.workoutTemplateExerciseStore.id;
     this.loadExerciseLog();
   }
 
@@ -33,12 +34,12 @@ export default class ExerciseLog extends React.Component {
   render() {
     return (
       <View style={{
-        backgroundColor: 'green'
+        backgroundColor: '#222', marginBottom: 10
       }}>
-        {!this.state.loading && <View style={{}}>
+        {!this.state.loading && <View style={{alignItems: 'center'}}>
 
 
-          <Text>{this.id} {this.currentWorkoutExerciseLogStore.sets.length}</Text>
+          <Text style={[gs.text, {color: '#bbb', fontSize: 18, marginBottom: 12}]}>{this.workoutTemplateExerciseStore.details.info.name}</Text>
           <View style={{flexDirection: 'row'}}>
             {this.currentWorkoutExerciseLogStore.sets.map((set) => {
               if (!set.removed) {
@@ -47,7 +48,7 @@ export default class ExerciseLog extends React.Component {
             })}
           </View>
 
-          <ExerciseLogsGraphic id={this.id} />
+          <ExerciseLogsGraphic id={this.id}/>
 
 
         </View>}

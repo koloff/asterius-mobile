@@ -20,15 +20,15 @@ export default class SetLog extends React.Component {
       weight: this.exerciseLogSetStore.weight ? this.exerciseLogSetStore.weight.toString() : ''
     });
 
-    this.debounceUpdateReps = _.debounce(this.exerciseLogSetStore.updateReps.bind(this.exerciseLogSetStore), 300);
-    this.debounceUpdateWeight = _.debounce(this.exerciseLogSetStore.updateWeight.bind(this.exerciseLogSetStore), 300);
+    this.debounceUpdateReps = _.debounce(this.exerciseLogSetStore.updateReps.bind(this.exerciseLogSetStore), 1000);
+    this.debounceUpdateWeight = _.debounce(this.exerciseLogSetStore.updateWeight.bind(this.exerciseLogSetStore), 1000);
   }
 
 
   @observer
   render() {
     return (
-      <View>
+      <View style={{alignItems: 'center'}}>
         <TextInput
           style={[gs.text, styles.input]}
           underlineColorAndroid={'transparent'}
@@ -51,7 +51,7 @@ export default class SetLog extends React.Component {
           style={[gs.text, styles.input]}
           underlineColorAndroid={'transparent'}
           keyboardType={'numeric'}
-          placeholderTextColor={'#555'}
+          placeholderTextColor={'#444'}
           selectionColor={'#ccc'}
           placeholder={'KG'}
           value={this.state.weight}
@@ -74,10 +74,12 @@ export default class SetLog extends React.Component {
 const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
-    backgroundColor: '#333',
-    marginBottom: 2,
-    marginLeft: 6,
-    padding: 1,
+    backgroundColor: 'transparent',
+    color: '#ccc',
+    marginBottom: 0,
+    marginLeft: 3,
+    marginRight: 3,
+    padding: 0,
     paddingRight: 5,
     paddingLeft: 5,
     height: 35,

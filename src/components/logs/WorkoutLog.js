@@ -8,6 +8,7 @@ import workoutsLogsStore from '../../store/workoutsLogsStore';
 import exercisesLogsStore from "../../store/exercisesLogsStore";
 
 import ExerciseLog from './ExerciseLog';
+import moment from "moment/moment";
 
 @observer
 @withNavigation
@@ -35,12 +36,12 @@ export default class Log extends React.Component {
     return <View style={{
       flex: 1,
       height: '100%',
-      backgroundColor: 'purple'
+      backgroundColor: '#101010'
     }}>
 
 
       <View style={[{
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         flexDirection: 'row',
         width: '100%',
       }]}>
@@ -60,7 +61,7 @@ export default class Log extends React.Component {
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity onPress={() => {
               this.props.navigation.navigate('Log')
-            }}><Text>{this.workoutLogDateStr}</Text></TouchableOpacity>
+            }}><Text style={[gs.text, {fontSize: 17}]}>{moment(this.workoutLogDateStr).format('D MMM YYYY')}</Text></TouchableOpacity>
 
           </View>
         </View>
@@ -68,19 +69,30 @@ export default class Log extends React.Component {
 
 
       {!this.state.loading && <View>
+        <ScrollView>
+          {workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises.map((workoutTemplateExerciseStore) => {
+            return (
+              <ExerciseLog key={workoutTemplateExerciseStore.id} workoutTemplateExerciseStore={workoutTemplateExerciseStore}/>)
+          })}
+        </ScrollView>
 
         <TouchableOpacity
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+            backgroundColor: '#4FC3F7',
+            position: 'absolute',
+            bottom: 14,
+            right: 10,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
           onPress={() => {
             this.props.navigation.navigate('Tweaker', {workoutTemplateStore: workoutsLogsStore.currentWorkoutLog.workoutTemplateStore})
           }}>
-          <Text>{workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.name}</Text>
+          <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 12}]}>EDIT</Text>
         </TouchableOpacity>
-
-        <ScrollView>
-          {workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises.map((exercise) => {
-            return (<ExerciseLog key={exercise.id} id={exercise.id}/>)
-          })}
-        </ScrollView>
 
       </View>}
 

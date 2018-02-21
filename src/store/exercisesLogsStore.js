@@ -31,11 +31,34 @@ class ExerciseLogsStore {
   path;
   @observable exerciseLogs = new Map();
   @observable lastPerformedDateStr;
-  @observable maxWeight;
-  @observable minWeight;
 
-  @computed get weightRange() {
-    return this.maxWeight - this.minWeight;
+  @computed get setsData() {
+    let foundMin = false;
+    let foundMax = false;
+    let max = 0;
+    let min = 999999;
+    let performedCount = 0;
+    this.exerciseLogs.forEach((log) => {
+      log.sets.forEach((set) => {
+        if (set.performed) {
+          if (set.weight && set.weight > max) {
+            foundMax = true;
+            max = set.weight;
+          }
+          if (set.weight && set.weight < min) {
+            foundMin = true;
+            min = set.weight;
+          }
+          performedCount++;
+        }
+      })
+    });
+    return {
+      maxWeight: max ? max : null,
+      minWeight: min ? min : null,
+      weightRange: (!max || !min) ? 0 : max - min,
+      performedCount: performedCount
+    };
   }
 
   constructor(id) {
@@ -43,7 +66,27 @@ class ExerciseLogsStore {
     this.path = `exercisesLogs/${authStore.uid}/${id}`;
   }
 
-  addPerformedLog(dateStr, log) {
+  async loadLogs() {
+    let logs = await database.get(this.path);
+    if (logs) {
+      console.log(logs);
+      _.forOwnRight(logs, (log, dateStr) => {
+        // log: {sets: [{reps, weight, removed}]
+        if (!this.exerciseLogs.has(dateStr)) {
+          this.setPerformedLog(dateStr, log);
+        }
+      })
+    }
+  }
+
+  async loadLog(dateStr) {
+    let log = await database.get(`${this.path}/${dateStr}`);
+    if (!this.exerciseLogs.has(dateStr)) {
+      this.setPerformedLog(dateStr, log);
+    }
+  }
+
+  setPerformedLog(dateStr, log) {
     let sets = log.sets;
     if (!sets) {
       return;
@@ -70,20 +113,6 @@ class ExerciseLogsStore {
     this.exerciseLogs.set(dateStr, exerciseLogStore);
   }
 
-  async loadLogs() {
-    let logs = await database.get(this.path);
-    console.log(logs);
-    _.forOwn(logs, (log, dateStr) => {
-      // log: {sets: [{reps, weight, removed}]
-      this.addPerformedLog(dateStr, log);
-    })
-  }
-
-  async loadLog(dateStr) {
-    let log = await database.get(`${this.path}/${dateStr}`);
-    this.addPerformedLog(dateStr);
-  }
-
   getLog(dateStr) {
     if (!this.exerciseLogs.has(dateStr)) {
       let exerciseLogStore = new ExerciseLogStore(this, dateStr);
@@ -92,15 +121,6 @@ class ExerciseLogsStore {
     }
     return this.exerciseLogs.get(dateStr);
   }
-
-  // todo check if exists on that date
-  // addLog(dateStr, setsCount) {
-  //   let exerciseLogStore = new ExerciseLogStore(this, dateStr);
-  //   _.times(setsCount, () => {
-  //     exerciseLogStore.addEmptySet();
-  //   });
-  //   this.exerciseLogs.set(dateStr, exerciseLogStore);
-  // }
 }
 
 class ExerciseLogStore {
@@ -121,7 +141,7 @@ class ExerciseLogStore {
         workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
           this.exerciseLogsStore.id);
 
-      if (this.workoutTemplateExerciseStore.sets > this.setsLength) {
+      if (this.workoutTemplateExerciseStore && (this.workoutTemplateExerciseStore.sets > this.setsLength)) {
         this.addEmptySet();
       }
     });
@@ -142,8 +162,6 @@ class ExerciseLogStore {
   }
 
   addPerformedSet(set) {
-    console.log('add performed set');
-    console.log(set);
     this.sets.push(new ExerciseLogSetStore(this, this.sets.length, set));
   }
 
@@ -179,7 +197,7 @@ class ExerciseLogSetStore {
   }
 
   updateReps(reps) {
-    this.reps = reps;
+    this.reps = parseFloat(reps);
     database.save(`${this.path}/reps`, reps);
   }
 
@@ -189,7 +207,13 @@ class ExerciseLogSetStore {
   }
 
   @computed get maxWeightDifferencePercentage() {
-    return this.weight / this.exerciseLogStore.exerciseLogsStore.maxWeight;
+    if (!this.exerciseLogStore.exerciseLogsStore.setsData.weightRange || !this.weight) {
+      return 0;
+    }
+    console.log('range', this.exerciseLogStore.exerciseLogsStore.setsData.weightRange);
+    console.log('this.weight', this.weight);
+    console.log('maxWeight', this.exerciseLogStore.exerciseLogsStore.setsData.weightRange);
+    return (this.exerciseLogStore.exerciseLogsStore.setsData.maxWeight - this.weight) / this.exerciseLogStore.exerciseLogsStore.setsData.weightRange;
   }
 }
 
