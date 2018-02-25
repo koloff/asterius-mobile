@@ -24,8 +24,8 @@ export default class WorkoutsScreen extends React.Component {
     tabBarLabel: 'WORKOUT',
   };
 
-  componentWillMount() {
-    workoutsLogsStore.init();
+  async componentWillMount() {
+    await workoutsLogsStore.init();
   }
 
   @observer
@@ -114,7 +114,7 @@ export default class WorkoutsScreen extends React.Component {
                 selectedDotColor: '#ffffff',
                 arrowColor: '#ccc',
                 monthTextColor: '#ccc',
-                textDayFontFamily: 'Montserrat',
+                textDayFontFamily: 'Montserrat-Regular',
                 textMonthFontFamily: 'Montserrat-Regular',
                 textDayHeaderFontFamily: 'Montserrat-Regular',
                 textDayFontSize: 16,
@@ -126,8 +126,10 @@ export default class WorkoutsScreen extends React.Component {
               disableMonthChange={true}
               markedDates={workoutsLogsStore.calendarData}
               onDayPress={(day) => {
-                if (!workoutsLogsStore.previousWorkoutLogs[day.dateString]) {
+                if (!workoutsLogsStore.previousWorkoutLogs.has(day.dateString)) {
                   workoutsLogsStore.selectedDateStr = day.dateString;
+                } else {
+                  this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: day.dateString});
                 }
 
               }}
@@ -156,10 +158,14 @@ class MiniWorkoutsList extends React.Component {
     this.workoutsTemplatesStore.listenChildRemoved();
   }
 
-  @observer
   _renderItem = ({item, index}) => {
     return <Observer>{() =>
-      <MiniWorkoutInList selectedDateStr={workoutsLogsStore.selectedDateStr} navigation={this.props.navigation} workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workout}/>}</Observer>
+      <MiniWorkoutInList
+        navigation={this.props.navigation}
+        selectedDateStr={workoutsLogsStore.selectedDateStr}
+        workoutTemplate={Mobx.toJS(this.workoutsTemplatesStore.workouts[index].workoutJSON)}
+        workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workoutStore}/>}
+    </Observer>
   };
 
   @observer

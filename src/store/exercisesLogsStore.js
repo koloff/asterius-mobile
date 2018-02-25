@@ -1,14 +1,14 @@
-import {observable, computed, extendObservable, observe, autorun} from 'mobx';
-import _ from 'lodash';
+import {observable, computed, extendObservable, observe, autorun} from "mobx";
+import _ from "lodash";
 import authStore from "./authStore";
 import database from "../database";
-import workoutsLogsStore from './workoutsLogsStore';
-
+import workoutsLogsStore from "./workoutsLogsStore";
 
 class ExercisesLogsStore {
   path;
   @observable exercisesLogs = new Map();
 
+  // init when auth change to reset
   init() {
     this.path = `exercisesLogs/${authStore.uid}`;
     extendObservable(this, {
@@ -16,6 +16,7 @@ class ExercisesLogsStore {
     });
   }
 
+  // returns empty exerciseLogs store, logs need to be fetched with loadLog/loadLogs
   getExerciseLogs(id) {
     if (!this.exercisesLogs.has(id)) {
       let exerciseLogsStore = new ExerciseLogsStore(id);
@@ -25,21 +26,28 @@ class ExercisesLogsStore {
   }
 }
 
-
 class ExerciseLogsStore {
   id;
   path;
   @observable exerciseLogs = new Map();
   @observable lastPerformedDateStr;
 
-  @computed get setsData() {
+  // creates empty exerciseLogs store, logs need to be fetched with loadLog/loadLogs
+  constructor(id) {
+    this.id = id;
+    this.path = `exercisesLogs/${authStore.uid}/${id}`;
+  }
+
+  // scans all performed sets and returns data
+  @computed
+  get setsData() {
     let foundMin = false;
     let foundMax = false;
     let max = 0;
     let min = 999999;
     let performedCount = 0;
-    this.exerciseLogs.forEach((log) => {
-      log.sets.forEach((set) => {
+    this.exerciseLogs.forEach(log => {
+      log.sets.forEach(set => {
         if (set.performed) {
           if (set.weight && set.weight > max) {
             foundMax = true;
@@ -51,32 +59,24 @@ class ExerciseLogsStore {
           }
           performedCount++;
         }
-      })
+      });
     });
     return {
       maxWeight: max ? max : null,
       minWeight: min ? min : null,
-      weightRange: (!max || !min) ? 0 : max - min,
+      weightRange: !max || !min ? 0 : max - min,
+      weightRatio: !max || !min ? 0 : max / min,
       performedCount: performedCount
     };
   }
 
-  constructor(id) {
-    this.id = id;
-    this.path = `exercisesLogs/${authStore.uid}/${id}`;
-  }
-
   async loadLogs() {
     let logs = await database.get(this.path);
-    if (logs) {
-      console.log(logs);
-      _.forOwnRight(logs, (log, dateStr) => {
-        // log: {sets: [{reps, weight, removed}]
-        if (!this.exerciseLogs.has(dateStr)) {
-          this.setPerformedLog(dateStr, log);
-        }
-      })
-    }
+    _.forOwnRight(logs, (log, dateStr) => {
+      if (!this.exerciseLogs.has(dateStr)) {
+        this.setPerformedLog(dateStr, log);
+      }
+    });
   }
 
   async loadLog(dateStr) {
@@ -86,6 +86,7 @@ class ExerciseLogsStore {
     }
   }
 
+  // creates and fills log store, log: {sets<array/object>: {reps, weight}}
   setPerformedLog(dateStr, log) {
     let sets = log.sets;
     if (!sets) {
@@ -93,21 +94,21 @@ class ExerciseLogsStore {
     }
     let exerciseLogStore = new ExerciseLogStore(this, dateStr);
     if (Array.isArray(sets)) {
-      sets.forEach((set) => {
+      sets.forEach(set => {
         if (set) {
           exerciseLogStore.addPerformedSet(set);
         } else {
           exerciseLogStore.addEmptySet();
         }
-      })
+      });
     } else {
-      _.forOwn(sets, (set) => {
+      _.forOwn(sets, set => {
         if (set) {
-          exerciseLogStore.addPerformedSet(set)
+          exerciseLogStore.addPerformedSet(set);
         } else {
           exerciseLogStore.addEmptySet();
         }
-      })
+      });
     }
     exerciseLogStore.watchAndFillSets();
     this.exerciseLogs.set(dateStr, exerciseLogStore);
@@ -135,30 +136,42 @@ class ExerciseLogStore {
     this.path = `${this.exerciseLogsStore.path}/${this.dateStr}`;
   }
 
+  // watches the workoutStore template and adds new sets if the count grow
+  // does not work if autorun is invoked in the  constructor
+  // NEEDS to be invoked every time new LogStore is created!!!
   watchAndFillSets() {
     autorun(() => {
-      this.workoutTemplateExerciseStore =
-        workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
-          this.exerciseLogsStore.id);
-
-      if (this.workoutTemplateExerciseStore && (this.workoutTemplateExerciseStore.sets > this.setsLength)) {
+      if (
+        this.workoutTemplateExerciseStore &&
+        this.workoutTemplateExerciseStore.sets > this.setsLength
+      ) {
         this.addEmptySet();
       }
     });
   }
 
-  @computed get setsLength() {
+  @computed
+  get workoutTemplateExerciseStore() {
+    let res = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
+      this.exerciseLogsStore.id
+    );
+    console.log(res);
+    return res;
+  }
+
+  @computed
+  get setsLength() {
     return this.sets.length;
   }
 
-  @computed get isCurrent() {
-    return workoutsLogsStore.currentWorkoutLog.dateStr = this.dateStr;
-  }
-
   addEmptySet() {
-    this.sets.push(new ExerciseLogSetStore(this, this.sets.length, {
-      reps: null, weight: null, removed: false
-    }));
+    this.sets.push(
+      new ExerciseLogSetStore(this, this.sets.length, {
+        reps: null,
+        weight: null,
+        removed: false
+      })
+    );
   }
 
   addPerformedSet(set) {
@@ -185,14 +198,13 @@ class ExerciseLogSetStore {
     this.weight = set.weight;
   }
 
-  @computed get removed() {
-    let workoutTemplateExerciseStore =
-      workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
-        this.exerciseLogStore.exerciseLogsStore.id);
-    return workoutTemplateExerciseStore.sets <= this.index;
+  @computed
+  get removed() {
+    return this.exerciseLogStore.workoutTemplateExerciseStore.sets <= this.index;
   }
 
-  @computed get performed() {
+  @computed
+  get performed() {
     return !this.removed && this.reps && this.weight;
   }
 
@@ -206,16 +218,19 @@ class ExerciseLogSetStore {
     database.save(`${this.path}/weight`, weight);
   }
 
-  @computed get maxWeightDifferencePercentage() {
-    if (!this.exerciseLogStore.exerciseLogsStore.setsData.weightRange || !this.weight) {
+  @computed
+  get maxWeightDifferencePercentage() {
+    if (
+      !this.exerciseLogStore.exerciseLogsStore.setsData.weightRange ||
+      !this.weight
+    ) {
       return 0;
     }
-    console.log('range', this.exerciseLogStore.exerciseLogsStore.setsData.weightRange);
-    console.log('this.weight', this.weight);
-    console.log('maxWeight', this.exerciseLogStore.exerciseLogsStore.setsData.weightRange);
-    return (this.exerciseLogStore.exerciseLogsStore.setsData.maxWeight - this.weight) / this.exerciseLogStore.exerciseLogsStore.setsData.weightRange;
+    return (
+      (this.exerciseLogStore.exerciseLogsStore.setsData.maxWeight - this.weight) /
+      this.exerciseLogStore.exerciseLogsStore.setsData.weightRange
+    );
   }
 }
-
 
 export default new ExercisesLogsStore();

@@ -17,64 +17,7 @@ class WorkoutsLogsStore {
   @observable selectedDateStr;
   // todo from db
 
-  @observable previousWorkoutLogs = {
-    '2018-01-29': {
-      workoutTemplate: {
-        name: 'Workout A',
-        exercises: [
-          {id: 'reversePecDeck', sets: 3},
-          {id: 'highCableCrossover', sets: 3},
-          {id: 'ropePushdown', sets: 77},
-          {id: 'dumbbellShoulderPress', sets: 4},
-          {id: 'lowCableCrossover', sets: 3},
-          {id: 'dumbbellInclineBenchPress', sets: 4},
-          {id: 'seatedTricepsPress', sets: 3}
-        ]
-      }
-    },
-    '2018-01-31': {
-      workoutTemplate: {
-        name: 'Workout A',
-        exercises: [
-          {id: 'reversePecDeck', sets: 3},
-          {id: 'highCableCrossover', sets: 3},
-          {id: 'ropePushdown', sets: 77},
-          {id: 'dumbbellShoulderPress', sets: 4},
-          {id: 'lowCableCrossover', sets: 3},
-          {id: 'dumbbellInclineBenchPress', sets: 4},
-          {id: 'seatedTricepsPress', sets: 3}
-        ]
-      }
-    },
-    '2017-11-02': {
-      workoutTemplate: {
-        name: 'Workout A',
-        exercises: [
-          {id: 'reversePecDeck', sets: 3},
-          {id: 'highCableCrossover', sets: 3},
-          {id: 'ropePushdown', sets: 77},
-          {id: 'dumbbellShoulderPress', sets: 4},
-          {id: 'lowCableCrossover', sets: 3},
-          {id: 'dumbbellInclineBenchPress', sets: 4},
-          {id: 'seatedTricepsPress', sets: 3}
-        ]
-      }
-    },
-    '2018-02-10': {
-      workoutTemplate: {
-        name: 'Workout A',
-        exercises: [
-          {id: 'reversePecDeck', sets: 3},
-          {id: 'highCableCrossover', sets: 3},
-          {id: 'ropePushdown', sets: 77},
-          {id: 'dumbbellShoulderPress', sets: 4},
-          {id: 'lowCableCrossover', sets: 3},
-          {id: 'dumbbellInclineBenchPress', sets: 4},
-          {id: 'seatedTricepsPress', sets: 3}
-        ]
-      }
-    },
-  };
+  @observable previousWorkoutLogs = new Map();
 
 
   //
@@ -82,12 +25,16 @@ class WorkoutsLogsStore {
     this.path = `workoutsLogs/${authStore.uid}`;
     this.todayDateStr = moment().format('YYYY-MM-DD');
     this.selectedDateStr = this.todayDateStr;
-    // this.previousWorkoutLogs = await database.get(this.path);
+    let workouts = await database.get(this.path);
+    _.forOwnRight(workouts, (workout, key) => {
+      this.previousWorkoutLogs.set(key, workout);
+    })
   }
 
   @computed get calendarData() {
     let res = {};
-    _.forOwn(this.previousWorkoutLogs, (workout, dateStr) => {
+
+    this.previousWorkoutLogs.forEach((workout, dateStr) => {
       res[dateStr] = {marked: true, dotColor: dotColor}
     });
     res[this.selectedDateStr] = {marked: false, selected: true};
@@ -96,15 +43,17 @@ class WorkoutsLogsStore {
 
   async startNewWorkoutLog(dateStr, workoutTemplate) {
     await database.save(`${this.path}/${dateStr}`,
-      // set the new workout in db
+      // set the new workoutStore in db
       {
         workoutTemplate: workoutTemplate
       });
-    await this.addCurrentWorkoutLog(dateStr);
+    // todo check
+    this.await
+    this.addCurrentWorkoutLog(dateStr);
   }
 
   // due to lack of navigation events cannot keep track of which
-  // is the current workout log on screen todo change
+  // is the current workoutStore log on screen todo change
   @observable _openedWorkoutsLogs = [];
   @observable currentWorkoutLog;
 

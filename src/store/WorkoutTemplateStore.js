@@ -92,6 +92,12 @@ export default class WorkoutTemplateStore {
     database.save(`${this.path}/exercises`, this.getExercisesAsObject());
   }
 
+  // both of the above
+  setExercisesSets(id, sets) {
+    this.setExerciseSetsImmediate(id, sets);
+    this.setExerciseSetsFinish(id, sets);
+  }
+
 
   moveExerciseUp(id) {
     let exerciseStore = this.getWorkoutTemplateExerciseStore(id);

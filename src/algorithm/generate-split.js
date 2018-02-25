@@ -37,7 +37,7 @@ function generateSplit(userParameters, userPreferredMuscles) {
       maxExerciseSetsCount: 5
     };
 
-    // generate full body workout
+    // generate full body workoutStore
     fullBodyOptions.trainedMuscles = _.clone(splits.fullBody);
     fullBodyOptions.preferredMuscles = _.clone(userPreferredMuscles);
 

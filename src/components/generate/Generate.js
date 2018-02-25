@@ -574,7 +574,7 @@ class GeneratedWorkoutsSlide extends React.Component {
               <MiniWorkoutGenerated
                 animation={this.state.animations[index]}
                 key={workoutRow.key}
-                workoutTemplateStore={workoutRow.workout}
+                workoutTemplateStore={workoutRow.workoutStore}
               />
             )
           })}

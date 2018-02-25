@@ -89,11 +89,11 @@ const MainTabNavigator = TabNavigator({
 });
 
 const MainNavigator = StackNavigator({
+  Main: {screen: MainTabNavigator},
   WorkoutLog: {
     screen: WorkoutLog,
     path: 'log/:workoutLogDateStr'
   },
-  Main: {screen: MainTabNavigator},
   Tweaker: {
     screen: Tweaker,
     path: 'tweaker/:workoutTemplateStore'

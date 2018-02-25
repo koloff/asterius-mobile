@@ -36,6 +36,7 @@ export default class Tweaker extends Component {
 
   componentWillMount() {
     this.workoutTemplateStore = this.props.navigation.state.params.workoutTemplateStore;
+    this.canDelete = this.props.navigation.state.params.canDelete;
     tweakerStore.reset(this.workoutTemplateStore);
     this.setState({name: this.workoutTemplateStore.name})
   }
@@ -124,7 +125,7 @@ export default class Tweaker extends Component {
             }]}>Estimated {tweakerStore.workoutTemplateStore.workoutDurationText}</Text>
           </View>
 
-          <TouchableOpacity
+          {this.canDelete && <TouchableOpacity
             style={[{
               position: 'absolute',
               right: 0,
@@ -138,7 +139,7 @@ export default class Tweaker extends Component {
               this.setState({modalVisible: true});
             }}>
             <Ionicons name={'md-trash'} size={25} color={'#ccc'}/>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
 
 
@@ -346,7 +347,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c0c0c'
   },
   header: {
-    backgroundColor: '#151515',
+    backgroundColor: 'transparent',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#222',
     flexDirection: 'row',
     width: '100%',
     // justifyContent: 'space-between',

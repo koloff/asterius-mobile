@@ -24,7 +24,7 @@ class MiniWorkoutExercise extends React.Component {
 }
 
 
-// props: workout<Workout>
+// props: workoutStore<Workout>
 @observer
 @withNavigation
 export default class MiniWorkoutGenerated extends React.Component {

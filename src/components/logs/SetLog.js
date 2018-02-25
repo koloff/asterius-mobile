@@ -28,44 +28,67 @@ export default class SetLog extends React.Component {
   @observer
   render() {
     return (
-      <View style={{alignItems: 'center'}}>
-        <TextInput
-          style={[gs.text, styles.input]}
-          underlineColorAndroid={'transparent'}
-          placeholder={'REPS'}
-          placeholderTextColor={'#555'}
-          selectionColor={'#ccc'}
-          keyboardType={'numeric'}
-          value={this.state.reps}
-          onChangeText={(val) => {
-            if (!isNaN(parseFloat(val))) {
-              this.setState({reps: val});
-              this.debounceUpdateReps(parseFloat(val));
-            } else {
-              this.setState({reps: ''});
-              this.debounceUpdateReps(0);
-            }
-          }}
-        />
-        <TextInput
-          style={[gs.text, styles.input]}
-          underlineColorAndroid={'transparent'}
-          keyboardType={'numeric'}
-          placeholderTextColor={'#444'}
-          selectionColor={'#ccc'}
-          placeholder={'KG'}
-          value={this.state.weight}
-          onChangeText={(val) => {
-            if (!isNaN(parseFloat(val))) {
-              this.setState({weight: val});
-              this.debounceUpdateWeight(parseFloat(val));
-            } else {
-              this.setState({weight: ''});
-              this.debounceUpdateWeight(0);
-            }
-          }}
-        />
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{alignItems: 'center'}}>
+          <TextInput
+            style={[gs.text, styles.input]}
+            underlineColorAndroid={'transparent'}
+            placeholder={'REPS'}
+            placeholderTextColor={'#555'}
+            selectionColor={'#F57C00'}
+            keyboardType={'numeric'}
+            value={this.state.reps}
+            onFocus={() => {
+              this.props.scrollToExercise(this.props.containerHeight * this.props.exerciseIndex);
+            }}
+            onChangeText={(val) => {
+              if (!isNaN(parseFloat(val))) {
+                this.setState({reps: val});
+                this.debounceUpdateReps(parseFloat(val));
+              } else {
+                this.setState({reps: ''});
+                this.debounceUpdateReps(0);
+              }
+            }}
+            onSubmitEditing={() => {
+              if (!this.state.weight) {
+                this._weightInput.focus();
+              }
+            }}
+          />
 
+          <TextInput
+            style={[gs.text, styles.input]}
+            underlineColorAndroid={'transparent'}
+            keyboardType={'numeric'}
+            placeholderTextColor={'#444'}
+            selectionColor={'#F57C00'}
+            placeholder={'KG'}
+            ref={(ref) => {
+              this._weightInput = ref
+            }}
+            onFocus={() => {
+              this.props.scrollToExercise(this.props.containerHeight * this.props.exerciseIndex);
+            }}
+            value={this.state.weight}
+            onChangeText={(val) => {
+              if (!isNaN(parseFloat(val))) {
+                this.setState({weight: val});
+                this.debounceUpdateWeight(parseFloat(val));
+              } else {
+                this.setState({weight: ''});
+                this.debounceUpdateWeight(0);
+              }
+            }}
+          />
+        </View>
+        <View style={{
+          width: 0,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: '#333',
+          height: 52
+        }}>
+        </View>
       </View>
     )
   }
@@ -74,11 +97,10 @@ export default class SetLog extends React.Component {
 const styles = StyleSheet.create({
   input: {
     textAlign: 'center',
-    backgroundColor: 'transparent',
+    // borderRightWidth: StyleSheet.hairlineWidth,
+    // borderColor: '#555',
     color: '#ccc',
     marginBottom: 0,
-    marginLeft: 3,
-    marginRight: 3,
     padding: 0,
     paddingRight: 5,
     paddingLeft: 5,

@@ -10,6 +10,7 @@ import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import workoutsLogsStore from "../../store/workoutsLogsStore";
 
 // @withNavigation
 @observer
@@ -70,8 +71,11 @@ export default class MiniWorkoutInList extends React.Component {
             </View>
 
             <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Log', {workoutLogDateStr: this.props.selectedDateStr})
+              onPress={async () => {
+                console.log(this.props.selectedDateStr);
+                console.log(this.props.workoutTemplate);
+                await workoutsLogsStore.startNewWorkoutLog(this.props.selectedDateStr, this.props.workoutTemplate);
+                this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: this.props.selectedDateStr})
               }}
               style={{backgroundColor: '#151515', padding: 5, paddingLeft: 12}}>
               <Text style={[gs.text, {color: '#FF9800', fontSize: 8, textAlign: 'right'}]}>

@@ -8,7 +8,6 @@ import {gs} from "../../globals";
 export default class SetCount extends React.Component {
 
   state = {
-    value: 3,
     initialSets: 0
   };
 
