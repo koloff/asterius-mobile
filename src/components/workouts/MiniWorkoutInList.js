@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Modal, Button} from 'react-native';
 import {observer} from 'mobx-react';
+import * as Mobx from "mobx";
 import {gs} from "../../globals";
 
 import moment from 'moment';
@@ -16,16 +17,23 @@ import workoutsLogsStore from "../../store/workoutsLogsStore";
 @observer
 export default class MiniWorkoutInList extends React.Component {
 
-  componentWillMount() {
+
+  state = {
+    loading: true
+  };
+
+  componentDidMount() {
     this.workoutTemplateStore = this.props.workoutTemplateStore;
     this.musclesModelStore = new MusclesModelStore(this.workoutTemplateStore);
+    this.setState({loading: false});
   }
+
 
   @observer
   render() {
     return (
       <View style={{paddingLeft: 5, paddingRight: 5, paddingBottom: 15}}>
-        <ElevatedView elevation={3} style={{
+        {!this.state.loading && <ElevatedView elevation={3} style={{
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth,
           backgroundColor: '#101010',
@@ -42,7 +50,10 @@ export default class MiniWorkoutInList extends React.Component {
               backgroundColor: '#151515',
             }}
             onPress={() => {
-              this.props.navigation.navigate('Tweaker', {workoutTemplateStore: this.props.workoutTemplateStore})
+              this.props.navigation.navigate('Tweaker', {
+                workoutTemplateStore: this.props.workoutTemplateStore,
+                canDelete: true
+              })
             }}>
 
             <View style={{padding: 4, paddingLeft: 10, flex: 1, width: '100%', alignItems: 'center'}}>
@@ -66,28 +77,35 @@ export default class MiniWorkoutInList extends React.Component {
 
             <View style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
               <Text style={[gs.text, {color: '#ccc', fontSize: 8, textAlign: 'left'}]}>
-                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>Not yet</Text>
+                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>
+                {this.props.workoutTemplateStore.lastPerformed ? moment(this.props.workoutTemplateStore.lastPerformed).format('D MMM YYYY') : 'Not yet'}</Text>
               </Text>
             </View>
 
             <TouchableOpacity
               onPress={async () => {
-                console.log(this.props.selectedDateStr);
-                console.log(this.props.workoutTemplate);
-                await workoutsLogsStore.startNewWorkoutLog(this.props.selectedDateStr, this.props.workoutTemplate);
-                this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: this.props.selectedDateStr})
+                if (!this.props.selectedDateStr) {
+                  return;
+                }
+                let date = this.props.selectedDateStr;
+                console.log(this.props.workoutTemplateStore);
+                await workoutsLogsStore.startNewWorkoutLog(date, this.props.workoutTemplateStore);
+                this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: date})
               }}
-              style={{backgroundColor: '#151515', padding: 5, paddingLeft: 12}}>
+              style={{backgroundColor: '#151515', padding: 5, paddingLeft: 12, justifyContent: 'center'}}>
               <Text style={[gs.text, {color: '#FF9800', fontSize: 8, textAlign: 'right'}]}>
-                <Ionicons name={'ios-play'} size={8}/>&nbsp;
-                PERFORM
-                ON{'\n'}<Text style={{fontSize: 14}}>{moment(this.props.selectedDateStr).format('D MMM YYYY')}</Text>
+                {this.props.selectedDateStr ?
+                  <Text><Ionicons name={'ios-play'} size={8}/>&nbsp;
+                    PERFORM
+                    ON{'\n'}
+                    <Text style={{fontSize: 14}}>{moment(this.props.selectedDateStr).format('D MMM YYYY')}</Text></Text>
+                  : <Text style={{fontSize: 8}}>USE THE CALENDAR{'\n'}TO SELECT A DATE</Text>}
               </Text>
             </TouchableOpacity>
-
-
           </View>
-        </ElevatedView>
+
+        </ElevatedView>}
+
       </View>
     )
   }

@@ -16,7 +16,6 @@ export default class WorkoutsTemplatesStore {
   listenChildAdded() {
     database.childAdded(this.path, (snap) => {
       let workout = {
-        workoutJSON: snap.val(),
         workoutStore: new WorkoutTemplateStore(snap.val(), this.path + '/' + snap.key),
         key: snap.key
       };
@@ -33,7 +32,7 @@ export default class WorkoutsTemplatesStore {
 
   async addWorkout() {
     try {
-      let {key, path} = await database.push(this.path, {name: 'Custom workoutStore'});
+      let {key, path} = await database.push(this.path, {name: 'Custom workout'});
     } catch (err) {
       console.log(err);
     }

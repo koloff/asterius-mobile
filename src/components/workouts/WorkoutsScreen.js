@@ -24,7 +24,7 @@ export default class WorkoutsScreen extends React.Component {
     tabBarLabel: 'WORKOUT',
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     await workoutsLogsStore.init();
   }
 
@@ -56,7 +56,7 @@ export default class WorkoutsScreen extends React.Component {
         }}></View>
 
         <View style={{
-          padding: 30,
+          padding: 15,
           paddingBottom: 0,
           paddingTop: 15
           // borderColor: '#222',
@@ -127,11 +127,10 @@ export default class WorkoutsScreen extends React.Component {
               markedDates={workoutsLogsStore.calendarData}
               onDayPress={(day) => {
                 if (!workoutsLogsStore.previousWorkoutLogs.has(day.dateString)) {
-                  workoutsLogsStore.selectedDateStr = day.dateString;
+                  workoutsLogsStore.pressedDateStr = day.dateString;
                 } else {
                   this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: day.dateString});
                 }
-
               }}
             />
           </ElevatedView>
@@ -152,7 +151,9 @@ class MiniWorkoutsList extends React.Component {
     mounted: false
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
     this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
     this.workoutsTemplatesStore.listenChildAdded();
     this.workoutsTemplatesStore.listenChildRemoved();
@@ -163,7 +164,6 @@ class MiniWorkoutsList extends React.Component {
       <MiniWorkoutInList
         navigation={this.props.navigation}
         selectedDateStr={workoutsLogsStore.selectedDateStr}
-        workoutTemplate={Mobx.toJS(this.workoutsTemplatesStore.workouts[index].workoutJSON)}
         workoutTemplateStore={this.workoutsTemplatesStore.workouts[index].workoutStore}/>}
     </Observer>
   };
@@ -230,35 +230,18 @@ class MiniWorkoutsList extends React.Component {
         <View style={{
           flex: 1, justifyContent: 'center', padding: 30, paddingTop: 0, paddingBottom: 0
         }}>
-          {/*<LinearGradient*/}
-          {/*colors={['rgba(0,0,0,0.3)', 'transparent']}*/}
-          {/*style={{*/}
-
-          {/*zIndex: 999,*/}
-          {/*position: 'relative',*/}
-          {/*width: '100%',*/}
-          {/*top: 5,*/}
-          {/*height: 5,*/}
-          {/*}}*/}
-          {/*/>*/}
-
-
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.4)']}
             style={{
-              position: 'relative',
+              position: 'absolute',
               zIndex: 999,
               width: '100%',
-              bottom: 6,
-              height: 6,
+              bottom: 0,
+              left: 30,
+              height: 5,
             }}
           />
           <FlatList
-            style={{
-              // borderColor: '#555',
-              // // borderBottomWidth: StyleSheet.hairlineWidth,
-              // borderTopWidth: StyleSheet.hairlineWidth
-            }}
             data={Mobx.toJS(this.workoutsTemplatesStore.workouts)}
             keyExtractor={(item) => item.key}
             renderItem={this._renderItem}

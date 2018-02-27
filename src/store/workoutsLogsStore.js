@@ -8,47 +8,54 @@ import exercisesLogsStore from "./exercisesLogsStore";
 
 const dotColor = 'rgba(255,143,0 ,1)';
 
-
-// module.hot.accept(() => { });
-
 class WorkoutsLogsStore {
   path;
   @observable todayDateStr;
-  @observable selectedDateStr;
-  // todo from db
-
+  @observable pressedDateStr;
   @observable previousWorkoutLogs = new Map();
 
-
-  //
   async init() {
     this.path = `workoutsLogs/${authStore.uid}`;
     this.todayDateStr = moment().format('YYYY-MM-DD');
-    this.selectedDateStr = this.todayDateStr;
     let workouts = await database.get(this.path);
     _.forOwnRight(workouts, (workout, key) => {
       this.previousWorkoutLogs.set(key, workout);
-    })
+    });
+  }
+
+  @computed get selectedDateStr() {
+    if (this.pressedDateStr && !this.previousWorkoutLogs.has(this.pressedDateStr)) {
+      return this.pressedDateStr;
+    }
+    if (!this.previousWorkoutLogs.has(this.todayDateStr)) {
+      return this.todayDateStr;
+    }
+    return null;
   }
 
   @computed get calendarData() {
     let res = {};
-
     this.previousWorkoutLogs.forEach((workout, dateStr) => {
       res[dateStr] = {marked: true, dotColor: dotColor}
     });
-    res[this.selectedDateStr] = {marked: false, selected: true};
+    if (this.selectedDateStr) {
+      res[this.selectedDateStr] = {marked: false, selected: true};
+    }
     return res;
   }
 
-  async startNewWorkoutLog(dateStr, workoutTemplate) {
+  async startNewWorkoutLog(dateStr, workoutTemplateStore) {
+    if (!workoutTemplateStore.lastPerformed ||
+      dateStr > workoutTemplateStore.lastPerformed) {
+      workoutTemplateStore.updateLastPerformed(dateStr);
+    }
     await database.save(`${this.path}/${dateStr}`,
       // set the new workoutStore in db
       {
-        workoutTemplate: workoutTemplate
+        workoutTemplate: workoutTemplateStore.asObject
       });
     // todo check
-    this.await
+    this.previousWorkoutLogs.set(dateStr, workoutTemplateStore.asObject);
     this.addCurrentWorkoutLog(dateStr);
   }
 

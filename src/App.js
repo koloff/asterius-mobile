@@ -15,7 +15,7 @@ export default class App extends Component {
     isReady: false
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     await authStore.init();
     this.setState({isReady: true});
 

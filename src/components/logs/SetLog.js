@@ -96,15 +96,15 @@ export default class SetLog extends React.Component {
 
 const styles = StyleSheet.create({
   input: {
-    textAlign: 'center',
+    // textAlign: 'center',
     // borderRightWidth: StyleSheet.hairlineWidth,
     // borderColor: '#555',
     color: '#ccc',
     marginBottom: 0,
     padding: 0,
-    paddingRight: 5,
+    paddingRight: 1,
     paddingLeft: 5,
-    height: 35,
-    minWidth: 55
+    // height: 35,
+    minWidth: 52
   }
 });

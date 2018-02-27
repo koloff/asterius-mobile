@@ -1,5 +1,8 @@
 import React from 'react';
-import {View, Text, Button, ScrollView, TouchableOpacity, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import {
+  View, Text, Button, ScrollView, TouchableOpacity, StyleSheet, KeyboardAvoidingView,
+  ActivityIndicator
+} from 'react-native';
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
 import workoutsLogsStore from "../../store/workoutsLogsStore";
@@ -14,10 +17,11 @@ const containerHeight = 340;
 export default class ExerciseLog extends React.Component {
 
   state = {
-    loading: true
+    loading: true,
+    renderingGraphic: true
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     this.workoutTemplateExerciseStore = this.props.workoutTemplateExerciseStore;
     this.currentWorkoutLogStore = workoutsLogsStore.currentWorkoutLog;
     this.id = this.workoutTemplateExerciseStore.id;
@@ -29,7 +33,17 @@ export default class ExerciseLog extends React.Component {
     await this.exerciseLogsStore.loadLogs();
     this.currentWorkoutExerciseLogStore = this.exerciseLogsStore.getLog(this.currentWorkoutLogStore.dateStr);
     this.setState({loading: false});
+    this.props.renderedExerciseLog();
   }
+
+  renderingGraphicDone() {
+    // console.log('rendering done');
+    // setTimeout(() => {
+
+      this.setState({renderingGraphic: false});
+    // })
+  }
+
 
 
   increaseSets() {
@@ -47,7 +61,7 @@ export default class ExerciseLog extends React.Component {
   render() {
     return (
       <View style={{
-        backgroundColor: '#222', height: containerHeight, paddingTop: 30, flex: 1
+        backgroundColor: '#101010', height: containerHeight, paddingTop: 30, flex: 1
       }}>
         {!this.state.loading && <View style={{alignItems: 'center', flex: 1}}>
 
@@ -61,7 +75,7 @@ export default class ExerciseLog extends React.Component {
             <View style={{
               width: 0,
               borderWidth: StyleSheet.hairlineWidth,
-              borderColor: '#333',
+              borderColor: '#101010',
               height: 52
             }}/>
             {this.currentWorkoutExerciseLogStore.sets.map((set) => {
@@ -91,7 +105,8 @@ export default class ExerciseLog extends React.Component {
           </View>
 
           <View style={{height: 205, width: '100%', alignItems: 'center', flex: 1}}>
-            <ExerciseLogsGraphic id={this.id}/>
+            <ExerciseLogsGraphic id={this.id} renderingGraphicDone={this.renderingGraphicDone.bind(this)} />
+            {this.state.renderingGraphic && <ActivityIndicator style={{position: 'absolute', top: 100}} size="small" color="#777"/>}
           </View>
 
         </View>}

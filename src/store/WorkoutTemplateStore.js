@@ -7,6 +7,7 @@ import * as Mobx from "mobx";
 export default class WorkoutTemplateStore {
   @observable path;
   @observable name = '';
+  @observable lastPerformed;
   @observable exercises = [];
   @observable addedNewExercise = false;
 
@@ -17,6 +18,7 @@ export default class WorkoutTemplateStore {
 
   setWorkout(workoutTemplate) {
     this.name = workoutTemplate.name;
+    this.lastPerformed = workoutTemplate.lastPerformed;
     if (workoutTemplate.exercises) {
       workoutTemplate.exercises.forEach((exercise) => {
         this.exercises.push(new WorkoutTemplateExerciseStore(this, exercise.id, exercise.sets));
@@ -51,6 +53,15 @@ export default class WorkoutTemplateStore {
     this.name = name;
     try {
       database.save(this.path + '/name', name);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  updateLastPerformed(dateStr) {
+    this.lastPerformed = dateStr;
+    try {
+      database.save(this.path + '/lastPerformed', dateStr);
     } catch (err) {
       console.error(err);
     }
@@ -113,6 +124,18 @@ export default class WorkoutTemplateStore {
     this.exercises.splice(index, 1);
     this.exercises.splice(index + 1, 0, exerciseStore);
     database.save(`${this.path}/exercises`, this.getExercisesAsObject());
+  }
+
+  @computed get asObject() {
+    return Mobx.toJS({
+      name: this.name,
+      exercises: this.exercises.map((exerciseStore) => {
+        return {
+          id: exerciseStore.id,
+          sets: exerciseStore.sets
+        }
+      })
+    })
   }
 }
 

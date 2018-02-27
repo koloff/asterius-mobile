@@ -155,7 +155,6 @@ class ExerciseLogStore {
     let res = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
       this.exerciseLogsStore.id
     );
-    console.log(res);
     return res;
   }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  View, Text, TouchableOpacity, Button, ScrollView, StyleSheet, ActivityIndicator,
-  KeyboardAvoidingView
+  View, Text, TouchableOpacity, Animated, ScrollView, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
@@ -14,29 +13,48 @@ import test from '../../store/generateStore'
 import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import tweakerStore from "../../store/tweakerStore";
 
 @observer
 @withNavigation
-export default class Log extends React.Component {
+export default class WorkoutLog extends React.Component {
 
   state = {
     loading: true,
-    // rendering: true
+    rendering: true,
+    renderedLogs: 0,
+    contentOpacity: new Animated.Value(0)
   };
 
-  componentWillMount() {
-    this.workoutLogDateStr = this.props.navigation.state.params.workoutLogDateStr;
-    this.loadStores();
-  }
 
-  async loadStores() {
-    // todo move
+  async componentWillMount() {
+    this.workoutLogDateStr = this.props.navigation.state.params.workoutLogDateStr;
+
+    // todo remove
     exercisesLogsStore.init();
     await workoutsLogsStore.init();
     await workoutsLogsStore.addCurrentWorkoutLog(this.workoutLogDateStr);
-    this.setState({loading: false})
+    this.exercises = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises;
+    this.setState({loading: false});
+
+    //todo move
+    if (!this.exercises.length) {
+      this.animateContent();
+    }
   }
 
+  renderedExerciseLog() {
+    this.setState({renderedLogs: this.state.renderedLogs + 1});
+    if (this.exercises.length === 1 && this.state.renderedLogs === 1) {
+      this.animateContent();
+    } else if (this.state.renderedLogs >= 2) {
+      this.animateContent();
+    }
+  }
+
+  animateContent() {
+    Animated.timing(this.state.contentOpacity, {toValue: 1, duration: 500, useNativeDriver: true}).start();
+  }
 
   // scroll to the position of the exercise
   scrollToExercise(position) {
@@ -45,26 +63,28 @@ export default class Log extends React.Component {
 
   @observer
   render() {
+
+    this.inverseContentOpacity = this.state.contentOpacity.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0]
+    });
+
     return <View style={{
       flex: 1,
       height: '100%',
-      backgroundColor: '#222'
+      backgroundColor: '#101010',
     }}>
 
 
       <View style={[{
-        // backgroundColor: '#222',
         borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        borderBottomColor: '#222',
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center'
       }]}>
-
-
         <View style={{position: 'absolute', left: 0}}>
-
           <TouchableOpacity
             style={{
               padding: 10, paddingBottom: 7, paddingRight: 21
@@ -94,7 +114,6 @@ export default class Log extends React.Component {
           </TouchableOpacity>
         </View>
 
-
         <View style={{position: 'absolute', right: 0}}>
           <TouchableOpacity
             style={{
@@ -113,23 +132,49 @@ export default class Log extends React.Component {
             <Text style={[gs.text, {textAlign: 'center', fontSize: 17, color: '#fff'}]}>EDIT</Text>
           </TouchableOpacity>
         </View>
-
       </View>
 
 
-      {!this.state.loading && <ScrollView
-        ref={(ref) => {
-          this._scroll = ref
-        }}
-        style={{flex: 1}}
-        // contentContainerStyle={{flex:0}}
-        keyboardShouldPersistTaps={'handled'}>
-        {workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises.map((workoutTemplateExerciseStore, index) => {
-          return (
-            <ExerciseLog key={workoutTemplateExerciseStore.id} scrollToExercise={this.scrollToExercise.bind(this)} exerciseIndex={index} workoutTemplateExerciseStore={workoutTemplateExerciseStore}/>)
-        })}
-        <View style={{height: 340}}></View>
-      </ScrollView>}
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        {!this.state.loading && <Animated.View style={{
+          position: 'absolute',
+          opacity: this.state.contentOpacity,
+          width: '100%',
+          height: '100%',
+          flex: 1,
+          justifyContent: 'center'
+        }}>
+          {!this.exercises.length ?
+            <View><Text style={[gs.text, {color: '#aaa', textAlign: 'center'}]}>No exercises in this
+              workout</Text></View> :
+            <ScrollView
+              ref={(ref) => {
+                this._scroll = ref
+              }}
+              style={{flex: 1}}
+              // contentContainerStyle={{flex:0}}
+              keyboardShouldPersistTaps={'handled'}>
+              {this.exercises.map((workoutTemplateExerciseStore, index) => {
+                return (
+                  <ExerciseLog
+                    key={workoutTemplateExerciseStore.id}
+                    scrollToExercise={this.scrollToExercise.bind(this)}
+                    renderedExerciseLog={this.renderedExerciseLog.bind(this)}
+                    exerciseIndex={index} workoutTemplateExerciseStore={workoutTemplateExerciseStore}
+                  />)
+              })}
+              <View style={{height: 340}}></View>
+            </ScrollView>}
+        </Animated.View>}
+        <Animated.View style={{
+          flex: 1,
+          opacity: this.inverseContentOpacity,
+          justifyContent: 'center'
+        }}>
+          <ActivityIndicator size="large" color="#777"/>
+        </Animated.View>
+      </View>
+
     </View>
   }
 }

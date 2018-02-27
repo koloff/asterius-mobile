@@ -66,7 +66,7 @@ export default class Tweaker extends Component {
             justifyContent: 'center'
           }}>
             {!this.state.editingName && <View style={{flexDirection: 'row'}}>
-              <Text style={[gs.text, {color: '#ddd', fontSize: 15}]}>
+              <Text style={[gs.text, {color: '#aaa', fontSize: 15}]}>
                 {tweakerStore.workoutTemplateStore.name}
               </Text>
               <TouchableOpacity
@@ -78,7 +78,7 @@ export default class Tweaker extends Component {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                <FontAwesome name={'edit'} color={'#ddd'} size={16}/>
+                <FontAwesome name={'edit'} color={'#aaa'} size={16}/>
               </TouchableOpacity>
             </View>}
             {this.state.editingName && <View style={{
@@ -144,7 +144,7 @@ export default class Tweaker extends Component {
 
 
         {this.state.renderMain ? <TweakerMainView/>
-          : <ActivityIndicator style={{top: '50%', marginTop: -100}} size="large" color="#777"/>}
+          : <ActivityIndicator style={{top: '50%', marginTop: -50}} size="large" color="#777"/>}
 
 
         <Modal
@@ -290,16 +290,23 @@ class TweakerMainView extends React.Component {
             width: '100%',
             height: '100%',
             position: 'absolute',
+            // backgroundColor: 'green',
             zIndex: tweakerStore.exerciseOption === 'VIEW WORKOUT' ? 100 : 1
           }}>
-            <ScrollView
-              ref={(workoutScrollView) => {
-                this.workoutScrollView = workoutScrollView
-              }}
-            >
-              {tweakerStore.workoutTemplateStore.exercises.map((exerciseStore) =>
-                <ExerciseInWorkoutInTweaker key={exerciseStore.id} workoutTemplateExerciseStore={exerciseStore}/>)}
-            </ScrollView>
+            {!tweakerStore.workoutTemplateStore.exercises.length ?
+              <View style={{
+                flex: 1,
+                height: '100%', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <Text style={[gs.text, {color: '#aaa'}]}>No exercises in this workout</Text>
+              </View> : <ScrollView
+                ref={(workoutScrollView) => {
+                  this.workoutScrollView = workoutScrollView
+                }}>
+                {tweakerStore.workoutTemplateStore.exercises.map((exerciseStore) =>
+                  <ExerciseInWorkoutInTweaker key={exerciseStore.id} workoutTemplateExerciseStore={exerciseStore}/>)}
+              </ScrollView>}
+
           </Animated.View>
           <Animated.View style={{
             opacity: this.state.transitions[1].value,
