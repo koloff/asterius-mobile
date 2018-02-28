@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, TouchableOpacity, Animated, ScrollView, StyleSheet, ActivityIndicator,
+  View, Text, TouchableOpacity, Animated, ScrollView, StyleSheet, ActivityIndicator, Modal, Button,
 } from 'react-native';
 import {observer} from 'mobx-react';
 import {gs} from "../../globals";
@@ -14,6 +14,7 @@ import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import tweakerStore from "../../store/tweakerStore";
+import * as Mobx from "mobx";
 
 @observer
 @withNavigation
@@ -23,17 +24,15 @@ export default class WorkoutLog extends React.Component {
     loading: true,
     rendering: true,
     renderedLogs: 0,
-    contentOpacity: new Animated.Value(0)
+    contentOpacity: new Animated.Value(0),
+    modalVisible: false
   };
 
 
   async componentWillMount() {
     this.workoutLogDateStr = this.props.navigation.state.params.workoutLogDateStr;
-
-    // todo remove
-    exercisesLogsStore.init();
-    await workoutsLogsStore.init();
     await workoutsLogsStore.addCurrentWorkoutLog(this.workoutLogDateStr);
+    this.dateStr = workoutsLogsStore.currentWorkoutLog.dateStr;
     this.exercises = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises;
     this.setState({loading: false});
 
@@ -45,6 +44,7 @@ export default class WorkoutLog extends React.Component {
 
   renderedExerciseLog() {
     this.setState({renderedLogs: this.state.renderedLogs + 1});
+
     if (this.exercises.length === 1 && this.state.renderedLogs === 1) {
       this.animateContent();
     } else if (this.state.renderedLogs >= 2) {
@@ -71,7 +71,6 @@ export default class WorkoutLog extends React.Component {
 
     return <View style={{
       flex: 1,
-      height: '100%',
       backgroundColor: '#101010',
     }}>
 
@@ -96,7 +95,6 @@ export default class WorkoutLog extends React.Component {
             <Ionicons name='ios-arrow-back' size={37} color='#ddd'/>
           </TouchableOpacity>
         </View>
-
         <View style={{margin: 5}}>
           <View style={{alignItems: 'center'}}>
             <Text style={[gs.text, {
@@ -107,13 +105,12 @@ export default class WorkoutLog extends React.Component {
           <TouchableOpacity
             style={{backgroundColor: 'transparent', justifyContent: 'center', marginTop: 2}}
             onPress={() => {
-              console.log('delete press');
+              this.setState({modalVisible: true});
             }}>
 
             <Text style={[gs.text, {fontSize: 11, textAlign: 'center', color: '#999'}]}>REMOVE</Text>
           </TouchableOpacity>
         </View>
-
         <View style={{position: 'absolute', right: 0}}>
           <TouchableOpacity
             style={{
@@ -135,25 +132,34 @@ export default class WorkoutLog extends React.Component {
       </View>
 
 
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        {!this.state.loading && <Animated.View style={{
+      <View style={{flex: 1}}>
+        <Animated.View style={{
           position: 'absolute',
-          opacity: this.state.contentOpacity,
           width: '100%',
           height: '100%',
+          opacity: this.inverseContentOpacity,
+          justifyContent: 'center'
+        }}>
+          <ActivityIndicator size="large" color="#777"/>
+        </Animated.View>
+
+        {!this.state.loading && this.dateStr === workoutsLogsStore.currentWorkoutLog.dateStr && <Animated.View style={{
+          opacity: this.state.contentOpacity,
           flex: 1,
           justifyContent: 'center'
         }}>
           {!this.exercises.length ?
             <View><Text style={[gs.text, {color: '#aaa', textAlign: 'center'}]}>No exercises in this
-              workout</Text></View> :
-            <ScrollView
+              workout</Text></View>
+
+            : <ScrollView
               ref={(ref) => {
                 this._scroll = ref
               }}
               style={{flex: 1}}
-              // contentContainerStyle={{flex:0}}
+              // contentContainerStyle={{flex: 1}}
               keyboardShouldPersistTaps={'handled'}>
+
               {this.exercises.map((workoutTemplateExerciseStore, index) => {
                 return (
                   <ExerciseLog
@@ -161,20 +167,57 @@ export default class WorkoutLog extends React.Component {
                     scrollToExercise={this.scrollToExercise.bind(this)}
                     renderedExerciseLog={this.renderedExerciseLog.bind(this)}
                     exerciseIndex={index} workoutTemplateExerciseStore={workoutTemplateExerciseStore}
-                  />)
+                  />
+                )
               })}
               <View style={{height: 340}}></View>
             </ScrollView>}
         </Animated.View>}
-        <Animated.View style={{
-          flex: 1,
-          opacity: this.inverseContentOpacity,
-          justifyContent: 'center'
-        }}>
-          <ActivityIndicator size="large" color="#777"/>
-        </Animated.View>
+
       </View>
+
+
+      <Modal
+        visible={this.state.modalVisible}
+        transparent={true}
+        animationType={'fade'}
+        onRequestClose={() =>
+          this.setState({modalVisible: false})}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.innerContainer}>
+            <Text style={[gs.text, gs.shadow]}>Delete this workout log?</Text>
+            <View style={{flexDirection: 'row', paddingTop: 10}}>
+              <View style={{marginRight: 10}}><Button
+                color={'red'}
+                onPress={() => {
+                  workoutsLogsStore.currentWorkoutLog.remove();
+                  this.props.navigation.goBack();
+                  this.setState({modalVisible: false})
+                }}
+                title="Delete"
+              /></View>
+              <View><Button
+                onPress={() => this.setState({modalVisible: false})}
+                title="Close"
+              /></View>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
     </View>
   }
 }
+
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.9)',
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+});

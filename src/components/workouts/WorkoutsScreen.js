@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Observer, observer} from 'mobx-react';
 import * as Mobx from 'mobx';
-import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image, Animated} from 'react-native';
 
 import {Calendar} from "react-native-calendars";
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,6 +17,7 @@ import WorkoutsTemplatesStore from '../../store/WorkoutsTemplatesStore';
 import ElevatedView from "../ElevatedView";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import exercisesLogsStore from "../../store/exercisesLogsStore";
 
 @observer
 export default class WorkoutsScreen extends React.Component {
@@ -24,8 +25,16 @@ export default class WorkoutsScreen extends React.Component {
     tabBarLabel: 'WORKOUT',
   };
 
+  state = {
+    opacity: new Animated.Value(0)
+  };
+
   async componentDidMount() {
     await workoutsLogsStore.init();
+    // todo remove
+    exercisesLogsStore.init();
+
+    Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 500}).start();
   }
 
   @observer
@@ -55,90 +64,99 @@ export default class WorkoutsScreen extends React.Component {
           backgroundColor: '#000'
         }}></View>
 
-        <View style={{
-          padding: 15,
-          paddingBottom: 0,
-          paddingTop: 15
-          // borderColor: '#222',
-          // borderBottomWidth: StyleSheet.hairlineWidth,
-          // borderTopWidth: StyleSheet.hairlineWidth
-        }}>
 
-          <ElevatedView elevation={4} style={{
-            // borderColor: '#222',
-            height: 300,
-            justifyContent: 'center',
-            // backgroundColor: 'red',
-            // borderWidth: StyleSheet.hairlineWidth,
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: this.state.opacity
           }}>
-            <Calendar
-              style={{
-                borderColor: '#222',
-                borderWidth: StyleSheet.hairlineWidth,
-                justifyContent: 'center'
-              }}
-              theme={{
-                'stylesheet.calendar.main': {
-                  week: {
-                    marginTop: 2,
-                    marginBottom: 2,
-                    flexDirection: 'row',
-                    justifyContent: 'space-around'
+          <View style={{
+            padding: 15,
+            paddingBottom: 0,
+            paddingTop: 15
+            // borderColor: '#222',
+            // borderBottomWidth: StyleSheet.hairlineWidth,
+            // borderTopWidth: StyleSheet.hairlineWidth
+          }}>
+
+            <ElevatedView elevation={4} style={{
+              // borderColor: '#222',
+              height: 300,
+              justifyContent: 'center',
+              borderRadius: 5,
+              // borderWidth: StyleSheet.hairlineWidth,
+            }}>
+              <Calendar
+                style={{
+                  borderRadius: 5,
+                  borderColor: '#222',
+                  borderWidth: StyleSheet.hairlineWidth,
+                  justifyContent: 'center'
+                }}
+                theme={{
+                  'stylesheet.calendar.main': {
+                    week: {
+                      marginTop: 2,
+                      marginBottom: 2,
+                      flexDirection: 'row',
+                      justifyContent: 'space-around'
+                    }
+                  },
+                  'stylesheet.day.basic': {
+                    base: {
+                      width: 34,
+                      height: 34,
+                      // backgroundColor: 'red',
+                      alignItems: 'center'
+                    },
+                    dot: {
+                      width: 6,
+                      height: 6,
+                      marginTop: -1,
+                      borderRadius: 3,
+                      opacity: 0
+                    },
+
+                  },
+                  // backgroundColor: '#ffffff',
+                  calendarBackground: '#151515',
+                  textSectionTitleColor: '#ccc',
+                  selectedDayBackgroundColor: '#FF9800',
+                  selectedDayTextColor: '#fff',
+                  todayTextColor: '#ccc',
+                  dayTextColor: '#ccc',
+                  textDisabledColor: '#555',
+                  dotColor: '#00adf5',
+                  selectedDotColor: '#ffffff',
+                  arrowColor: '#ccc',
+                  monthTextColor: '#ccc',
+                  textDayFontFamily: 'Montserrat-Regular',
+                  textMonthFontFamily: 'Montserrat-Regular',
+                  textDayHeaderFontFamily: 'Montserrat-Regular',
+                  textDayFontSize: 16,
+                  textMonthFontSize: 16,
+                  textDayHeaderFontSize: 13
+                }}
+                maxDate={workoutsLogsStore.todayDateStr}
+                firstDay={1}
+                disableMonthChange={true}
+                markedDates={workoutsLogsStore.calendarData}
+                onDayPress={(day) => {
+                  if (!workoutsLogsStore.workoutsLogs.has(day.dateString)) {
+                    workoutsLogsStore.pressedDateStr = day.dateString;
+                  } else {
+                    this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: day.dateString});
                   }
-                },
-                'stylesheet.day.basic': {
-                  base: {
-                    width: 34,
-                    height: 34,
-                    // backgroundColor: 'red',
-                    alignItems: 'center'
-                  },
-                  dot: {
-                    width: 6,
-                    height: 6,
-                    marginTop: -1,
-                    borderRadius: 3,
-                    opacity: 0
-                  },
+                }}
+              />
+            </ElevatedView>
 
-                },
-                // backgroundColor: '#ffffff',
-                calendarBackground: '#151515',
-                textSectionTitleColor: '#ccc',
-                selectedDayBackgroundColor: '#FF9800',
-                selectedDayTextColor: '#fff',
-                todayTextColor: '#ccc',
-                dayTextColor: '#ccc',
-                textDisabledColor: '#555',
-                dotColor: '#00adf5',
-                selectedDotColor: '#ffffff',
-                arrowColor: '#ccc',
-                monthTextColor: '#ccc',
-                textDayFontFamily: 'Montserrat-Regular',
-                textMonthFontFamily: 'Montserrat-Regular',
-                textDayHeaderFontFamily: 'Montserrat-Regular',
-                textDayFontSize: 16,
-                textMonthFontSize: 16,
-                textDayHeaderFontSize: 13
-              }}
-              maxDate={workoutsLogsStore.todayDateStr}
-              firstDay={1}
-              disableMonthChange={true}
-              markedDates={workoutsLogsStore.calendarData}
-              onDayPress={(day) => {
-                if (!workoutsLogsStore.previousWorkoutLogs.has(day.dateString)) {
-                  workoutsLogsStore.pressedDateStr = day.dateString;
-                } else {
-                  this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: day.dateString});
-                }
-              }}
-            />
-          </ElevatedView>
-
-        </View>
+          </View>
 
 
-        <MiniWorkoutsList navigation={this.props.navigation}/>
+          <MiniWorkoutsList navigation={this.props.navigation}/>
+        </Animated.View>
+
       </View>
     )
   }
@@ -180,6 +198,7 @@ class MiniWorkoutsList extends React.Component {
               }}
               style={{
                 flex: 1,
+                borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -202,6 +221,7 @@ class MiniWorkoutsList extends React.Component {
             <TouchableOpacity
               style={{
                 flex: 1,
+                borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',

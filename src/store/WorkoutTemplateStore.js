@@ -3,11 +3,12 @@ import * as ec from '../algorithm/exercises/exercises-collection';
 import authStore from "./authStore";
 import database from "../database";
 import * as Mobx from "mobx";
+import _ from 'lodash';
 
 export default class WorkoutTemplateStore {
   @observable path;
   @observable name = '';
-  @observable lastPerformed;
+  @observable performedDates = [];
   @observable exercises = [];
   @observable addedNewExercise = false;
 
@@ -18,12 +19,21 @@ export default class WorkoutTemplateStore {
 
   setWorkout(workoutTemplate) {
     this.name = workoutTemplate.name;
-    this.lastPerformed = workoutTemplate.lastPerformed;
+    _.forOwn(workoutTemplate.performedDates, (date) => {
+      this.performedDates.push(date)
+    });
     if (workoutTemplate.exercises) {
       workoutTemplate.exercises.forEach((exercise) => {
         this.exercises.push(new WorkoutTemplateExerciseStore(this, exercise.id, exercise.sets));
       })
     }
+  }
+
+  @computed get lastPerformedDate() {
+    if (!this.performedDates.length) {
+      return null;
+    }
+    return this.performedDates.sort()[this.performedDates.length - 1];
   }
 
   getWorkoutTemplateExerciseStore(id) {
@@ -58,12 +68,14 @@ export default class WorkoutTemplateStore {
     }
   }
 
-  updateLastPerformed(dateStr) {
-    this.lastPerformed = dateStr;
-    try {
-      database.save(this.path + '/lastPerformed', dateStr);
-    } catch (err) {
-      console.error(err);
+  addPerformedDate(dateStr) {
+    if (!(this.performedDates.indexOf(dateStr) >= 0)) {
+      this.performedDates.push(dateStr);
+      try {
+        database.push(this.path + '/performedDates', dateStr);
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 

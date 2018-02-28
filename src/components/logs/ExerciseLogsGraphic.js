@@ -13,6 +13,7 @@ import {gs} from "../../globals";
 import LinearGradient from 'react-native-linear-gradient';
 import workoutsLogsStore from "../../store/workoutsLogsStore";
 import moment from "moment/moment";
+import {withNavigation} from "react-navigation";
 
 @observer
 export default class ExerciseLogsGraphic extends React.Component {
@@ -25,13 +26,7 @@ export default class ExerciseLogsGraphic extends React.Component {
   async componentDidMount() {
     this.id = this.props.id;
     this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.id);
-    await this.exerciseLogsStore.loadLogs();
     this.setState({loading: false});
-
-    // Animated.timing(this.state.opacity, {toValue: 1, duration: 2000}).start(setTimeout(() => {
-    //   this._logsScrollRef.scrollToEnd();
-    // }));
-
   }
 
   @observer
@@ -98,8 +93,13 @@ class LogsScroll extends React.Component {
   }
 }
 
-@observer
+@withNavigation
 class Log extends React.Component {
+  navigate() {
+    this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: this.props.logStore.dateStr})
+  }
+
+  @observer
   render() {
 
     // inner graph is where the sets boxes stay; if the weight differnce is smaller make its height smaller to avoid big gaps
@@ -116,16 +116,18 @@ class Log extends React.Component {
 
     return (
       <View style={{backgroundColor: '#101010'}}>
-        <TouchableOpacity style={{
-          opacity: this.props.logStore.dateStr === workoutsLogsStore.currentWorkoutLog.dateStr ? 1 : 0.5,
-          height: '100%',
-          flex: 0,
-          minWidth: 120,
-          // marginLeft: 2,
-          // marginRight: 2,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+        <TouchableOpacity
+          onPress={this.navigate.bind(this)}
+          style={{
+            opacity: this.props.logStore.dateStr === workoutsLogsStore.currentWorkoutLog.dateStr ? 1 : 0.5,
+            height: '100%',
+            flex: 0,
+            minWidth: 120,
+            // marginLeft: 2,
+            // marginRight: 2,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
 
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(70,70,70, 0.3)']}

@@ -29,6 +29,7 @@ class ExercisesLogsStore {
 class ExerciseLogsStore {
   id;
   path;
+  @observable loaded = false;
   @observable exerciseLogs = new Map();
   @observable lastPerformedDateStr;
 
@@ -71,12 +72,14 @@ class ExerciseLogsStore {
   }
 
   async loadLogs() {
-    let logs = await database.get(this.path);
-    _.forOwnRight(logs, (log, dateStr) => {
-      if (!this.exerciseLogs.has(dateStr)) {
-        this.setPerformedLog(dateStr, log);
-      }
-    });
+    if (!this.loaded) {
+      let logs = await database.get(this.path);
+      _.forOwnRight(logs, (log, dateStr) => {
+        if (!this.exerciseLogs.has(dateStr)) {
+          this.setPerformedLog(dateStr, log);
+        }
+      });
+    }
   }
 
   async loadLog(dateStr) {
@@ -88,7 +91,7 @@ class ExerciseLogsStore {
 
   // creates and fills log store, log: {sets<array/object>: {reps, weight}}
   setPerformedLog(dateStr, log) {
-    let sets = log.sets;
+    let sets = log && log.sets;
     if (!sets) {
       return;
     }
@@ -178,7 +181,8 @@ class ExerciseLogStore {
   }
 
   remove() {
-    // todo
+    this.exerciseLogsStore.exerciseLogs.delete(this.dateStr);
+    database.remove(this.path);
   }
 }
 

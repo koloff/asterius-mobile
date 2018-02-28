@@ -34,6 +34,7 @@ export default class MiniWorkoutInList extends React.Component {
     return (
       <View style={{paddingLeft: 5, paddingRight: 5, paddingBottom: 15}}>
         {!this.state.loading && <ElevatedView elevation={3} style={{
+          borderRadius: 5,
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth,
           backgroundColor: '#101010',
@@ -43,9 +44,10 @@ export default class MiniWorkoutInList extends React.Component {
             style={{
               flexDirection: 'row',
               flex: 1,
-              width: '100%',
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
               borderColor: '#222',
-              borderBottomWidth: StyleSheet.hairlineWidth,
+              // borderBottomWidth: StyleSheet.hairlineWidth,
               // backgroundColor: 'red',
               backgroundColor: '#151515',
             }}
@@ -72,13 +74,16 @@ export default class MiniWorkoutInList extends React.Component {
 
           <View style={{
             flexDirection: 'row',
-            padding: 0
+            padding: 5,
+            backgroundColor: '#151515',
+            borderBottomLeftRadius: 5,
+            borderBottomRightRadius: 5
           }}>
 
-            <View style={{backgroundColor: '#151515', flex: 1, padding: 5, paddingLeft: 12}}>
-              <Text style={[gs.text, {color: '#ccc', fontSize: 8, textAlign: 'left'}]}>
+            <View style={{flex: 1, padding: 5, paddingLeft: 12}}>
+              <Text style={[gs.text, {color: '#aaa', fontSize: 8, textAlign: 'left'}]}>
                 LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>
-                {this.props.workoutTemplateStore.lastPerformed ? moment(this.props.workoutTemplateStore.lastPerformed).format('D MMM YYYY') : 'Not yet'}</Text>
+                {this.props.workoutTemplateStore.lastPerformedDate ? moment(this.props.workoutTemplateStore.lastPerformedDate).format('D MMM YYYY') : 'Not yet'}</Text>
               </Text>
             </View>
 
@@ -92,8 +97,17 @@ export default class MiniWorkoutInList extends React.Component {
                 await workoutsLogsStore.startNewWorkoutLog(date, this.props.workoutTemplateStore);
                 this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: date})
               }}
-              style={{backgroundColor: '#151515', padding: 5, paddingLeft: 12, justifyContent: 'center'}}>
-              <Text style={[gs.text, {color: '#FF9800', fontSize: 8, textAlign: 'right'}]}>
+              style={{
+                // borderWidth: StyleSheet.hairlineWidth,
+                backgroundColor: '#151515',
+                borderColor: '#FF9800',
+                padding: 5,
+                paddingLeft: 7,
+                paddingRight: 7,
+                borderRadius: 5,
+                justifyContent: 'center'
+              }}>
+              <Text style={[gs.text, gs.shadow, {color: '#FF9800', fontSize: 8, textAlign: 'center'}]}>
                 {this.props.selectedDateStr ?
                   <Text><Ionicons name={'ios-play'} size={8}/>&nbsp;
                     PERFORM

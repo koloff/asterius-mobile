@@ -25,25 +25,22 @@ export default class ExerciseLog extends React.Component {
     this.workoutTemplateExerciseStore = this.props.workoutTemplateExerciseStore;
     this.currentWorkoutLogStore = workoutsLogsStore.currentWorkoutLog;
     this.id = this.workoutTemplateExerciseStore.id;
-    this.loadExerciseLogs();
+    await this.loadExerciseLogs();
   }
 
   async loadExerciseLogs() {
     this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.id);
+    console.log('loading log');
     await this.exerciseLogsStore.loadLogs();
+    console.log('log loaded');
     this.currentWorkoutExerciseLogStore = this.exerciseLogsStore.getLog(this.currentWorkoutLogStore.dateStr);
     this.setState({loading: false});
     this.props.renderedExerciseLog();
   }
 
   renderingGraphicDone() {
-    // console.log('rendering done');
-    // setTimeout(() => {
-
-      this.setState({renderingGraphic: false});
-    // })
+    this.setState({renderingGraphic: false});
   }
-
 
 
   increaseSets() {
@@ -105,8 +102,9 @@ export default class ExerciseLog extends React.Component {
           </View>
 
           <View style={{height: 205, width: '100%', alignItems: 'center', flex: 1}}>
-            <ExerciseLogsGraphic id={this.id} renderingGraphicDone={this.renderingGraphicDone.bind(this)} />
-            {this.state.renderingGraphic && <ActivityIndicator style={{position: 'absolute', top: 100}} size="small" color="#777"/>}
+            <ExerciseLogsGraphic id={this.id} renderingGraphicDone={this.renderingGraphicDone.bind(this)}/>
+            {this.state.renderingGraphic &&
+            <ActivityIndicator style={{position: 'absolute', top: 100}} size="small" color="#777"/>}
           </View>
 
         </View>}
