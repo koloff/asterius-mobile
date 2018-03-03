@@ -26,8 +26,10 @@ function childChanged(path, callback) {
 
 async function get(path) {
   return new Promise((resolve, reject) => {
+    // console.log('downloading', path);
     firebase.database().ref(path).once('value', (snapshot) => {
       const data = snapshot.val();
+      // console.log('downloaded', path);
       return resolve(data);
     }, (err) => {
       return reject(err);

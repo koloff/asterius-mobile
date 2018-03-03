@@ -8,47 +8,59 @@ import {withNavigation} from "react-navigation";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import workoutsLogsStore from '../../store/workoutsLogsStore';
 import exercisesLogsStore from "../../store/exercisesLogsStore";
-import test from '../../store/generateStore'
 
 import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import tweakerStore from "../../store/tweakerStore";
-import * as Mobx from "mobx";
 
-@observer
+
 @withNavigation
+@observer
 export default class WorkoutLog extends React.Component {
 
   state = {
     loading: true,
-    rendering: true,
+    renderingLogs: 0,
     renderedLogs: 0,
+    renderedAllLogs: false,
     contentOpacity: new Animated.Value(0),
     modalVisible: false
   };
 
-
   async componentWillMount() {
-    this.workoutLogDateStr = this.props.navigation.state.params.workoutLogDateStr;
-    await workoutsLogsStore.addCurrentWorkoutLog(this.workoutLogDateStr);
-    this.dateStr = workoutsLogsStore.currentWorkoutLog.dateStr;
-    this.exercises = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.exercises;
-    this.setState({loading: false});
+    this.dateStr = this.props.navigation.state.params.workoutLogDateStr;
+    await workoutsLogsStore.addNewWorkoutLogStore(this.dateStr);
+    this.workoutLogStore = workoutsLogsStore.getWorkoutLogStore(this.dateStr);
+    this.exercises = this.workoutLogStore.workoutTemplateStore.exercises;
 
-    //todo move
-    if (!this.exercises.length) {
-      this.animateContent();
-    }
+    let promises = this.exercises.map((exerciseTemplateStore) => {
+      let exerciseLogStore = exercisesLogsStore.getExerciseLogs(exerciseTemplateStore.id);
+      return exerciseLogStore.loadExerciseLogs();
+    });
+    await Promise.all(promises)
+      .then(() => {
+        this.exerciseLogsStore =
+          this.setState({loading: false})
+        //todo move
+        if (!this.exercises.length) {
+          this.animateContent();
+        }
+      });
+
+  }
+
+  renderingExerciseLog() {
+    this.setState({renderingLogs: this.state.renderingLogs + 1});
   }
 
   renderedExerciseLog() {
-    this.setState({renderedLogs: this.state.renderedLogs + 1});
-
+    this.setState({renderedLogs: ++this.state.renderedLogs});
     if (this.exercises.length === 1 && this.state.renderedLogs === 1) {
       this.animateContent();
     } else if (this.state.renderedLogs >= 2) {
       this.animateContent();
+    }
+    if (this.state.renderedLogs >= this.state.renderingLogs) {
+      this.setState({renderedAllLogs: true});
     }
   }
 
@@ -89,7 +101,9 @@ export default class WorkoutLog extends React.Component {
               padding: 10, paddingBottom: 7, paddingRight: 21
             }}
             onPress={() => {
-              this.props.navigation.goBack()
+              requestAnimationFrame(() => {
+                this.props.navigation.goBack()
+              })
             }}
           >
             <Ionicons name='ios-arrow-back' size={37} color='#ddd'/>
@@ -100,12 +114,14 @@ export default class WorkoutLog extends React.Component {
             <Text style={[gs.text, {
               fontSize: 15,
               textAlign: 'center'
-            }]}>{moment(this.workoutLogDateStr).format('D MMM YYYY')}</Text>
+            }]}>{moment(this.dateStr).format('D MMM YYYY')}</Text>
           </View>
           <TouchableOpacity
             style={{backgroundColor: 'transparent', justifyContent: 'center', marginTop: 2}}
             onPress={() => {
-              this.setState({modalVisible: true});
+              requestAnimationFrame(() => {
+                this.setState({modalVisible: true});
+              })
             }}>
 
             <Text style={[gs.text, {fontSize: 11, textAlign: 'center', color: '#999'}]}>REMOVE</Text>
@@ -123,7 +139,7 @@ export default class WorkoutLog extends React.Component {
             onPress={() => {
               this.props.navigation.navigate('Tweaker', {
                 canDelete: false,
-                workoutTemplateStore: workoutsLogsStore.currentWorkoutLog.workoutTemplateStore
+                workoutTemplateStore: this.workoutLogStore.workoutTemplateStore
               })
             }}>
             <Text style={[gs.text, {textAlign: 'center', fontSize: 17, color: '#fff'}]}>EDIT</Text>
@@ -143,7 +159,7 @@ export default class WorkoutLog extends React.Component {
           <ActivityIndicator size="large" color="#777"/>
         </Animated.View>
 
-        {!this.state.loading && this.dateStr === workoutsLogsStore.currentWorkoutLog.dateStr && <Animated.View style={{
+        {!this.state.loading && <Animated.View style={{
           opacity: this.state.contentOpacity,
           flex: 1,
           justifyContent: 'center'
@@ -166,11 +182,13 @@ export default class WorkoutLog extends React.Component {
                     key={workoutTemplateExerciseStore.id}
                     scrollToExercise={this.scrollToExercise.bind(this)}
                     renderedExerciseLog={this.renderedExerciseLog.bind(this)}
-                    exerciseIndex={index} workoutTemplateExerciseStore={workoutTemplateExerciseStore}
+                    renderingExerciseLog={this.renderingExerciseLog.bind(this)}
+                    exerciseIndex={index}
+                    dateStr={this.dateStr}
+                    workoutTemplateExerciseStore={workoutTemplateExerciseStore}
                   />
                 )
               })}
-              <View style={{height: 340}}></View>
             </ScrollView>}
         </Animated.View>}
 
@@ -191,9 +209,12 @@ export default class WorkoutLog extends React.Component {
               <View style={{marginRight: 10}}><Button
                 color={'red'}
                 onPress={() => {
-                  workoutsLogsStore.currentWorkoutLog.remove();
-                  this.props.navigation.goBack();
-                  this.setState({modalVisible: false})
+                  requestAnimationFrame(() => {
+
+                    this.workoutLogStore.remove();
+                    this.props.navigation.goBack();
+                    this.setState({modalVisible: false})
+                  })
                 }}
                 title="Delete"
               /></View>

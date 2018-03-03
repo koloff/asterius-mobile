@@ -16,6 +16,8 @@ import GenerateStack from './components/generate/GenerateStack';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
+import Test from './components/Test';
+
 const MainTabNavigator = TabNavigator({
   Workouts: {screen: WorkoutsScreen},
   Progress: {screen: ProgressScreen},

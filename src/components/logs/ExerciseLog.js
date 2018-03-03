@@ -4,54 +4,38 @@ import {
   ActivityIndicator
 } from 'react-native';
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 import {gs} from "../../globals";
-import workoutsLogsStore from "../../store/workoutsLogsStore";
-import exercisesLogsStore from "../../store/exercisesLogsStore";
 import SetLog from './SetLog';
 import ExerciseLogsGraphic from "./ExerciseLogsGraphic";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import exercisesLogsStore from "../../store/exercisesLogsStore";
+
+import * as Mobx from 'mobx';
 
 const containerHeight = 340;
 
 @observer
 export default class ExerciseLog extends React.Component {
 
-  state = {
-    loading: true,
-    renderingGraphic: true
-  };
 
-  async componentDidMount() {
-    this.workoutTemplateExerciseStore = this.props.workoutTemplateExerciseStore;
-    this.currentWorkoutLogStore = workoutsLogsStore.currentWorkoutLog;
-    this.id = this.workoutTemplateExerciseStore.id;
-    await this.loadExerciseLogs();
-  }
-
-  async loadExerciseLogs() {
-    this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.id);
-    console.log('loading log');
-    await this.exerciseLogsStore.loadLogs();
-    console.log('log loaded');
-    this.currentWorkoutExerciseLogStore = this.exerciseLogsStore.getLog(this.currentWorkoutLogStore.dateStr);
-    this.setState({loading: false});
+  componentWillMount() {
+    this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.props.workoutTemplateExerciseStore.id);
+    this.exerciseLogStore = this.exerciseLogsStore.getLog(this.props.dateStr);
     this.props.renderedExerciseLog();
   }
 
-  renderingGraphicDone() {
-    this.setState({renderingGraphic: false});
-  }
-
-
   increaseSets() {
-    if (this.workoutTemplateExerciseStore.sets >= 6) {
+    if (this.exerciseLogStore.workoutTemplateExerciseStore.sets >= 6) {
       return;
     }
-    this.workoutTemplateExerciseStore.workoutTemplateStore.setExercisesSets(this.id, this.workoutTemplateExerciseStore.sets + 1);
+    this.exerciseLogStore.workoutTemplateExerciseStore.workoutTemplateStore.setExercisesSets(
+      this.exerciseLogStore.workoutTemplateExerciseStore.id, this.exerciseLogStore.workoutTemplateExerciseStore.sets + 1);
   }
 
   decreaseSets() {
-    this.workoutTemplateExerciseStore.workoutTemplateStore.setExercisesSets(this.id, this.workoutTemplateExerciseStore.sets - 1);
+    this.exerciseLogStore.workoutTemplateExerciseStore.workoutTemplateStore.setExercisesSets(
+      this.exerciseLogStore.workoutTemplateExerciseStore.id, this.exerciseLogStore.workoutTemplateExerciseStore.sets - 1);
   }
 
   @observer
@@ -60,14 +44,14 @@ export default class ExerciseLog extends React.Component {
       <View style={{
         backgroundColor: '#101010', height: containerHeight, paddingTop: 30, flex: 1
       }}>
-        {!this.state.loading && <View style={{alignItems: 'center', flex: 1}}>
+        <View style={{alignItems: 'center', flex: 1}}>
 
 
           <Text style={[gs.text, {
             color: '#bbb',
             fontSize: 18,
             marginBottom: 12
-          }]}>{this.workoutTemplateExerciseStore.index + 1}. {this.workoutTemplateExerciseStore.details.info.name}</Text>
+          }]}>{this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <View style={{
               width: 0,
@@ -75,7 +59,7 @@ export default class ExerciseLog extends React.Component {
               borderColor: '#101010',
               height: 52
             }}/>
-            {this.currentWorkoutExerciseLogStore.sets.map((set) => {
+            {this.exerciseLogStore.sets.map((set) => {
               if (!set.removed) {
                 return <SetLog
                   key={set.index}
@@ -102,12 +86,13 @@ export default class ExerciseLog extends React.Component {
           </View>
 
           <View style={{height: 205, width: '100%', alignItems: 'center', flex: 1}}>
-            <ExerciseLogsGraphic id={this.id} renderingGraphicDone={this.renderingGraphicDone.bind(this)}/>
-            {this.state.renderingGraphic &&
-            <ActivityIndicator style={{position: 'absolute', top: 100}} size="small" color="#777"/>}
+            <ExerciseLogsGraphic
+              exerciseLogsStore={this.exerciseLogsStore}
+              id={this.exerciseLogStore.workoutTemplateExerciseStore.id}
+            />
           </View>
 
-        </View>}
+        </View>
       </View>
     )
   }

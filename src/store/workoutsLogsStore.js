@@ -13,13 +13,15 @@ class WorkoutsLogsStore {
   @observable todayDateStr;
   @observable pressedDateStr;
   @observable workoutsLogs = new Map();
+  @observable workoutLogsStores = new Map();
+  @observable currentWorkoutDateStr;
 
   async init() {
     this.path = `workoutsLogs/${authStore.uid}`;
     this.todayDateStr = moment().format('YYYY-MM-DD');
     let workouts = await database.get(this.path);
-    _.forOwnRight(workouts, (workout, key) => {
-      this.workoutsLogs.set(key, workout);
+    _.forOwnRight(workouts, (workout, dateStr) => {
+      this.workoutsLogs.set(dateStr, workout);
     });
   }
 
@@ -44,6 +46,7 @@ class WorkoutsLogsStore {
     return res;
   }
 
+
   async startNewWorkoutLog(dateStr, workoutTemplateStore) {
     workoutTemplateStore.addPerformedDate(dateStr);
     await database.save(`${this.path}/${dateStr}`,
@@ -53,25 +56,22 @@ class WorkoutsLogsStore {
       });
     // todo check
     this.workoutsLogs.set(dateStr, workoutTemplateStore.asObject);
-    this.addCurrentWorkoutLog(dateStr);
+
   }
 
-  // due to lack of navigation events cannot keep track of which
-  // is the current workoutStore log on screen todo change
-  @observable _openedWorkoutsLogs = [];
-  @observable currentWorkoutLog;
+  // todo subtract
 
-  async addCurrentWorkoutLog(dateStr) {
+
+  async addNewWorkoutLogStore(dateStr) {
     let workoutLogStore = new WorkoutLogStore();
-    // async
     await workoutLogStore.init(this, dateStr);
-    this._openedWorkoutsLogs.push(workoutLogStore);
-    this.currentWorkoutLog = workoutLogStore;
+    this.workoutLogsStores.set(dateStr, workoutLogStore);
+    this.currentWorkoutDateStr = dateStr;
+    return this.workoutLogsStores.get(dateStr);
   }
 
-  subtractCurrentWorkoutLog() {
-    this._openedWorkoutsLogs.pop();
-    this.currentWorkoutLog = this._openedWorkoutsLogs[this._openedWorkoutsLogs.length - 1];
+  getWorkoutLogStore(dateStr) {
+    return this.workoutLogsStores.get(dateStr);
   }
 }
 

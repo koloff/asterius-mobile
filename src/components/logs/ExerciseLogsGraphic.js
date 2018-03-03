@@ -18,16 +18,8 @@ import {withNavigation} from "react-navigation";
 @observer
 export default class ExerciseLogsGraphic extends React.Component {
   state = {
-    renderMain: false,
-    loading: true
+    renderMain: false
   };
-
-
-  async componentDidMount() {
-    this.id = this.props.id;
-    this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.id);
-    this.setState({loading: false});
-  }
 
   @observer
   render() {
@@ -37,15 +29,18 @@ export default class ExerciseLogsGraphic extends React.Component {
           flexDirection: 'row',
           flex: 1,
           width: '100%',
-          alignItems: 'center'
+          alignItems: 'center',
+          // backgroundColor: 'red',
+          justifyContent: 'center'
         }}>
 
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(70,70,70, 0.10)']}
             style={{position: 'absolute', left: 0, right: 0, height: '100%', width: Dimensions.get('window').width}}
           />
-          {!this.state.loading &&
-          <LogsScroll renderingGraphicDone={this.props.renderingGraphicDone} exerciseLogsStore={this.exerciseLogsStore}/>}
+          <LogsScroll
+            // renderingGraphicDone={this.props.renderingGraphicDone}
+            exerciseLogsStore={this.props.exerciseLogsStore}/>
 
 
         </View>
@@ -61,12 +56,11 @@ class LogsScroll extends React.Component {
   };
 
   componentDidMount() {
-    this.props.renderingGraphicDone();
     Animated.timing(this.state.opacity, {toValue: 1, duration: 500, useNativeDriver: true}).start();
   }
 
   render() {
-    return <Animated.View style={{opacity: this.state.opacity}}>
+    return <Animated.View style={{opacity: 1}}>
       <ScrollView
         ref={(ref) => {
           this._logsScroll = ref;
@@ -84,8 +78,8 @@ class LogsScroll extends React.Component {
         }}>
 
 
-        {this.props.exerciseLogsStore.exerciseLogs.values().map((logStore) => {
-          return <Log key={logStore.dateStr} logStore={logStore}/>
+        {this.props.exerciseLogsStore.exerciseLogs.map((exerciseLogStore) => {
+          return <Log key={exerciseLogStore.dateStr} exerciseLogStore={exerciseLogStore}/>
         })}
 
       </ScrollView>
@@ -94,16 +88,17 @@ class LogsScroll extends React.Component {
 }
 
 @withNavigation
+@observer
 class Log extends React.Component {
   navigate() {
-    this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: this.props.logStore.dateStr})
+    this.props.navigation.navigate('WorkoutLog', {workoutLogDateStr: this.props.exerciseLogStore.dateStr})
   }
 
   @observer
   render() {
 
     // inner graph is where the sets boxes stay; if the weight differnce is smaller make its height smaller to avoid big gaps
-    let weightRatio = this.props.logStore.exerciseLogsStore.setsData.weightRatio;
+    let weightRatio = this.props.exerciseLogStore.exerciseLogsStore.setsData.weightRatio;
     if (!weightRatio) {
       this.innerGraphHeight = 80;
     } else if (weightRatio <= 1.5) {
@@ -119,7 +114,7 @@ class Log extends React.Component {
         <TouchableOpacity
           onPress={this.navigate.bind(this)}
           style={{
-            opacity: this.props.logStore.dateStr === workoutsLogsStore.currentWorkoutLog.dateStr ? 1 : 0.5,
+            opacity: this.props.exerciseLogStore.dateStr === workoutsLogsStore.currentWorkoutDateStr ? 1 : 0.5,
             height: '100%',
             flex: 0,
             minWidth: 120,
@@ -142,7 +137,7 @@ class Log extends React.Component {
             paddingRight: 5,
             top: 0
           }}>
-            {this.props.logStore.sets.map((set, index) => {
+            {this.props.exerciseLogStore.sets.map((set, index) => {
               if (set.performed) {
                 return <Set key={index} innerGraphHeight={this.innerGraphHeight} logSetStore={set}/>;
               }
@@ -156,7 +151,7 @@ class Log extends React.Component {
             <Text style={[gs.text, {
               color: '#757575',
               fontSize: 13,
-            }]}>{moment(this.props.logStore.dateStr).format('D MMM YYYY')}</Text>
+            }]}>{moment(this.props.exerciseLogStore.dateStr).format('D MMM YYYY')}</Text>
           </View>
         </TouchableOpacity>
       </View>

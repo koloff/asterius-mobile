@@ -1,8 +1,9 @@
-import {observable, computed, extendObservable, observe, autorun} from "mobx";
+import {observable, computed, extendObservable, observe, autorun, autorunAsync} from "mobx";
 import _ from "lodash";
 import authStore from "./authStore";
 import database from "../database";
-import workoutsLogsStore from "./workoutsLogsStore";
+import workoutsLogsStore from './workoutsLogsStore';
+import * as Mobx from 'mobx';
 
 class ExercisesLogsStore {
   path;
@@ -16,7 +17,7 @@ class ExercisesLogsStore {
     });
   }
 
-  // returns empty exerciseLogs store, logs need to be fetched with loadLog/loadLogs
+  // returns empty exerciseLogs store, logs need to be fetched with loadExerciseLogs
   getExerciseLogs(id) {
     if (!this.exercisesLogs.has(id)) {
       let exerciseLogsStore = new ExerciseLogsStore(id);
@@ -30,10 +31,9 @@ class ExerciseLogsStore {
   id;
   path;
   @observable loaded = false;
-  @observable exerciseLogs = new Map();
-  @observable lastPerformedDateStr;
+  @observable exerciseLogs = [];
 
-  // creates empty exerciseLogs store, logs need to be fetched with loadLog/loadLogs
+  // creates empty exerciseLogs store, logs need to be fetched with loadExerciseLogs
   constructor(id) {
     this.id = id;
     this.path = `exercisesLogs/${authStore.uid}/${id}`;
@@ -71,59 +71,75 @@ class ExerciseLogsStore {
     };
   }
 
-  async loadLogs() {
-    if (!this.loaded) {
-      let logs = await database.get(this.path);
-      _.forOwnRight(logs, (log, dateStr) => {
-        if (!this.exerciseLogs.has(dateStr)) {
-          this.setPerformedLog(dateStr, log);
-        }
-      });
+
+  getLog(dateStr) {
+    let res = this.exerciseLogs.find((exerciseLog) => exerciseLog.dateStr === dateStr);
+    if (!res) {
+      console.log('');
+      res = this.pushExerciseLogStore(dateStr);
     }
+    return res;
   }
 
-  async loadLog(dateStr) {
-    let log = await database.get(`${this.path}/${dateStr}`);
-    if (!this.exerciseLogs.has(dateStr)) {
-      this.setPerformedLog(dateStr, log);
-    }
-  }
-
-  // creates and fills log store, log: {sets<array/object>: {reps, weight}}
-  setPerformedLog(dateStr, log) {
-    let sets = log && log.sets;
-    if (!sets) {
+  pushExerciseLogStore(dateStr, log) {
+    // log exists already for the date
+    let res = this.exerciseLogs.find((exerciseLog) => exerciseLog.dateStr === dateStr);
+    if (res) {
       return;
     }
     let exerciseLogStore = new ExerciseLogStore(this, dateStr);
-    if (Array.isArray(sets)) {
-      sets.forEach(set => {
-        if (set) {
-          exerciseLogStore.addPerformedSet(set);
-        } else {
-          exerciseLogStore.addEmptySet();
-        }
-      });
-    } else {
-      _.forOwn(sets, set => {
-        if (set) {
-          exerciseLogStore.addPerformedSet(set);
-        } else {
-          exerciseLogStore.addEmptySet();
-        }
-      });
+
+    // creates and fills log store, log: {sets<array/object>: {reps, weight}}
+    let sets = log && log.sets;
+    if (sets) {
+      if (Array.isArray(sets)) {
+        sets.forEach(set => {
+          if (set) {
+            exerciseLogStore.addPerformedSet(set);
+          } else {
+            exerciseLogStore.addEmptySet();
+          }
+        });
+      } else {
+        _.forOwn(sets, set => {
+          if (set) {
+            exerciseLogStore.addPerformedSet(set);
+          } else {
+            exerciseLogStore.addEmptySet();
+          }
+        });
+      }
     }
+
+    // find the log position chronologically
+    let index = 0;
+    this.exerciseLogs.forEach((exerciseLog) => {
+      if (exerciseLog.dateStr < dateStr) {
+        index++;
+      }
+    });
     exerciseLogStore.watchAndFillSets();
-    this.exerciseLogs.set(dateStr, exerciseLogStore);
+    this.exerciseLogs.splice(index, 0, exerciseLogStore);
+    return exerciseLogStore;
   }
 
-  getLog(dateStr) {
-    if (!this.exerciseLogs.has(dateStr)) {
-      let exerciseLogStore = new ExerciseLogStore(this, dateStr);
-      exerciseLogStore.watchAndFillSets();
-      this.exerciseLogs.set(dateStr, exerciseLogStore);
-    }
-    return this.exerciseLogs.get(dateStr);
+  async loadExerciseLogs() {
+    return new Promise(async (resolve, reject) => {
+      if (!this.loaded) {
+        try {
+          let logs = await database.get(this.path);
+          _.forOwnRight(logs, (log, dateStr) => {
+            this.pushExerciseLogStore(dateStr, log)
+          });
+          return resolve();
+        } catch (err) {
+          console.log(err);
+          return reject();
+        }
+      } else {
+        return resolve();
+      }
+    })
   }
 }
 
@@ -139,15 +155,10 @@ class ExerciseLogStore {
     this.path = `${this.exerciseLogsStore.path}/${this.dateStr}`;
   }
 
-  // watches the workoutStore template and adds new sets if the count grow
-  // does not work if autorun is invoked in the  constructor
-  // NEEDS to be invoked every time new LogStore is created!!!
   watchAndFillSets() {
     autorun(() => {
-      if (
-        this.workoutTemplateExerciseStore &&
-        this.workoutTemplateExerciseStore.sets > this.setsLength
-      ) {
+      if (this.workoutTemplateExerciseStore &&
+        (this.workoutTemplateExerciseStore.sets > this.setsLength)) {
         this.addEmptySet();
       }
     });
@@ -155,10 +166,13 @@ class ExerciseLogStore {
 
   @computed
   get workoutTemplateExerciseStore() {
-    let res = workoutsLogsStore.currentWorkoutLog.workoutTemplateStore.getWorkoutTemplateExerciseStore(
-      this.exerciseLogsStore.id
-    );
-    return res;
+    let workoutLogStore = workoutsLogsStore.getWorkoutLogStore(this.dateStr);
+    if (workoutLogStore) {
+      return workoutLogStore.workoutTemplateStore.getWorkoutTemplateExerciseStore(
+        this.exerciseLogsStore.id
+      );
+    }
+    return null;
   }
 
   @computed
@@ -192,6 +206,7 @@ class ExerciseLogSetStore {
   path;
   @observable reps;
   @observable weight;
+  @observable removed;
 
   constructor(exerciseLogStore, index, set) {
     this.exerciseLogStore = exerciseLogStore;
@@ -199,11 +214,15 @@ class ExerciseLogSetStore {
     this.path = `${this.exerciseLogStore.path}/sets/${index}`;
     this.reps = set.reps;
     this.weight = set.weight;
-  }
+    this.removed = set.removed;
 
-  @computed
-  get removed() {
-    return this.exerciseLogStore.workoutTemplateExerciseStore.sets <= this.index;
+    autorunAsync(() => {
+      if (this.exerciseLogStore.workoutTemplateExerciseStore) {
+        this.removed = this.exerciseLogStore.workoutTemplateExerciseStore.sets <= this.index;
+        database.save(this.path + '/removed', this.removed);
+
+      }
+    }, 500);
   }
 
   @computed
