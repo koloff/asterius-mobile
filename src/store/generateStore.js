@@ -15,7 +15,6 @@ class GenerateStore {
 
   @observable generating = false;
   @observable generated = false;
-  @observable workouts = [];
 
   defaultUserParameters = {
     gender: null, // 1 - male, 2 - female
@@ -127,7 +126,6 @@ class GenerateStore {
           ]
         };
 
-        this.workouts = [];
         if (authStore.isAnonymous) {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
@@ -136,7 +134,10 @@ class GenerateStore {
         //todo
         for (let i = 0; i < res.workouts.length; i++) {
           let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, res.workouts[i]);
-          this.workoutsTemplatesStore.workouts.push({workout: new WorkoutTemplateStore(res.workouts[i], ref.key, ref.path), key: ref.key});
+          this.workoutsTemplatesStore.workouts.push({
+            workoutStore: new WorkoutTemplateStore(res.workouts[i], ref.path),
+            key: ref.key
+          });
         }
 
         return resolve();
@@ -146,6 +147,10 @@ class GenerateStore {
         return reject(false);
       }
     })
+  }
+
+  deleteGeneratedWorkouts() {
+    this.workoutsTemplatesStore.removeWorkoutsInCurrentStore();
   }
 }
 

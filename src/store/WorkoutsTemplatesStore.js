@@ -30,6 +30,12 @@ export default class WorkoutsTemplatesStore {
     })
   }
 
+  removeWorkoutsInCurrentStore() {
+    this.workouts.forEach((workout) => {
+      workout.workoutStore.removeWorkout();
+    })
+  }
+
   async addWorkout() {
     try {
       let {key, path} = await database.push(this.path, {name: 'Custom workout'});

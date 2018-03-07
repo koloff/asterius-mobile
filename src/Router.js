@@ -2,13 +2,13 @@ import * as React from "react";
 import {observer} from 'mobx-react';
 
 import authStore from './store/authStore';
-import {StackNavigator, TabBarBottom, TabNavigator} from 'react-navigation';
+import {StackNavigator, TabBarBottom, TabNavigator, withNavigation} from 'react-navigation';
 
 import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
 import WorkoutLog from './components/logs/WorkoutLog';
 import WorkoutsScreen from './components/workouts/WorkoutsScreen';
-import ProgressScreen from "./components/progress/ProgressScreen";
+import ProgressScreen from "./components/progress/WeightScreen";
 import EatScreen from "./components/eat/EatScreen";
 import SettingsScreen from "./components/settings/SettingsScreen";
 import GenerateStack from './components/generate/GenerateStack';
@@ -17,6 +17,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 
 import Test from './components/Test';
+import {Image, View} from "react-native";
 
 const MainTabNavigator = TabNavigator({
   Workouts: {screen: WorkoutsScreen},
@@ -90,8 +91,34 @@ const MainTabNavigator = TabNavigator({
   },
 });
 
+class MainTabNavigatorWithBackground extends React.Component {
+  render() {
+    return <View style={{flex: 1}}>
+      <Image
+        style={{
+          flex: 1,
+          resizeMode: 'cover',
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}
+        source={require('./assets/bg1.jpg')}
+      />
+      <View style={{
+        opacity: 0.5,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#000'
+      }}></View>
+      <MainTabNavigator navigation={this.props.navigation}/>
+    </View>;
+  }
+}
+
+MainTabNavigatorWithBackground.router = MainTabNavigator.router;
 const MainNavigator = StackNavigator({
-  Main: {screen: MainTabNavigator},
+  Main: {screen: MainTabNavigatorWithBackground},
   WorkoutLog: {
     screen: WorkoutLog,
     path: 'log/:workoutLogDateStr'
@@ -109,6 +136,7 @@ const MainNavigator = StackNavigator({
     backgroundColor: '#0c0c0c',
   }
 });
+
 
 
 const StartNavigator = StackNavigator({

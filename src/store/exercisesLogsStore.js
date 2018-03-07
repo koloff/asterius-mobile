@@ -195,7 +195,9 @@ class ExerciseLogStore {
   }
 
   remove() {
-    this.exerciseLogsStore.exerciseLogs.delete(this.dateStr);
+    let index = this.exerciseLogsStore.exerciseLogs.findIndex((exerciseLog) => exerciseLog.dateStr === this.dateStr);
+    console.log(index);
+    this.exerciseLogsStore.exerciseLogs.splice(index, 1);
     database.remove(this.path);
   }
 }

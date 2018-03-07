@@ -41,30 +41,8 @@ export default class WorkoutsScreen extends React.Component {
   render() {
     return (
       <View style={{
-        backgroundColor: '#0c0c0c',
         flex: 1
       }}>
-
-        <Image
-          style={{
-            flex: 1,
-            resizeMode: 'cover',
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-          }}
-          source={require('../../assets/bg1.jpg')}
-        />
-
-        <View style={{
-          opacity: 0.5,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#000'
-        }}></View>
-
-
         <Animated.View
           style={{
             flex: 1,
@@ -78,7 +56,6 @@ export default class WorkoutsScreen extends React.Component {
             // borderBottomWidth: StyleSheet.hairlineWidth,
             // borderTopWidth: StyleSheet.hairlineWidth
           }}>
-
             <ElevatedView elevation={4} style={{
               // borderColor: '#222',
               height: 300,

@@ -14,7 +14,6 @@ class WorkoutsLogsStore {
   @observable pressedDateStr;
   @observable workoutsLogs = new Map();
   @observable workoutLogsStores = new Map();
-  @observable currentWorkoutDateStr;
 
   async init() {
     this.path = `workoutsLogs/${authStore.uid}`;
@@ -56,17 +55,28 @@ class WorkoutsLogsStore {
       });
     // todo check
     this.workoutsLogs.set(dateStr, workoutTemplateStore.asObject);
-
   }
 
-  // todo subtract
+  @observable _currentWorkoutDateStrings = [];
+
+  @computed get currentWorkoutDateStr() {
+    if (!this._currentWorkoutDateStrings.length) {
+      return null;
+    }
+    return this._currentWorkoutDateStrings[this._currentWorkoutDateStrings.length - 1];
+  }
+
+  subtractOpenedWorkout() {
+    this._currentWorkoutDateStrings.splice(
+      this._currentWorkoutDateStrings.length - 1, 1);
+  }
 
 
   async addNewWorkoutLogStore(dateStr) {
     let workoutLogStore = new WorkoutLogStore();
     await workoutLogStore.init(this, dateStr);
     this.workoutLogsStores.set(dateStr, workoutLogStore);
-    this.currentWorkoutDateStr = dateStr;
+    this._currentWorkoutDateStrings.push(dateStr);
     return this.workoutLogsStores.get(dateStr);
   }
 

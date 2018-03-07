@@ -66,7 +66,7 @@ export default class Tweaker extends Component {
             justifyContent: 'center'
           }}>
             {!this.state.editingName && <View style={{flexDirection: 'row'}}>
-              <Text style={[gs.text, {color: '#aaa', fontSize: 15}]}>
+              <Text style={[gs.text, {color: '#fff', fontSize: 15}]}>
                 {tweakerStore.workoutTemplateStore.name}
               </Text>
               <TouchableOpacity
@@ -75,10 +75,11 @@ export default class Tweaker extends Component {
                 }}
                 style={{
                   padding: 5,
+                  marginLeft: 5,
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                <FontAwesome name={'edit'} color={'#aaa'} size={16}/>
+                <FontAwesome name={'edit'} color={'#fff'} size={16}/>
               </TouchableOpacity>
             </View>}
             {this.state.editingName && <View style={{

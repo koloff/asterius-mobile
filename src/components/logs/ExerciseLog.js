@@ -48,17 +48,11 @@ export default class ExerciseLog extends React.Component {
 
 
           <Text style={[gs.text, {
-            color: '#bbb',
+            color: '#999',
             fontSize: 18,
             marginBottom: 12
           }]}>{this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{
-              width: 0,
-              borderWidth: StyleSheet.hairlineWidth,
-              borderColor: '#101010',
-              height: 52
-            }}/>
             {this.exerciseLogStore.sets.map((set) => {
               if (!set.removed) {
                 return <SetLog

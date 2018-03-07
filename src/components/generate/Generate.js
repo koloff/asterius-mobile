@@ -108,6 +108,7 @@ export default class Generate extends React.Component {
 
   onWorkoutsReset() {
     this._swiper.scrollBy(-1);
+    generateStore.deleteGeneratedWorkouts();
     generateStore.generated = false;
   }
 
@@ -159,7 +160,6 @@ export default class Generate extends React.Component {
             }}>
             <Ionicons name={'md-close'} size={37} color={'#888'}/>
           </TouchableOpacity>
-
 
 
         </View>
@@ -392,7 +392,6 @@ const Slide4 = observer((props) => {
     <RadioButtons
       selected={generateStore.userParameters.days}
       onSelectedChange={(value) => {
-        console.log(value);
         switch (value) {
           case 1:
             this.durationSlider.setNativeProps({value: 75});
@@ -545,22 +544,22 @@ class GeneratedWorkoutsSlide extends React.Component {
   };
 
   componentWillMount() {
-    let animations = generateStore.workouts.map((workout) => new Animated.Value(0));
+    let animations = generateStore.workoutsTemplatesStore.workouts.map((workout) => new Animated.Value(0));
     this.setState({animations})
   }
 
   componentDidMount() {
     let sequence = this.state.animations.map((animation) => {
       return Animated.timing(animation, {
-        duration: 300,
-        toValue: 0.8,
+        duration: 333,
+        toValue: 0.9,
         useNativeDriver: true
       })
     });
 
     setTimeout(() => {
       Animated.sequence(sequence).start();
-    }, 600)
+    }, 333)
   }
 
   @observer
@@ -580,16 +579,16 @@ class GeneratedWorkoutsSlide extends React.Component {
           })}
         </ScrollView>
 
-        <LinearGradient
-          colors={['rgba(0,0,0,0.5)', 'transparent']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: 6,
-          }}
-        />
+        {/*<LinearGradient*/}
+          {/*colors={['rgba(0,0,0,0.5)', 'transparent']}*/}
+          {/*style={{*/}
+            {/*position: 'absolute',*/}
+            {/*left: 0,*/}
+            {/*right: 0,*/}
+            {/*top: 0,*/}
+            {/*height: 6,*/}
+          {/*}}*/}
+        {/*/>*/}
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.5)']}
           style={{
@@ -636,7 +635,7 @@ class GeneratedWorkoutsSlide extends React.Component {
           justifyContent: 'center'
         }}
         onPress={async () => {
-          this.props.opacity ?  this.props.onTransition('Register') : this.props.navigation.goBack();
+          this.props.opacity ? this.props.onTransition('Register') : this.props.navigation.goBack();
         }}>
         <Text style={[gs.text, {color: 'rgba(255,143,0 ,1)', fontSize: 17, textAlign: 'center'}]}>
           <FontAwesome name='flag-checkered' size={17} color='rgba(255,143,0 ,1)'/>

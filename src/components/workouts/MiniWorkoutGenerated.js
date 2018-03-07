@@ -10,6 +10,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
 
+import * as Mobx from 'mobx';
+
 @observer
 class MiniWorkoutExercise extends React.Component {
   render() {
@@ -76,7 +78,6 @@ export default class MiniWorkoutGenerated extends React.Component {
                 marginBottom: 7
               }]}>Estimated {this.workoutTemplateStore.workoutDurationText}</Text>
               {this.workoutTemplateStore.exercises.map((exerciseStore) => {
-                console.log(exerciseStore.details);
                 return (
                   <MiniWorkoutExercise key={exerciseStore.id} exerciseStore={exerciseStore}/>
                 )

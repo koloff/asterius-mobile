@@ -11,6 +11,7 @@ import exercisesLogsStore from "../../store/exercisesLogsStore";
 
 import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 
 @withNavigation
@@ -92,6 +93,7 @@ export default class WorkoutLog extends React.Component {
         borderBottomColor: '#222',
         flexDirection: 'row',
         width: '100%',
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center'
       }]}>
@@ -102,6 +104,7 @@ export default class WorkoutLog extends React.Component {
             }}
             onPress={() => {
               requestAnimationFrame(() => {
+                workoutsLogsStore.subtractOpenedWorkout();
                 this.props.navigation.goBack()
               })
             }}
@@ -109,30 +112,31 @@ export default class WorkoutLog extends React.Component {
             <Ionicons name='ios-arrow-back' size={37} color='#ddd'/>
           </TouchableOpacity>
         </View>
-        <View style={{margin: 5}}>
-          <View style={{alignItems: 'center'}}>
-            <Text style={[gs.text, {
-              fontSize: 15,
-              textAlign: 'center'
-            }]}>{moment(this.dateStr).format('D MMM YYYY')}</Text>
-          </View>
+
+        <View style={{alignItems: 'center'}}>
+          <Text style={[gs.text, {
+            fontSize: 19,
+            padding: 10,
+            textAlign: 'center'
+          }]}>{moment(this.dateStr).format('D MMM YYYY')}</Text>
+        </View>
+        <View style={{position: 'absolute', flexDirection: 'row', right: 0}}>
           <TouchableOpacity
-            style={{backgroundColor: 'transparent', justifyContent: 'center', marginTop: 2}}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 7
+            }}
             onPress={() => {
               requestAnimationFrame(() => {
                 this.setState({modalVisible: true});
               })
             }}>
-
-            <Text style={[gs.text, {fontSize: 11, textAlign: 'center', color: '#999'}]}>REMOVE</Text>
+            <MaterialIcons name={'delete'} color={'#fff'} size={21}/>
           </TouchableOpacity>
-        </View>
-        <View style={{position: 'absolute', right: 0}}>
           <TouchableOpacity
             style={{
               padding: 10,
-              // backgroundColor: '#4FC3F7',
-              // position: 'absolute',
               alignItems: 'center',
               justifyContent: 'center'
             }}
@@ -142,7 +146,7 @@ export default class WorkoutLog extends React.Component {
                 workoutTemplateStore: this.workoutLogStore.workoutTemplateStore
               })
             }}>
-            <Text style={[gs.text, {textAlign: 'center', fontSize: 17, color: '#fff'}]}>EDIT</Text>
+            <Ionicons name={'md-settings'} color={'#fff'} size={21}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -210,7 +214,6 @@ export default class WorkoutLog extends React.Component {
                 color={'red'}
                 onPress={() => {
                   requestAnimationFrame(() => {
-
                     this.workoutLogStore.remove();
                     this.props.navigation.goBack();
                     this.setState({modalVisible: false})

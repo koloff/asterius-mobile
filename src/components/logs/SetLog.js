@@ -33,7 +33,7 @@ export default class SetLog extends React.Component {
           <TextInput
             style={[gs.text, styles.input]}
             underlineColorAndroid={'transparent'}
-            placeholder={'REPS'}
+            placeholder={'reps'}
             placeholderTextColor={'#555'}
             selectionColor={'#F57C00'}
             keyboardType={'numeric'}
@@ -63,7 +63,7 @@ export default class SetLog extends React.Component {
             keyboardType={'numeric'}
             placeholderTextColor={'#444'}
             selectionColor={'#F57C00'}
-            placeholder={'KG'}
+            placeholder={'kg'}
             ref={(ref) => {
               this._weightInput = ref
             }}
@@ -82,13 +82,13 @@ export default class SetLog extends React.Component {
             }}
           />
         </View>
-        <View style={{
-          width: 0,
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: '#333',
-          height: 52
-        }}>
-        </View>
+        {/*<View style={{*/}
+          {/*width: 0,*/}
+          {/*borderWidth: StyleSheet.hairlineWidth,*/}
+          {/*borderColor: '#333',*/}
+          {/*height: 52*/}
+        {/*}}>*/}
+        {/*</View>*/}
       </View>
     )
   }
