@@ -3,12 +3,18 @@ import {
   Platform,
   StyleSheet,
   StatusBar,
-  View, Text
+  View, Text, YellowBox
 } from 'react-native';
 import Router from './Router';
 
 import authStore from './store/authStore';
 import database from './database';
+
+YellowBox.ignoreWarnings([
+  'Warning: componentWillMount is deprecated',
+  'Warning: componentWillUpdate is deprecated',
+  'Warning: componentWillReceiveProps is deprecated',
+]);
 
 export default class App extends Component {
   state = {

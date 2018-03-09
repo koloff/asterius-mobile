@@ -8,7 +8,7 @@ import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
 import WorkoutLog from './components/logs/WorkoutLog';
 import WorkoutsScreen from './components/workouts/WorkoutsScreen';
-import ProgressScreen from "./components/progress/WeightScreen";
+import WeightScreen from "./components/weight/WeightScreen";
 import EatScreen from "./components/eat/EatScreen";
 import SettingsScreen from "./components/settings/SettingsScreen";
 import GenerateStack from './components/generate/GenerateStack';
@@ -21,11 +21,9 @@ import {Image, View} from "react-native";
 
 const MainTabNavigator = TabNavigator({
   Workouts: {screen: WorkoutsScreen},
-  Progress: {screen: ProgressScreen},
+  Weight: {screen: WeightScreen},
   Eat: {screen: EatScreen},
-  // Support: {screen: SupportScreen},
   Settings: {screen: SettingsScreen},
-
 }, {
   navigationOptions: ({navigation}) => ({
     tabBarIcon: ({focused}) => {
@@ -39,7 +37,7 @@ const MainTabNavigator = TabNavigator({
             style={{marginBottom: -1}}
             color={focused ? '#ccc' : '#555'}
           />;
-        case 'Progress':
+        case 'Weight':
           return <MaterialCommunityIcons
             name={'scale-bathroom'}
             size={focused ? 27 : 20}
@@ -136,7 +134,6 @@ const MainNavigator = StackNavigator({
     backgroundColor: '#0c0c0c',
   }
 });
-
 
 
 const StartNavigator = StackNavigator({

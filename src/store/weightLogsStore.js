@@ -14,7 +14,7 @@ class WeightLogsStore {
 
     database.childAdded(this.path, (ref) => {
       let log = {...ref.val(), key: ref.key};
-      this.logs.push(log);
+      this.logs.unshift(log);
     })
   }
 
@@ -24,14 +24,25 @@ class WeightLogsStore {
 
   }
 
-  @computed get graphData() {
+  @computed
+  get logsLength() {
+    return this.logs.length;
+  }
+
+  @computed
+  get graphData() {
     if (this.logs.length === 0) {
       return [1, 1];
     } else if (this.logs.length === 1) {
       return [this.logs[0].weight, this.logs[0].weight]
     }
-    return this.logs.map((log) => log.weight);
+    let res = [];
+    _.forEachRight(this.logs, (log) => {
+      res.push(log.weight);
+    })
+    return res;
   }
+
 
   addLog(weight) {
     database.push(this.path, {

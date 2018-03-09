@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Observer, observer} from 'mobx-react';
 import * as Mobx from 'mobx';
-import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image, Animated} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image, Animated, ActivityIndicator} from 'react-native';
 
 import {Calendar} from "react-native-calendars";
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,6 +18,7 @@ import ElevatedView from "../ElevatedView";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import exercisesLogsStore from "../../store/exercisesLogsStore";
+import AnimatedLoading from "../AnimatedLoading";
 
 @observer
 export default class WorkoutsScreen extends React.Component {
@@ -34,7 +35,7 @@ export default class WorkoutsScreen extends React.Component {
     // todo remove
     exercisesLogsStore.init();
 
-    Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 500}).start();
+    Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 333}).start();
   }
 
   @observer
@@ -43,6 +44,12 @@ export default class WorkoutsScreen extends React.Component {
       <View style={{
         flex: 1
       }}>
+        <AnimatedLoading
+          opacity={this.state.opacity.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0]
+          })}
+        />
         <Animated.View
           style={{
             flex: 1,
@@ -58,7 +65,6 @@ export default class WorkoutsScreen extends React.Component {
           }}>
             <ElevatedView elevation={4} style={{
               // borderColor: '#222',
-              height: 300,
               justifyContent: 'center',
               borderRadius: 5,
               // borderWidth: StyleSheet.hairlineWidth,
@@ -98,12 +104,12 @@ export default class WorkoutsScreen extends React.Component {
                   // backgroundColor: '#ffffff',
                   calendarBackground: '#151515',
                   textSectionTitleColor: '#ccc',
-                  selectedDayBackgroundColor: '#FF9800',
+                  selectedDayBackgroundColor: '#EF6C00',
                   selectedDayTextColor: '#fff',
                   todayTextColor: '#ccc',
                   dayTextColor: '#ccc',
                   textDisabledColor: '#555',
-                  dotColor: '#00adf5',
+                  dotColor: '#EF6C00',
                   selectedDotColor: '#ffffff',
                   arrowColor: '#ccc',
                   monthTextColor: '#ccc',
@@ -133,6 +139,7 @@ export default class WorkoutsScreen extends React.Component {
 
           <MiniWorkoutsList navigation={this.props.navigation}/>
         </Animated.View>
+
 
       </View>
     )

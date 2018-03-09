@@ -107,7 +107,7 @@ export default class MiniWorkoutInList extends React.Component {
                 borderRadius: 5,
                 justifyContent: 'center'
               }}>
-              <Text style={[gs.text, gs.shadow, {color: '#FF9800', fontSize: 8, textAlign: 'center'}]}>
+              <Text style={[gs.text, gs.shadow, {color: '#EF6C00', fontSize: 8, textAlign: 'center'}]}>
                 {this.props.selectedDateStr ?
                   <Text><Ionicons name={'ios-play'} size={8}/>&nbsp;
                     PERFORM
