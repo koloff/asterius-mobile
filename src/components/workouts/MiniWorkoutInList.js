@@ -60,11 +60,11 @@ export default class MiniWorkoutInList extends React.Component {
 
             <View style={{padding: 4, paddingLeft: 10, flex: 1, width: '100%', alignItems: 'center'}}>
               <Text style={[gs.text, {
-                fontSize: 13,
+                fontSize: 17,
                 color: '#bbb'
               }]}>{this.props.workoutTemplateStore.name}</Text>
               <Text style={[gs.text, {
-                fontSize: 10,
+                fontSize: 12,
                 color: '#999',
                 top: -2
               }]}>Estimated {this.workoutTemplateStore.workoutDurationText}</Text>
@@ -81,10 +81,13 @@ export default class MiniWorkoutInList extends React.Component {
           }}>
 
             <View style={{flex: 1, padding: 5, paddingLeft: 12}}>
+              {this.props.workoutTemplateStore.lastPerformedDate &&
               <Text style={[gs.text, {color: '#aaa', fontSize: 8, textAlign: 'left'}]}>
-                LAST PERFORMED{'\n'}<Text style={{fontSize: 14}}>
-                {this.props.workoutTemplateStore.lastPerformedDate ? moment(this.props.workoutTemplateStore.lastPerformedDate).format('D MMM YYYY') : 'Not yet'}</Text>
-              </Text>
+                PERFORMED
+                ON{'\n'}<Text style={{fontSize: 14}}>{moment(this.props.workoutTemplateStore.lastPerformedDate).format('D MMM YYYY')}</Text></Text>}
+              {!this.props.workoutTemplateStore.lastPerformedDate &&
+              <Text style={[gs.text, {color: '#aaa', fontSize: 12, textAlign: 'center', width: 60}]}>
+                NOT{'\n'}LOGGED</Text>}
             </View>
 
             <TouchableOpacity
@@ -110,10 +113,10 @@ export default class MiniWorkoutInList extends React.Component {
               <Text style={[gs.text, gs.shadow, {color: '#EF6C00', fontSize: 8, textAlign: 'center'}]}>
                 {this.props.selectedDateStr ?
                   <Text><Ionicons name={'ios-play'} size={8}/>&nbsp;
-                    PERFORM
+                    LOG
                     ON{'\n'}
                     <Text style={{fontSize: 14}}>{moment(this.props.selectedDateStr).format('D MMM YYYY')}</Text></Text>
-                  : <Text style={{fontSize: 8}}>USE THE CALENDAR{'\n'}TO SELECT A DATE</Text>}
+                  : <Text style={{fontSize: 12}}>TO LOG{'\n'}SELECT DATE</Text>}
               </Text>
             </TouchableOpacity>
           </View>

@@ -56,7 +56,7 @@ export default class EatScreen extends React.Component {
         }}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={[gs.text, gs.shadow, {
-              color: '#888',
+              color: '#fff',
               fontSize: 10,
               textAlign: 'center',
               position: 'absolute',
@@ -85,7 +85,7 @@ export default class EatScreen extends React.Component {
           </View>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={[gs.text, gs.shadow, {
-              color: '#888',
+              color: '#fff',
               fontSize: 10,
               textAlign: 'center',
               position: 'absolute',

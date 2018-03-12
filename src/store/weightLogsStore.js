@@ -3,24 +3,45 @@ import moment from 'moment';
 import _ from 'lodash';
 import database from "../database";
 import authStore from "./authStore";
-
+import firebase from 'react-native-firebase';
 
 class WeightLogsStore {
   path;
-  @observable period = '1W';
+  @observable period = 7;
   @observable logs = [];
 
   init() {
     this.path = `weightLogs/${authStore.uid}`;
-
-    database.childAdded(this.path, (ref) => {
-      let log = {...ref.val(), key: ref.key};
-      this.logs.unshift(log);
-    })
+    this.loadLogs(this.period);
   }
 
-  loadLogs() {
+  loadLogs(days) {
+    this.period = days;
+    this.logs.replace([]);
+    let timestamp = new Date();
+    timestamp.setDate(timestamp.getDate() - days);
+    let ref = firebase.database().ref(this.path);
+    ref
+      .orderByChild('time')
+      .startAt(timestamp.getTime())
+      .on('child_added', (ref) => {
+        let log = {...ref.val(), key: ref.key};
+        this.logs.unshift(log);
+      });
+  }
 
+  @computed get logsData() {
+    let min = 999, max = 0;
+    this.logs.forEach((log) => {
+      if (log.weight < min) {
+        min = log.weight;
+      }
+      if (log.weight > max) {
+        max = log.weight;
+      }
+    });
+
+    return {min, max};
   }
 
   @computed
@@ -50,7 +71,10 @@ class WeightLogsStore {
   }
 
   addLog(weight) {
-    database.save(`/userParameters/${authStore.uid}/weight`, parseFloat(weight));
+    if (isNaN(weight) || weight < 30 || weight > 300) {
+      return;
+    }
+    database.save(`userParameters/${authStore.uid}/weight`, parseFloat(weight));
     database.push(this.path, {
       time: Date.now(),
       weight: parseFloat(weight)

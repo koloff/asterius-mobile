@@ -195,8 +195,8 @@ class MiniWorkoutsList extends React.Component {
                 <MaterialIcons size={26} color={'#ccc'} name={'playlist-add'}/>
               </View>
               <View>
-                <Text style={[gs.text, gs.shadow, {fontSize: 13}]}>
-                  Generate{'\n'}new workouts
+                <Text style={[gs.text, {fontSize: 17, color: '#ccc'}]}>
+                  GENERATE
                 </Text>
               </View>
             </TouchableOpacity>
@@ -223,8 +223,8 @@ class MiniWorkoutsList extends React.Component {
                 <Ionicons size={26} color={'#ccc'} name={'md-add'}/>
               </View>
               <View>
-                <Text style={[gs.text, gs.shadow, {fontSize: 13}]}>
-                  Add custom{'\n'}workout
+                <Text style={[gs.text, {fontSize: 17, color: '#ccc'}]}>
+                  CUSTOM
                 </Text>
               </View>
             </TouchableOpacity>

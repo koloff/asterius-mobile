@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
 import {observer} from 'mobx-react';
 
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -46,12 +46,18 @@ export default class ExerciseInWorkoutInTweaker extends React.Component {
 
 
         <View style={styles.exerciseDetailsBox}>
-          <TouchableHighlight style={styles.exerciseNameBox}>
-            <Text style={[gs.text, styles.exerciseName, {
-              fontSize: 15,
-              color: '#B0BEC5'
-            }]}>{this.props.workoutTemplateExerciseStore.details.info.name}</Text>
-          </TouchableHighlight>
+          <View style={styles.exerciseNameBox}>
+            <TouchableOpacity
+              style={{left: -17}}
+              onPress={() => {
+                Linking.openURL(`https://www.youtube.com/results?search_query=${this.props.workoutTemplateExerciseStore.details.info.name}`)
+              }}>
+              <Text style={[gs.text, styles.exerciseName, {
+                fontSize: 15,
+                color: '#B0BEC5'
+              }]}>{this.props.workoutTemplateExerciseStore.details.info.name}</Text>
+            </TouchableOpacity>
+          </View>
           <SetCount id={this.props.workoutTemplateExerciseStore.id}/>
         </View>
 
@@ -77,9 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 4,
     marginBottom: 6
-  },
-  exerciseName: {
-    left: -17
   },
   moveBox: {
     backgroundColor: '#1e1e1e',

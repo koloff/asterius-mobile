@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  View, Text, Button, ScrollView, TouchableOpacity, StyleSheet, KeyboardAvoidingView,
-  ActivityIndicator
+  View, Text, Button, ScrollView, TouchableOpacity, Linking
 } from 'react-native';
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
@@ -11,7 +10,6 @@ import ExerciseLogsGraphic from "./ExerciseLogsGraphic";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import exercisesLogsStore from "../../store/exercisesLogsStore";
 
-import * as Mobx from 'mobx';
 
 const containerHeight = 340;
 
@@ -46,12 +44,20 @@ export default class ExerciseLog extends React.Component {
       }}>
         <View style={{alignItems: 'center', flex: 1}}>
 
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(`https://www.youtube.com/results?search_query=${this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}`)
+            }}>
+            <Text style={[gs.text, {
+              color: '#999',
+              fontSize: 18,
+              marginBottom: 12
+            }]}>
+              {this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}.
+              {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}
+            </Text>
+          </TouchableOpacity>
 
-          <Text style={[gs.text, {
-            color: '#999',
-            fontSize: 18,
-            marginBottom: 12
-          }]}>{this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             {this.exerciseLogStore.sets.map((set) => {
               if (!set.removed) {

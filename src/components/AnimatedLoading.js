@@ -10,6 +10,6 @@ export default function AnimatedLoading(props) {
       justifyContent: 'center',
       opacity: props.opacity
     }}>
-    <ActivityIndicator color={'#333'}/>
+    <ActivityIndicator size={'large'} color={'#333'}/>
   </Animated.View>
 }

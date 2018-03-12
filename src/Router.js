@@ -1,5 +1,6 @@
 import * as React from "react";
 import {observer} from 'mobx-react';
+import {Image, View} from "react-native";
 
 import authStore from './store/authStore';
 import {StackNavigator, TabBarBottom, TabNavigator, withNavigation} from 'react-navigation';
@@ -12,16 +13,16 @@ import WeightScreen from "./components/weight/WeightScreen";
 import EatScreen from "./components/eat/EatScreen";
 import SettingsScreen from "./components/settings/SettingsScreen";
 import GenerateStack from './components/generate/GenerateStack';
+// import ExerciseDetails from "./components/exercises/ExerciseDetails";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 import Test from './components/Test';
-import {Image, View} from "react-native";
 
 const MainTabNavigator = TabNavigator({
-  Weight: {screen: WeightScreen},
   Workouts: {screen: WorkoutsScreen},
+  Weight: {screen: WeightScreen},
   Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {
@@ -108,7 +109,7 @@ class MainTabNavigatorWithBackground extends React.Component {
         width: '100%',
         height: '100%',
         backgroundColor: '#000'
-      }}></View>
+      }}/>
       <MainTabNavigator navigation={this.props.navigation}/>
     </View>;
   }
@@ -116,6 +117,10 @@ class MainTabNavigatorWithBackground extends React.Component {
 
 MainTabNavigatorWithBackground.router = MainTabNavigator.router;
 const MainNavigator = StackNavigator({
+  // ExerciseDetails: {
+  //   screen: ExerciseDetails,
+  //   path: 'exercise/:id'
+  // },
   Main: {screen: MainTabNavigatorWithBackground},
   WorkoutLog: {
     screen: WorkoutLog,

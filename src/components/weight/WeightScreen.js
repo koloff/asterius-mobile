@@ -14,17 +14,14 @@ import AnimatedLoading from "../AnimatedLoading";
 
 @observer
 export default class WeightScreen extends React.Component {
-
   state = {
     animation: new Animated.Value(0),
     value: ''
   };
 
-
   componentDidMount() {
     weightLogsStore.init();
     setTimeout(() => {
-
       Animated.timing(this.state.animation, {
         toValue: 1,
         useNativeDriver: true,
@@ -32,7 +29,6 @@ export default class WeightScreen extends React.Component {
       }).start();
     }, 200)
   }
-
 
   render() {
     const Gradient = () => (
@@ -66,8 +62,8 @@ export default class WeightScreen extends React.Component {
               strokeWidth: 4,
               stroke: 'url(#gradient)',
             }}
-            gridMin={73}
-            gridMax={85}
+            gridMin={weightLogsStore.logsData.min - 1}
+            gridMax={weightLogsStore.logsData.max + 1}
             curve={shape.curveNatural}
             extras={[Gradient]}
           />
@@ -86,32 +82,32 @@ export default class WeightScreen extends React.Component {
               <TouchableOpacity
                 style={{padding: 15, paddingTop: 10}}
                 onPress={() => {
-                  weightLogsStore.loadLogs('1W');
+                  weightLogsStore.loadLogs(7);
                 }}>
                 <Text style={[gs.text, gs.shadow, {
                   fontSize: 19,
-                  color: weightLogsStore.period === '1W' ? '#F57C00' : '#ccc'
-                }]}>1 Week</Text>
+                  color: weightLogsStore.period === 7 ? '#F57C00' : '#ccc'
+                }]}>7 Days</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{padding: 15, paddingTop: 10}}
                 onPress={() => {
-                  weightLogsStore.loadLogs('1M');
+                  weightLogsStore.loadLogs(30);
                 }}>
                 <Text style={[gs.text, gs.shadow, {
                   fontSize: 19,
-                  color: weightLogsStore.period === '1M' ? '#F57C00' : '#ccc'
-                }]}>1 Month</Text>
+                  color: weightLogsStore.period === 30 ? '#F57C00' : '#ccc'
+                }]}>30 Days</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{padding: 15, paddingTop: 10}}
                 onPress={() => {
-                  weightLogsStore.loadLogs('3M');
+                  weightLogsStore.loadLogs(90);
                 }}>
                 <Text style={[gs.text, gs.shadow, {
                   fontSize: 19,
-                  color: weightLogsStore.period === '3M' ? '#F57C00' : '#ccc'
-                }]}>3 Months</Text>
+                  color: weightLogsStore.period === 90 ? '#F57C00' : '#ccc'
+                }]}>90 days</Text>
               </TouchableOpacity>
             </View>
           </View>

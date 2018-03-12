@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Linking} from 'react-native';
 import {observer} from 'mobx-react';
 
 import * as mc from '../../algorithm/muscles/muscles-collection';
@@ -30,10 +30,15 @@ export default class ExerciseWithMuscles extends React.Component {
 
         <View style={styles.exerciseDetailsBox}>
           <View style={styles.exerciseNameBox}>
-            <Text style={[gs.text, styles.exerciseName, {
-              color: '#B0BEC5',
-              fontSize: 16
-            }]}>{this.state.exercise.info.name}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(`https://www.youtube.com/results?search_query=${this.state.exercise.info.name}`)
+              }}>
+              <Text style={[gs.text, styles.exerciseName, {
+                color: '#B0BEC5',
+                fontSize: 16
+              }]}>{this.state.exercise.info.name}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.musclesUsedBox}>
 
