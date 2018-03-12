@@ -11,7 +11,8 @@ export default class SetCount extends React.Component {
     initialSets: 0
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.state.initialSets = this.getSetsCount();
   }
 

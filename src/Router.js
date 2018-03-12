@@ -20,8 +20,8 @@ import Test from './components/Test';
 import {Image, View} from "react-native";
 
 const MainTabNavigator = TabNavigator({
-  Workouts: {screen: WorkoutsScreen},
   Weight: {screen: WeightScreen},
+  Workouts: {screen: WorkoutsScreen},
   Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {

@@ -23,7 +23,7 @@ export default class Register extends React.Component {
     loading: false
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       this.setState({keyboardOpen: true})
     });

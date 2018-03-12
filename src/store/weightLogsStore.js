@@ -7,6 +7,7 @@ import authStore from "./authStore";
 
 class WeightLogsStore {
   path;
+  @observable period = '1W';
   @observable logs = [];
 
   init() {
@@ -18,8 +19,6 @@ class WeightLogsStore {
     })
   }
 
-
-  //todo create period
   loadLogs() {
 
   }
@@ -39,12 +38,19 @@ class WeightLogsStore {
     let res = [];
     _.forEachRight(this.logs, (log) => {
       res.push(log.weight);
-    })
+    });
     return res;
   }
 
 
+  removeLog(key) {
+    let logIndex = this.logs.findIndex((log) => log.key === key);
+    database.remove(`${this.path}/${key}`);
+    this.logs.splice(logIndex, 1);
+  }
+
   addLog(weight) {
+    database.save(`/userParameters/${authStore.uid}/weight`, parseFloat(weight));
     database.push(this.path, {
       time: Date.now(),
       weight: parseFloat(weight)

@@ -9,12 +9,8 @@ import Router from './Router';
 
 import authStore from './store/authStore';
 import database from './database';
+import userParametersStore from "./store/userParametersStore";
 
-YellowBox.ignoreWarnings([
-  'Warning: componentWillMount is deprecated',
-  'Warning: componentWillUpdate is deprecated',
-  'Warning: componentWillReceiveProps is deprecated',
-]);
 
 export default class App extends Component {
   state = {
@@ -23,6 +19,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     await authStore.init();
+    await userParametersStore.init();
     this.setState({isReady: true});
 
     // SEED DATA

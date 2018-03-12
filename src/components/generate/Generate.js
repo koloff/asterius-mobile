@@ -13,6 +13,7 @@ import {observer} from 'mobx-react';
 import Swiper from 'react-native-swiper';
 import {gs} from "../../globals";
 import generateStore from "../../store/generateStore";
+import userParametersStore from '../../store/userParametersStore';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -33,6 +34,7 @@ import {withNavigation} from "react-navigation";
 @withNavigation
 export default class Generate extends React.Component {
   state = {
+    loading: true,
     slide: 0,
     durationSliderValue: 65,
     keyboardOpen: false,
@@ -47,10 +49,11 @@ export default class Generate extends React.Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       this.setState({keyboardOpen: false})
     });
+
   }
 
-  async componentWillMount() {
-    await generateStore.init();
+  componentWillMount() {
+    generateStore.init();
   }
 
   componentWillUnmount() {
@@ -59,11 +62,11 @@ export default class Generate extends React.Component {
   }
 
   canChangeSlide() {
-    if (this.state.slide === 0 && !generateStore.userParameters.gender) {
+    if (this.state.slide === 0 && !userParametersStore.parameters.gender) {
       return false;
     }
     else if (this.state.slide === 1 &&
-      (!generateStore.userParameters.age || !generateStore.userParameters.weight || !generateStore.userParameters.height)) {
+      (!userParametersStore.parameters.age || !userParametersStore.parameters.weight || !userParametersStore.parameters.height)) {
       return false;
     } else {
       return true;
@@ -71,7 +74,7 @@ export default class Generate extends React.Component {
   }
 
   getExperienceColor() {
-    switch (generateStore.userParameters.experience) {
+    switch (userParametersStore.parameters.experience) {
       case 1:
         return '#78909C';
       case 2:
@@ -84,7 +87,7 @@ export default class Generate extends React.Component {
   }
 
   getExperienceTexts() {
-    switch (generateStore.userParameters.experience) {
+    switch (userParametersStore.parameters.experience) {
       case 1:
         return ['UNTRAINED', 'Have not trained much with weights yet'];
       case 2:
@@ -98,7 +101,7 @@ export default class Generate extends React.Component {
 
   onMusclePress(id) {
     generateStore.musclesModelStore.switchMuscleSelected(id);
-    generateStore.switchMuscle(id);
+    userParametersStore.switchMuscle(id);
   }
 
   onWorkoutsGenerated() {
@@ -252,9 +255,9 @@ const Slide1 = observer((props) => {
     <Question text={'What is your gender?'}/>
 
     <RadioButtons
-      selected={generateStore.userParameters.gender}
+      selected={userParametersStore.parameters.gender}
       onSelectedChange={(value) => {
-        generateStore.userParameters.gender = value
+        userParametersStore.parameters.gender = value
       }}
       optionStyle={styles.optionStyle}
       style={{maxHeight: 90, flexDirection: 'row'}}
@@ -282,9 +285,9 @@ const Slide2 = observer((props) => {
     <Question text={'What are your units?'}/>
 
     <RadioButtons
-      selected={generateStore.userParameters.measuringUnit}
+      selected={userParametersStore.parameters.measuringUnit}
       onSelectedChange={(value) => {
-        generateStore.userParameters.measuringUnit = value
+        userParametersStore.parameters.measuringUnit = value
       }}
       optionStyle={styles.optionStyle}
       style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
@@ -310,14 +313,14 @@ const Slide2 = observer((props) => {
 
     <Question text={'What are your measurements?'}/>
     <View style={{flexDirection: 'row'}}>
-      <ParameterInputNumber title={'Age'} unit={'YEARS'} value={generateStore.userParameters.age} onChangeText={(val) => {
-        generateStore.userParameters.age = val;
+      <ParameterInputNumber title={'Age'} unit={'YEARS'} value={userParametersStore.parameters.age} onChangeText={(val) => {
+        userParametersStore.parameters.age = val;
       }}/>
-      <ParameterInputNumber title={'Height'} unit={generateStore.userParameters.measuringUnit === 1 ? 'CM' : 'IN'} value={generateStore.userParameters.height} onChangeText={(val) => {
-        generateStore.userParameters.height = val;
+      <ParameterInputNumber title={'Height'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'CM' : 'IN'} value={userParametersStore.parameters.height} onChangeText={(val) => {
+        userParametersStore.parameters.height = val;
       }}/>
-      <ParameterInputNumber title={'Weight'} unit={generateStore.userParameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={generateStore.userParameters.weight} onChangeText={(val) => {
-        generateStore.userParameters.weight = val;
+      <ParameterInputNumber title={'Weight'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={userParametersStore.parameters.weight} onChangeText={(val) => {
+        userParametersStore.parameters.weight = val;
       }}/>
     </View>
     {/*</View>*/}
@@ -329,9 +332,9 @@ const Slide3 = observer((props) => {
     <Question text={'What is your experience?'} style={{marginBottom: 15, marginTop: 0}}/>
 
     <RadioButtons
-      selected={generateStore.userParameters.experience}
+      selected={userParametersStore.parameters.experience}
       onSelectedChange={(value) => {
-        generateStore.userParameters.experience = value
+        userParametersStore.parameters.experience = value
       }}
       optionStyle={styles.optionStyle}
       style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
@@ -390,23 +393,23 @@ const Slide4 = observer((props) => {
     <Question text={'How often are you going to train?'}/>
 
     <RadioButtons
-      selected={generateStore.userParameters.days}
+      selected={userParametersStore.parameters.days}
       onSelectedChange={(value) => {
         switch (value) {
           case 1:
             this.durationSlider.setNativeProps({value: 75});
-            generateStore.userParameters.duration = 80;
+            userParametersStore.parameters.duration = 80;
             break;
           case 2:
             this.durationSlider.setNativeProps({value: 65});
-            generateStore.userParameters.duration = 70;
+            userParametersStore.parameters.duration = 70;
             break;
           case 3:
             this.durationSlider.setNativeProps({value: 55});
-            generateStore.userParameters.duration = 60;
+            userParametersStore.parameters.duration = 60;
             break;
         }
-        generateStore.userParameters.days = value;
+        userParametersStore.parameters.days = value;
       }}
       optionStyle={styles.optionStyle}
       style={{maxHeight: 70, flexDirection: 'row'}}
@@ -443,7 +446,7 @@ const Slide4 = observer((props) => {
           borderRadius: 5,
         }}>
         <Text style={[gs.text, {textAlign: 'center', color: 'rgba(255,143,0 ,1)', fontSize: 21}]}>
-          {generateStore.userParameters.duration} MINUTES
+          {userParametersStore.parameters.duration} MINUTES
         </Text>
         <Text style={[gs.text, {textAlign: 'center', color: '#999', fontSize: 12}]}>
           5 minutes of them are for warmup
@@ -464,7 +467,7 @@ const Slide4 = observer((props) => {
       style={{height: 100, width: '100%', top: -30}}
       value={65}
       onValueChange={(val) => {
-        generateStore.userParameters.duration = val;
+        userParametersStore.parameters.duration = val;
       }}
     />
   </View>
@@ -545,13 +548,13 @@ class GeneratedWorkoutsSlide extends React.Component {
 
   componentWillMount() {
     let animations = generateStore.workoutsTemplatesStore.workouts.map((workout) => new Animated.Value(0));
-    this.setState({animations})
+    this.setState({animations});
   }
 
   componentDidMount() {
     let sequence = this.state.animations.map((animation) => {
       return Animated.timing(animation, {
-        duration: 333,
+        duration: 400,
         toValue: 0.9,
         useNativeDriver: true
       })
@@ -559,7 +562,7 @@ class GeneratedWorkoutsSlide extends React.Component {
 
     setTimeout(() => {
       Animated.sequence(sequence).start();
-    }, 333)
+    }, 1000)
   }
 
   @observer
@@ -578,27 +581,16 @@ class GeneratedWorkoutsSlide extends React.Component {
             )
           })}
         </ScrollView>
-
         {/*<LinearGradient*/}
-          {/*colors={['rgba(0,0,0,0.5)', 'transparent']}*/}
-          {/*style={{*/}
-            {/*position: 'absolute',*/}
-            {/*left: 0,*/}
-            {/*right: 0,*/}
-            {/*top: 0,*/}
-            {/*height: 6,*/}
-          {/*}}*/}
+        {/*colors={['transparent', 'rgba(0,0,0,0.5)']}*/}
+        {/*style={{*/}
+        {/*position: 'absolute',*/}
+        {/*left: 0,*/}
+        {/*right: 0,*/}
+        {/*bottom: 0,*/}
+        {/*height: 6,*/}
+        {/*}}*/}
         {/*/>*/}
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.5)']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 6,
-          }}
-        />
       </View>
 
       <TouchableOpacity

@@ -1,9 +1,9 @@
-import {observable} from 'mobx';
+import {observable, extendObservable, reaction} from 'mobx';
 import database from '../database';
 import authStore from './authStore';
-import {extendObservable} from "mobx";
 import _ from 'lodash';
 
+import userParametersStore from './userParametersStore';
 import MusclesModelStore from "./MusclesModelStore";
 import WorkoutTemplateStore from "./WorkoutTemplateStore";
 import WorkoutsTemplatesStore from "./WorkoutsTemplatesStore";
@@ -16,67 +16,37 @@ class GenerateStore {
   @observable generating = false;
   @observable generated = false;
 
-  defaultUserParameters = {
-    gender: null, // 1 - male, 2 - female
-    measuringUnit: 1, // 1 - metric, 2 - imperial
-    age: '',
-    weight: '',
-    height: '',
-    experience: 2, // 1-4
-    days: 2, // 1-3 (1/2, 3/4, 5/6)
-    duration: 70, // minutes
-    preferredMuscles: []
-  };
-  @observable userParameters = _.clone(this.defaultUserParameters, true);
 
-  async init() {
-    return new Promise((resolve) => {
-      this.musclesModelStore = new MusclesModelStore();
-      this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
-      this.workoutsTemplatesStore.listenChildRemoved();
+  init() {
+    this.musclesModelStore = new MusclesModelStore();
+    console.log(this.musclesModelStore);
+    this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
+    this.workoutsTemplatesStore.listenChildRemoved();
 
+    // RESET
+    extendObservable(this, {
+      workouts: [],
+      generating: false,
+      generated: false
+    });
 
-      // RESET
-      extendObservable(this, {
-        userParameters: _.clone(this.defaultUserParameters, true),
-        workouts: [],
-        generating: false,
-        generated: false
-      });
+    // const preferredMusclesReaction = reaction(
+    //   () => userParametersStore.parameters.preferredMuscles,
+    //   preferredMuscles => {
+    //     preferredMuscles.forEach((muscleId) => {
+    //       this.musclesModelStore.setMuscleSelected(muscleId);
+    //     });
+    //   }, {
+    //     context: this
+    //   },
+    // );
 
-      database.watch(`/userParameters/${authStore.uid}`, (snap) => {
-        let userParameters = snap.val();
-        if (userParameters) {
-          extendObservable(this, {userParameters});
-          if (userParameters.preferredMuscles) {
-            userParameters.preferredMuscles.forEach((muscleId) => {
-              this.musclesModelStore.setMuscleSelected(muscleId);
-            })
-          } else {
-            userParameters.preferredMuscles = [];
-          }
-        }
-        return resolve();
-      })
-
-    })
-  }
-
-  switchMuscle(id) {
-    if (this.userParameters.preferredMuscles.indexOf(id) === -1) {
-      this.userParameters.preferredMuscles.push(id);
-    } else {
-      let index = this.userParameters.preferredMuscles.indexOf(id);
-      if (index >= 0) {
-        this.userParameters.preferredMuscles.splice(index, 1);
-      }
-    }
   }
 
   async generateWorkout() {
     return new Promise(async (resolve, reject) => {
       try {
-        await database.save(`/userParameters/${authStore.uid}`, this.userParameters);
+        await userParametersStore.saveUserParameters();
 
         let res = {
           workouts: [

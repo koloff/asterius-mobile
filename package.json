@@ -11,6 +11,7 @@
     "restart": "adb shell input text \"RR\""
   },
   "dependencies": {
+    "d3-shape": "^1.2.0",
     "deep-equal": "^1.0.1",
     "lodash": "^4.17.4",
     "mobx": "^3.4.1",

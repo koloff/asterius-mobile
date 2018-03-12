@@ -56,35 +56,64 @@ export default class WeightScreen extends React.Component {
           <LineChart
             style={{
               marginTop: 10,
-              height: 200,
+              height: 150,
               justifyContent: 'center'
             }}
             data={weightLogsStore.graphData}
-            contentInset={{top: 20, bottom: 20}}
+            contentInset={{top: 10, bottom: 10}}
             showGrid={false}
             svg={{
               strokeWidth: 4,
               stroke: 'url(#gradient)',
             }}
+            gridMin={73}
+            gridMax={85}
             curve={shape.curveNatural}
             extras={[Gradient]}
           />
 
-          {/*<Text style={[gs.text, gs.shadow, {*/}
-          {/*textAlign: 'center',*/}
-          {/*color: '#F57C00',*/}
-          {/*fontSize: 17,*/}
-          {/*}]}>Your weight</Text>*/}
 
           <View style={{
             // flex: 1,
             // backgroundColor: 'red',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 20,
+            marginTop: 5,
+            marginBottom: 20,
             flexDirection: 'row'
           }}>
-
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                style={{padding: 15, paddingTop: 10}}
+                onPress={() => {
+                  weightLogsStore.loadLogs('1W');
+                }}>
+                <Text style={[gs.text, gs.shadow, {
+                  fontSize: 19,
+                  color: weightLogsStore.period === '1W' ? '#F57C00' : '#ccc'
+                }]}>1 Week</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{padding: 15, paddingTop: 10}}
+                onPress={() => {
+                  weightLogsStore.loadLogs('1M');
+                }}>
+                <Text style={[gs.text, gs.shadow, {
+                  fontSize: 19,
+                  color: weightLogsStore.period === '1M' ? '#F57C00' : '#ccc'
+                }]}>1 Month</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{padding: 15, paddingTop: 10}}
+                onPress={() => {
+                  weightLogsStore.loadLogs('3M');
+                }}>
+                <Text style={[gs.text, gs.shadow, {
+                  fontSize: 19,
+                  color: weightLogsStore.period === '3M' ? '#F57C00' : '#ccc'
+                }]}>3 Months</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <ScrollView
@@ -99,7 +128,7 @@ export default class WeightScreen extends React.Component {
                 alignItems: 'center',
                 flexDirection: 'row',
               }}>
-                <View style={{padding: 15, paddingLeft: 5}}>
+                <View style={{padding: 10, paddingLeft: 5}}>
                   <Text style={[gs.text, {fontSize: 19, color: '#ccc'}]}>NOW</Text>
                 </View>
                 <TextInput
@@ -153,13 +182,13 @@ export default class WeightScreen extends React.Component {
                         paddingRight: 10
                       }}
                       onPress={() => {
-                        weightLogsStore.addLog(this.state.value);
+                        weightLogsStore.removeLog(log.key);
                       }}
                     >
-                      <MaterialIcons color={'#999'} name={'delete'} size={33}/>
+                      <MaterialIcons color={'#999'} name={'delete'} size={29}/>
                     </TouchableOpacity>
 
-                    <View style={{padding: 15, paddingLeft: 5}}>
+                    <View style={{padding: 10, paddingLeft: 5}}>
                       <Text style={[gs.text, {
                         fontSize: 21,
                         color: '#ccc'

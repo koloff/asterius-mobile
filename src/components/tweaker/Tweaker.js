@@ -30,15 +30,15 @@ export default class Tweaker extends Component {
   state = {
     renderMain: false,
     editingName: false,
-    name: '',
+    name: this.props.navigation.state.params.workoutTemplateStore.name,
     modalVisible: false
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.workoutTemplateStore = this.props.navigation.state.params.workoutTemplateStore;
     this.canDelete = this.props.navigation.state.params.canDelete;
     tweakerStore.reset(this.workoutTemplateStore);
-    this.setState({name: this.workoutTemplateStore.name})
   }
 
   componentDidMount() {

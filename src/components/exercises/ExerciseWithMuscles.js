@@ -18,7 +18,8 @@ export default class ExerciseWithMuscles extends React.Component {
     workoutExercise: {}
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.state.exercise = ec.get(this.props.id);
   }
 
