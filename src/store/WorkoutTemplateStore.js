@@ -1,6 +1,5 @@
 import {computed, observable} from 'mobx';
 import * as ec from '../algorithm/exercises/exercises-collection';
-import authStore from "./authStore";
 import database from "../database";
 import * as Mobx from "mobx";
 import _ from 'lodash';
@@ -45,10 +44,10 @@ export default class WorkoutTemplateStore {
     minutes += 5; // warmup
 
     this.exercises.forEach((exerciseStore) => {
-      minutes += exerciseStore.sets * 2;
+      minutes += exerciseStore.sets * 2.5;
     });
     let hours = Math.floor(minutes / 60);
-    let leftMinutes = minutes - hours * 60;
+    let leftMinutes = Math.floor(minutes - hours * 60);
 
     if (hours && leftMinutes) {
       return `${hours} hr ${leftMinutes} min`;

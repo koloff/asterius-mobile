@@ -25,7 +25,7 @@ export default class MusclesModel extends React.Component {
   constructor(props) {
     super(props);
     // DIMENSIONS OF THE SVG
-    this.svgWidth = 300 * 2;
+    this.svgWidth = 317 * 2;
     this.svgHeight = 618;
 
     if (this.props.width) {
@@ -84,7 +84,7 @@ export default class MusclesModel extends React.Component {
 
   renderModelSide(sidePoints) {
     return (
-      <Svg width={300} height={618}>
+      <Svg width={317} height={618}>
         {sidePoints.map((muscle) => {
           return muscle.points.map((pointsStr, index) => (
             <MusclesModelMuscle

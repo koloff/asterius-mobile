@@ -2,11 +2,13 @@ import {observable, extendObservable, reaction} from 'mobx';
 import database from '../database';
 import authStore from './authStore';
 import _ from 'lodash';
+import * as Mobx from 'mobx';
 
 import userParametersStore from './userParametersStore';
 import MusclesModelStore from "./MusclesModelStore";
 import WorkoutTemplateStore from "./WorkoutTemplateStore";
 import WorkoutsTemplatesStore from "./WorkoutsTemplatesStore";
+import generateSplit from '../algorithm/generate-split';
 
 
 class GenerateStore {
@@ -30,82 +32,32 @@ class GenerateStore {
       generated: false
     });
 
-    // const preferredMusclesReaction = reaction(
-    //   () => userParametersStore.parameters.preferredMuscles,
-    //   preferredMuscles => {
-    //     preferredMuscles.forEach((muscleId) => {
-    //       this.musclesModelStore.setMuscleSelected(muscleId);
-    //     });
-    //   }, {
-    //     context: this
-    //   },
-    // );
-
+    userParametersStore.parameters.preferredMuscles.forEach((muscleId) => {
+      this.musclesModelStore.setMuscleSelected(muscleId);
+    });
   }
 
   async generateWorkout() {
     return new Promise(async (resolve, reject) => {
       try {
         await userParametersStore.saveUserParameters();
-
-        let res = {
-          workouts: [
-            {
-              name: 'Workout A',
-              createdAt: Date.now(),
-              routineId: 'ROUTINE_1',
-              routineNumber: 1,
-              exercises: [
-                {id: 'reversePecDeck', sets: 3},
-                {id: 'highCableCrossover', sets: 3},
-                {id: 'ropePushdown', sets: 77},
-                {id: 'dumbbellShoulderPress', sets: 4},
-                {id: 'lowCableCrossover', sets: 3},
-                {id: 'dumbbellInclineBenchPress', sets: 4},
-                {id: 'seatedTricepsPress', sets: 3}
-              ]
-            },
-            {
-              name: 'Workout B',
-              createdAt: Date.now(),
-              routineId: 'ROUTINE_1',
-              routineNumber: 2,
-              exercises: [
-                {id: 'cableRow', sets: 4},
-                {id: 'latPulldownWideGrip', sets: 4},
-                {id: 'cableExternalRotation', sets: 3},
-                {id: 'reversePecDeck', sets: 4},
-                {id: 'inclineDumbbellCurl', sets: 2},
-                {id: 'dumbbellShrug', sets: 3},
-                {id: 'overheadCableCurl', sets: 3}
-              ]
-            },
-            {
-              name: 'Workout C',
-              createdAt: Date.now(),
-              routineId: 'ROUTINE_1',
-              routineNumber: 3,
-              exercises: [
-                {id: 'smithMachineCalfRaise', sets: 4},
-                {id: 'barbellSquat', sets: 4},
-                {id: 'legExtension', sets: 4},
-                {id: 'crunches', sets: 4},
-                {id: 'legCurl', sets: 4}
-              ]
-            },
-          ]
-        };
+        let result = generateSplit(Mobx.toJS(userParametersStore.parameters));
+        let workouts = [];
+        _.forOwn(result, (workout, letter) => {
+          workouts.push({
+            name: `Workout ${letter}`,
+            exercises: workout
+          })
+        });
 
         if (authStore.isAnonymous) {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
-
-
         //todo
-        for (let i = 0; i < res.workouts.length; i++) {
-          let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, res.workouts[i]);
+        for (let i = 0; i < workouts.length; i++) {
+          let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, workouts[i]);
           this.workoutsTemplatesStore.workouts.push({
-            workoutStore: new WorkoutTemplateStore(res.workouts[i], ref.path),
+            workoutStore: new WorkoutTemplateStore(workouts[i], ref.path),
             key: ref.key
           });
         }

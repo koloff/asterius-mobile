@@ -1,7 +1,8 @@
-import {observable} from 'mobx';
+import {observable, autorun} from 'mobx';
 import database from '../database';
 import authStore from './authStore';
 import {extendObservable} from "mobx";
+import calculateFitnessLevel from '../algorithm/calculate-fitness-level';
 import _ from 'lodash';
 
 class UserParametersStore {
@@ -21,7 +22,8 @@ class UserParametersStore {
         duration: 70, // minutes
         preferredMuscles: [],
         activity: 3,
-        goal: 3 // 1-5 (1-loose fat, 5 - gain weight)
+        goal: 3, // 1-5 (1-loose fat, 5 - gain weight)
+        fitnessLevel: null
       }
     });
   }
@@ -32,16 +34,20 @@ class UserParametersStore {
 
   async init() {
     return new Promise((resolve, reject) => {
-      this.path = `/userParameters/${authStore.uid}`;
-      this.reset();
-      database.watch(this.path, (snap) => {
-        let userParameters = snap.val();
-        if (userParameters) {
-          if (!userParameters.preferredMuscles) userParameters.preferredMuscles = [];
-          this.parameters = userParameters;
-        }
-        return resolve();
+
+      autorun(() => {
+        this.path = `/userParameters/${authStore.uid}`;
+        this.reset();
+        database.watch(this.path, (snap) => {
+          let userParameters = snap.val();
+          if (userParameters) {
+            if (!userParameters.preferredMuscles) userParameters.preferredMuscles = [];
+            this.parameters = userParameters;
+          }
+          return resolve();
+        })
       })
+
     });
   }
 
@@ -67,6 +73,7 @@ class UserParametersStore {
   }
 
   async saveUserParameters() {
+    this.parameters.fitnessLevel = calculateFitnessLevel(this.parameters);
     await database.save(this.path, this.parameters);
   }
 

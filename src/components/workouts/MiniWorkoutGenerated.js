@@ -42,12 +42,14 @@ export default class MiniWorkoutGenerated extends React.Component {
     return (
       <Animated.View style={{
         padding: 5,
+        marginBottom: 3,
         opacity: this.props.animation,
       }}>
 
         <ElevatedView elevation={3} style={{
           borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth
+          borderWidth: StyleSheet.hairlineWidth,
+          borderRadius: 5
         }}>
           <TouchableOpacity
             onPress={() => {
@@ -57,7 +59,8 @@ export default class MiniWorkoutGenerated extends React.Component {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: 0,
+              borderRadius: 5,
+              padding: 3,
               paddingRight: 7,
               backgroundColor: '#131313',
               borderWidth: 0,

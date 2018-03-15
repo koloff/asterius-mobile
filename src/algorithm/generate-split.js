@@ -6,33 +6,60 @@ let calculateFitnessLevel = require('./calculate-fitness-level');
 let splits = require('./splits');
 
 
+let PARAMS = {
+  gender: null, // 1 - male, 2 - female
+  measuringUnit: 1, // 1 - metric, 2 - imperial
+  age: '',
+  weight: '',
+  height: '',
+  experience: 2, // 1-4
+  days: 2, // 1-3 (1/2, 3/4, 5/6)
+  duration: 70, // minutes
+  preferredMuscles: [],
+  activity: 3,
+  goal: 3 // 1-5 (1-loose fat, 5 - gain weight)
+};
+
 function generateSingleWorkout(options) {
   let workout = generateVolume(options);
+
   if (!workout.length) {
-    // if preferred muscles are too much, replace isolation exercises with compound lifts
-    options.minIsolationSetsCount = 0;
+    // if preferred muscles are too much, reduce mev
+    options.mevMultiplier = options.mevMultiplier / 2;
     workout = generateVolume(options);
-    // if still cannot generate volume -> remove preferred muscles
+
     if (!workout.length) {
+      // if preferred muscles are too much, replace isolation exercises with compound lifts
+      options.mevMultiplier = options.mevMultiplier * 2;
       options.preferredMuscles = [];
       workout = generateVolume(options);
+
+      // if (!workout.length) {
+      //   // if still cannot generate, reduce mev
+      //   options.mevMultiplier = options.mevMultiplier / 2;
+      //   workout = generateVolume(options);
+      // }
     }
   }
+
+
   return workout;
 }
 
-function generateSplit(userParameters, userPreferredMuscles) {
-  let fitnessLevel = calculateFitnessLevel(userParameters);
+function generateSplit(userParameters) {
+  let userPreferredMuscles = userParameters.preferredMuscles;
+  let fitnessLevel = userParameters.fitnessLevel;
+  let sets = Math.round((userParameters.duration - 5) / 2.5);
 
   // At 1-2 training sessions per week generate FULL BODY workouts
-  if (userParameters.days === '1-2') {
+  if (userParameters.days === 1) {
     let fullBodyOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 26,
-      mevMultiplier: 0.9,
-      mrvMultiplier: fitnessLevel * 1,
-      minIsolationSetsCount: 2,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
+      minIsolationSetsCount: 3,
       minExerciseSetsCount: 2,
       maxExerciseSetsCount: 5
     };
@@ -46,25 +73,25 @@ function generateSplit(userParameters, userPreferredMuscles) {
   }
 
   // At 3-4 training sessions per week generate upper/lower workouts
-  else if (userParameters.days === '3-4') {
+  else if (userParameters.days === 2) {
 
     // Training A: UPPER BODY
     let upperOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 22,
-      mevMultiplier: 1.1,
-      mrvMultiplier: fitnessLevel * 1,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 2,
-      maxExerciseSetsCount: 4
+      maxExerciseSetsCount: 5
     };
 
     upperOptions.trainedMuscles = _.clone(splits.upperBody);
-    userPreferredMuscles.forEach(mKey => {
-      let muscle = mc.get(mKey);
+    userPreferredMuscles.forEach(mId => {
+      let muscle = mc.get(mId);
       if (muscle.types.indexOf('upperBody') >= 0) {
-        upperOptions.preferredMuscles.push(muscle.key)
+        upperOptions.preferredMuscles.push(muscle.id)
       }
 
     });
@@ -75,19 +102,19 @@ function generateSplit(userParameters, userPreferredMuscles) {
     let lowerOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 22,
-      mevMultiplier: 1,
-      mrvMultiplier: fitnessLevel * 1,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 2,
-      maxExerciseSetsCount: 4
+      maxExerciseSetsCount: 5
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);
-    userPreferredMuscles.forEach(mKey => {
-      let muscle = mc.get(mKey);
+    userPreferredMuscles.forEach(mId => {
+      let muscle = mc.get(mId);
       if (muscle.types.indexOf('lowerBody') >= 0 || muscle.info.group === 'Core') {
-        lowerOptions.preferredMuscles.push(muscle.key)
+        lowerOptions.preferredMuscles.push(muscle.id)
       }
     });
 
@@ -104,19 +131,19 @@ function generateSplit(userParameters, userPreferredMuscles) {
     let pushOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 18,
-      mevMultiplier: 1.2,
-      mrvMultiplier: fitnessLevel * 1,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 4
+      maxExerciseSetsCount: 5
     };
 
     pushOptions.trainedMuscles = _.clone(splits.push);
-    userPreferredMuscles.forEach(mKey => {
-      let muscle = mc.get(mKey);
+    userPreferredMuscles.forEach(mId => {
+      let muscle = mc.get(mId);
       if (muscle.types.indexOf('push') >= 0) {
-        pushOptions.preferredMuscles.push(muscle.key)
+        pushOptions.preferredMuscles.push(muscle.id)
       }
     });
 
@@ -126,19 +153,19 @@ function generateSplit(userParameters, userPreferredMuscles) {
     let pullOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 18,
-      mevMultiplier: 1.2,
-      mrvMultiplier: fitnessLevel * 1,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 2,
-      maxExerciseSetsCount: 4
+      maxExerciseSetsCount: 5
     };
 
     pullOptions.trainedMuscles = _.clone(splits.pull);
-    userPreferredMuscles.forEach(mKey => {
-      let muscle = mc.get(mKey);
+    userPreferredMuscles.forEach(mId => {
+      let muscle = mc.get(mId);
       if (muscle.types.indexOf('pull') >= 0) {
-        pullOptions.preferredMuscles.push(muscle.key)
+        pullOptions.preferredMuscles.push(muscle.id)
       }
     });
 
@@ -148,19 +175,19 @@ function generateSplit(userParameters, userPreferredMuscles) {
     let lowerOptions = {
       trainedMuscles: [],
       preferredMuscles: [],
-      sets: 18,
-      mevMultiplier: 1.2,
-      mrvMultiplier: fitnessLevel * 1.1,
+      sets: sets,
+      mrvMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 4
+      maxExerciseSetsCount: 5
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);
-    userPreferredMuscles.forEach(mKey => {
-      let muscle = mc.get(mKey);
+    userPreferredMuscles.forEach(mId => {
+      let muscle = mc.get(mId);
       if (muscle.types.indexOf('lowerBody') >= 0 || muscle.info.group === 'Core') {
-        lowerOptions.preferredMuscles.push(muscle.key)
+        lowerOptions.preferredMuscles.push(muscle.id)
       }
     });
 
@@ -170,4 +197,5 @@ function generateSplit(userParameters, userPreferredMuscles) {
   }
 }
 
+// generateSplit(PARAMS, ['backRotatorCuff', 'coreObliques', 'bicepsShortHead', 'legsGlutes']);
 module.exports = generateSplit;

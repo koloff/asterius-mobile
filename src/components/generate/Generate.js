@@ -104,9 +104,25 @@ export default class Generate extends React.Component {
     userParametersStore.switchMuscle(id);
   }
 
-  onWorkoutsGenerated() {
+  async generateWorkouts() {
+    generateStore.generating = true;
     this._swiper.scrollBy(1);
-    generateStore.generated = true;
+    try {
+      await generateStore.generateWorkout();
+      setTimeout(() => {
+        generateStore.generating = false;
+        generateStore.generated = true;
+      });
+    } catch (err) {
+      generateStore.generating = false;
+      this._swiper.scrollBy(-1);
+      let toast = Toast.show('Invalid parameters!', {
+        shadow: true,
+        position: -10,
+        backgroundColor: 'red'
+      });
+      console.log(err);
+    }
   }
 
   onWorkoutsReset() {
@@ -186,7 +202,7 @@ export default class Generate extends React.Component {
               this._swiper.scrollBy(index - state.index);
               this.setState({slide: index})
             }
-            if (state.index === 5 && !generateStore.generated) {
+            if (state.index === 5 && (!generateStore.generating && !generateStore.generated)) {
               this._swiper.scrollBy(-1);
               this.setState({slide: 4})
             }
@@ -222,16 +238,21 @@ export default class Generate extends React.Component {
           <Slide3 getExperienceColor={this.getExperienceColor} getExperienceTexts={this.getExperienceTexts}/>
           <Slide4/>
           <Slide5
-            onWorkoutsGenerated={this.onWorkoutsGenerated.bind(this)}
+            generateWorkouts={this.generateWorkouts.bind(this)}
             onMusclePress={this.onMusclePress.bind(this)}
             musclesModelStore={generateStore.musclesModelStore}
           />
 
           <View style={{flex: 1, width: '100%', height: '100%', padding: 6, paddingTop: 100}}>
+            {generateStore.generating && <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', top: -50}}>
+              <Text style={[gs.text, {color: '#999', textAlign: 'center', marginBottom: 10}]}>This might take time</Text>
+              <ActivityIndicator size={'large'} color={'#999'}/>
+            </View>}
             {generateStore.generated && <GeneratedWorkoutsSlide
               navigation={this.props.navigation}
               onWorkoutsReset={this.onWorkoutsReset.bind(this)}
               onTransition={this.props.onTransition}
+              transitionFromStart={this.props.transitionFromStart}
             />}
           </View>
 
@@ -501,24 +522,7 @@ const Slide5 = observer((props) => {
         alignItems: 'center',
         justifyContent: 'center'
       }}
-      onPress={async () => {
-        try {
-          generateStore.generating = true;
-          await generateStore.generateWorkout();
-          setTimeout(() => {
-            generateStore.generating = false;
-          }, 1500);
-          props.onWorkoutsGenerated();
-        } catch (err) {
-          generateStore.generating = false;
-          let toast = Toast.show('Invalid parameters!', {
-            shadow: true,
-            position: -10,
-            backgroundColor: 'red'
-          });
-          console.log(err);
-        }
-      }}>
+      onPress={props.generateWorkouts}>
       <Text style={[gs.text, {color: 'rgba(255,143,0 ,1)', fontSize: 17, textAlign: 'center'}]}>
         <FontAwesome name='flag-checkered' size={17} color='rgba(255,143,0 ,1)'/>
         {'\n'}Generate
@@ -562,14 +566,13 @@ class GeneratedWorkoutsSlide extends React.Component {
 
     setTimeout(() => {
       Animated.sequence(sequence).start();
-    }, 1000)
+    }, 777)
   }
 
   @observer
   render() {
     return <View style={{paddingTop: 0, paddingBottom: 0, flex: 1, height: '100%'}}>
       <View style={{marginBottom: 60}}>
-
         <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
           {generateStore.workoutsTemplatesStore.workouts.map((workoutRow, index) => {
             return (
@@ -581,16 +584,6 @@ class GeneratedWorkoutsSlide extends React.Component {
             )
           })}
         </ScrollView>
-        {/*<LinearGradient*/}
-        {/*colors={['transparent', 'rgba(0,0,0,0.5)']}*/}
-        {/*style={{*/}
-        {/*position: 'absolute',*/}
-        {/*left: 0,*/}
-        {/*right: 0,*/}
-        {/*bottom: 0,*/}
-        {/*height: 6,*/}
-        {/*}}*/}
-        {/*/>*/}
       </View>
 
       <TouchableOpacity
@@ -605,9 +598,7 @@ class GeneratedWorkoutsSlide extends React.Component {
           alignItems: 'center',
           justifyContent: 'center'
         }}
-        onPress={async () => {
-          this.props.onWorkoutsReset();
-        }}>
+        onPress={this.props.onWorkoutsReset}>
         <Text style={[gs.text, {color: 'rgba(255,143,0 ,1)', fontSize: 17, textAlign: 'center'}]}>
           <MaterialIcons name='settings-backup-restore' size={17} color='rgba(255,143,0 ,1)'/>
           {'\n'}Reset
@@ -627,7 +618,7 @@ class GeneratedWorkoutsSlide extends React.Component {
           justifyContent: 'center'
         }}
         onPress={async () => {
-          this.props.opacity ? this.props.onTransition('Register') : this.props.navigation.goBack();
+          this.props.transitionFromStart ? this.props.onTransition('Register') : this.props.navigation.goBack();
         }}>
         <Text style={[gs.text, {color: 'rgba(255,143,0 ,1)', fontSize: 17, textAlign: 'center'}]}>
           <FontAwesome name='flag-checkered' size={17} color='rgba(255,143,0 ,1)'/>

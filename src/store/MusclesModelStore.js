@@ -2,7 +2,7 @@ import {computed, observable} from 'mobx';
 import * as mc from '../algorithm/muscles/muscles-collection';
 import _ from 'lodash';
 import * as ec from "../algorithm/exercises/exercises-collection";
-
+import userParametersStore from '../store/userParametersStore';
 
 /**
  * Stores MuscleModel internal data
@@ -86,6 +86,6 @@ class MusclesModelMuscleStore {
       })
     });
 
-    return (currentVolume / this.details.mrv) * 100;
+    return (currentVolume / (this.details.mrv * userParametersStore.parameters.fitnessLevel)) * 100;
   }
 }

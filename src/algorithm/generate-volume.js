@@ -1,12 +1,12 @@
 let _ = require('lodash');
-let lpSolver = require('../lib/lp-solver/original/solver');
+let lpSolver = require('./solver/main');
 
 let mc = require('./muscles/muscles-collection');
 let ec = require('./exercises/exercises-collection');
 
 // TODO (optional): add constraint for minimum compound lifts; add type parameter to exercise collection
 /**
- * Get parameters object and returns exercises array in the form: [{exerciseKey: setsCount}]
+ * Get parameters object and returns exercises array in the form: [{exerciseid: setsCount}]
  */
 function generateVolume(parameters) {
   let trainedMuscles = parameters.trainedMuscles;
@@ -43,25 +43,25 @@ function generateVolume(parameters) {
 
   let allMuscles = [];
   // add the preferred muscles in the beginning for priority reasons
-  preferredMuscles.forEach((mKey) => {
-    allMuscles.push(mKey)
+  preferredMuscles.forEach((mId) => {
+    allMuscles.push(mId)
   });
   // then add all trained muscles
-  trainedMuscles.forEach((mKey) => {
-    if (allMuscles.indexOf(mKey) < 0) {
-      allMuscles.push(mKey);
+  trainedMuscles.forEach((mId) => {
+    if (allMuscles.indexOf(mId) < 0) {
+      allMuscles.push(mId);
     }
   });
 
-  allMuscles.forEach((mKey) => {
-    constraints[mKey] = {};
+  allMuscles.forEach((mId) => {
+    constraints[mId] = {};
     // do not overtrain muscles
-    constraints[mKey].max = (mc.get(mKey).mrv * 100 /*in percentage*/) * mrvMultiplier;
+    constraints[mId].max = (mc.get(mId).mrv * 100 /*in percentage*/) * mrvMultiplier;
     // do not undertrain muscles
-    constraints[mKey].min = (mc.get(mKey).mev * 100 /*in percentage*/) * mevMultiplier;
+    constraints[mId].min = (mc.get(mId).mev * 100 /*in percentage*/) * mevMultiplier;
     // if muscles is preferred, get its isolation exercise
-    if (preferredMuscles.indexOf(mKey) >= 0) {
-      isolationExercisesForPreferredMuscles.push(getIsolationExerciseKey(mKey));
+    if (preferredMuscles.indexOf(mId) >= 0) {
+      isolationExercisesForPreferredMuscles.push(getIsolationExerciseId(mId));
     }
   });
 
@@ -73,37 +73,37 @@ function generateVolume(parameters) {
 
     // calculate exercise volume for the muscles it trains and are chosen
     let trainedMusclesVolume = 0;
-    _.forOwn(exercise.musclesUsed, (percentage, mKey) => {
-      exerciseVar[mKey] = percentage;
-      if (trainedMuscles.indexOf(mKey) >= 0) {
+    _.forOwn(exercise.musclesUsed, (percentage, mId) => {
+      exerciseVar[mId] = percentage;
+      if (trainedMuscles.indexOf(mId) >= 0) {
         trainedMusclesVolume += percentage;
       }
     });
 
-    if (trainedMusclesVolume > 0 || isolationExercisesForPreferredMuscles.indexOf(exercise.key) >= 0) {
+    if (trainedMusclesVolume > 0 || isolationExercisesForPreferredMuscles.indexOf(exercise.id) >= 0) {
       // create ILPP constraints for each exercise
-      constraints[exercise.key] = {};
+      constraints[exercise.id] = {};
       // create ILPP variable for each exercise
 
       // if the exercise isolates any of the maximum preferred muscles add it
-      if (isolationExercisesForPreferredMuscles.indexOf(exercise.key) >= 0 && minIsolationSetsCount > 0) {
-        constraints[exercise.key].min = minIsolationSetsCount;
+      if (isolationExercisesForPreferredMuscles.indexOf(exercise.id) >= 0 && minIsolationSetsCount > 0) {
+        constraints[exercise.id].min = minIsolationSetsCount;
       } else {
         // the exercise sets can be 0 or in the range [min, max]
         // there is no SEC type in jsLpSolver, so we create a fix by using a slack variable for each exercise
-        constraints[exercise.key].min = minExerciseSetsCount;
-        binaries[`${exercise.key}_slack`] = 1;
-        constraints[`${exercise.key}_slack`] = {max: 1};
-        variables[`${exercise.key}_slack`] = {[exercise.key]: maxExerciseSetsCount, [`${exercise.key}_slack`]: 1};
-        exerciseVar[`${exercise.key}_slack`] = 1 / maxExerciseSetsCount;
+        constraints[exercise.id].min = minExerciseSetsCount;
+        binaries[`${exercise.id}_slack`] = 1;
+        constraints[`${exercise.id}_slack`] = {max: 1};
+        variables[`${exercise.id}_slack`] = {[exercise.id]: maxExerciseSetsCount, [`${exercise.id}_slack`]: 1};
+        exerciseVar[`${exercise.id}_slack`] = 1 / maxExerciseSetsCount;
       }
 
-      constraints[exercise.key].max = maxExerciseSetsCount;
+      constraints[exercise.id].max = maxExerciseSetsCount;
       exerciseVar.sets = 1;
-      exerciseVar[exercise.key] = 1;
+      exerciseVar[exercise.id] = 1;
       exerciseVar['trainedMusclesVolume'] = trainedMusclesVolume;
-      variables[exercise.key] = exerciseVar;
-      ints[exercise.key] = 1;
+      variables[exercise.id] = exerciseVar;
+      ints[exercise.id] = 1;
     }
   });
 
@@ -121,60 +121,59 @@ function generateVolume(parameters) {
 
 
   if (result.feasible) {
-    _.forOwn(result, (item, key) => {
-      if (key.indexOf('slack') < 0 && item > 0
-        && !(key === 'feasible' || key === 'result' || key === 'bounded')) {
-        workout.push({key: key, sets: item})
+    _.forOwn(result, (item, id) => {
+      if (id.indexOf('slack') < 0 && item > 0
+        && !(id === 'feasible' || id === 'result' || id === 'bounded')) {
+        workout.push({id: id, sets: item})
       }
     });
   }
 
-  // console.log('---------------------------LOGS---------------------------');
+  console.log('---------------------------LOGS---------------------------');
   // console.log(constraints);
   // console.log(variables);
   // console.log(ints);
   // console.log(binaries);
-  // console.log('__________________________________________');
-  // console.log('SOLUTION');
-  // console.log(exercises);
-  // trainedMuscles.forEach((mKey) => {
-  //   console.log(mKey);
-  //   let currentVolume = 0;
-  //   exercises.forEach((exShort) => {
-  //     let exercise = ec.get(exShort.key);
-  //     _.forOwn(exercise.musclesUsed, (percentage, key) => {
-  //       if (mKey === key) {
-  //         currentVolume += exShort.sets * (percentage / 100);
-  //       }
-  //     })
-  //   });
-  //   console.log((currentVolume / mc.get(mKey).mev) * 100);
-  // });
-  //
-  // console.log('---------------------------END LOGS---------------------------');
+  console.log('__________________________________________');
+  console.log('SOLUTION');
+  console.log(workout);
+
+  trainedMuscles.forEach((mId) => {
+    console.log(mId);
+    let currentVolume = 0;
+    workout.forEach((exShort) => {
+      let exercise = ec.get(exShort.id);
+      _.forOwn(exercise.musclesUsed, (percentage, id) => {
+        if (mId === id) {
+          currentVolume += exShort.sets * (percentage / 100);
+        }
+      })
+    });
+    console.log((currentVolume / mc.get(mId).mev) * 100);
+  });
+  console.log('---------------------------END LOGS---------------------------');
 
   return workout;
 }
 
 
-function getIsolationExerciseKey(muscleKey) {
-  let currentExerciseKey = '';
+function getIsolationExerciseId(muscleId) {
+  let currentExerciseId = '';
   let currentMaxPercentage = 0;
   ec.exercises.forEach((exercise) => {
-    _.forOwn(exercise.musclesUsed, (percentage, mKey) => {
-      if (mKey === muscleKey && percentage >= currentMaxPercentage) {
-        currentExerciseKey = exercise.key;
+    _.forOwn(exercise.musclesUsed, (percentage, mId) => {
+      if (mId === muscleId && percentage >= currentMaxPercentage) {
+        currentExerciseId = exercise.id;
         currentMaxPercentage = percentage;
       }
     })
   });
 
+  console.log('__________________________');
+  console.log(currentExerciseId, currentMaxPercentage);
+  console.log('________________________');
 
-  // console.log('__________________________');
-  // console.log(currentExerciseKey, currentMaxPercentage);
-  // console.log('________________________');
-
-  return currentExerciseKey;
+  return currentExerciseId;
 }
 
 module.exports = generateVolume;
