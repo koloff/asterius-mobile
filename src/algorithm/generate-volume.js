@@ -21,6 +21,9 @@ function generateVolume(parameters) {
   let muscles = mc.muscles;
   let exercises = ec.exercises;
 
+  console.log(parameters);
+
+
 
   console.log('TRAINED MUSCLES');
   console.log(trainedMuscles);
@@ -107,6 +110,11 @@ function generateVolume(parameters) {
     }
   });
 
+  // console.log('---------------------------LOGS---------------------------');
+  // console.log(constraints);
+  // console.log(variables);
+  // console.log(ints);
+  // console.log(binaries);
 
   let result = lpSolver.Solve({
     optimize: 'trainedMusclesVolume',
@@ -129,29 +137,24 @@ function generateVolume(parameters) {
     });
   }
 
-  console.log('---------------------------LOGS---------------------------');
-  // console.log(constraints);
-  // console.log(variables);
-  // console.log(ints);
-  // console.log(binaries);
   console.log('__________________________________________');
   console.log('SOLUTION');
   console.log(workout);
-
-  trainedMuscles.forEach((mId) => {
-    console.log(mId);
-    let currentVolume = 0;
-    workout.forEach((exShort) => {
-      let exercise = ec.get(exShort.id);
-      _.forOwn(exercise.musclesUsed, (percentage, id) => {
-        if (mId === id) {
-          currentVolume += exShort.sets * (percentage / 100);
-        }
-      })
-    });
-    console.log((currentVolume / mc.get(mId).mev) * 100);
-  });
-  console.log('---------------------------END LOGS---------------------------');
+  //
+  // trainedMuscles.forEach((mId) => {
+  //   console.log(mId);
+  //   let currentVolume = 0;
+  //   workout.forEach((exShort) => {
+  //     let exercise = ec.get(exShort.id);
+  //     _.forOwn(exercise.musclesUsed, (percentage, id) => {
+  //       if (mId === id) {
+  //         currentVolume += exShort.sets * (percentage / 100);
+  //       }
+  //     })
+  //   });
+  //   console.log((currentVolume / mc.get(mId).mev) * 100);
+  // });
+  // console.log('---------------------------END LOGS---------------------------');
 
   return workout;
 }

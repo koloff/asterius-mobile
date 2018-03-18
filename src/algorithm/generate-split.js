@@ -7,7 +7,7 @@ let splits = require('./splits');
 
 
 let PARAMS = {
-  gender: null, // 1 - male, 2 - female
+  gender: 1, // 1 - malePoints, 2 - femalePoints
   measuringUnit: 1, // 1 - metric, 2 - imperial
   age: '',
   weight: '',
@@ -17,11 +17,15 @@ let PARAMS = {
   duration: 70, // minutes
   preferredMuscles: [],
   activity: 3,
-  goal: 3 // 1-5 (1-loose fat, 5 - gain weight)
+  goal: 3, // 1-5 (1-loose fat, 5 - gain weight),
+  fitnessLevel: 1
 };
 
 function generateSingleWorkout(options) {
+  console.log('generating...');
   let workout = generateVolume(options);
+
+  console.log('generated');
 
   if (!workout.length) {
     // if preferred muscles are too much, reduce mev
@@ -34,11 +38,11 @@ function generateSingleWorkout(options) {
       options.preferredMuscles = [];
       workout = generateVolume(options);
 
-      // if (!workout.length) {
-      //   // if still cannot generate, reduce mev
-      //   options.mevMultiplier = options.mevMultiplier / 2;
-      //   workout = generateVolume(options);
-      // }
+      if (!workout.length) {
+        // if still cannot generate, reduce mev
+        options.mevMultiplier = options.mevMultiplier / 2;
+        workout = generateVolume(options);
+      }
     }
   }
 
@@ -60,7 +64,7 @@ function generateSplit(userParameters) {
       mrvMultiplier: fitnessLevel,
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
-      minExerciseSetsCount: 2,
+      minExerciseSetsCount: 3,
       maxExerciseSetsCount: 5
     };
 
@@ -81,9 +85,9 @@ function generateSplit(userParameters) {
       preferredMuscles: [],
       sets: sets,
       mrvMultiplier: fitnessLevel,
-      mevMultiplier: fitnessLevel,
+      mevMultiplier: fitnessLevel * 1.1,
       minIsolationSetsCount: 3,
-      minExerciseSetsCount: 2,
+      minExerciseSetsCount: 3,
       maxExerciseSetsCount: 5
     };
 
@@ -106,7 +110,7 @@ function generateSplit(userParameters) {
       mrvMultiplier: fitnessLevel,
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
-      minExerciseSetsCount: 2,
+      minExerciseSetsCount: 3,
       maxExerciseSetsCount: 5
     };
 
@@ -157,7 +161,7 @@ function generateSplit(userParameters) {
       mrvMultiplier: fitnessLevel,
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
-      minExerciseSetsCount: 2,
+      minExerciseSetsCount: 3,
       maxExerciseSetsCount: 5
     };
 
@@ -197,5 +201,9 @@ function generateSplit(userParameters) {
   }
 }
 
-// generateSplit(PARAMS, ['backRotatorCuff', 'coreObliques', 'bicepsShortHead', 'legsGlutes']);
+// console.time('someFunction');
+// generateSplit(PARAMS, [])//['chestSternalHead', 'legsGlutes', 'legsQuadriceps', 'coreAbs']);
+// console.timeEnd('someFunction');
+
+
 module.exports = generateSplit;

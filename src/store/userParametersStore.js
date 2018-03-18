@@ -36,16 +36,21 @@ class UserParametersStore {
     return new Promise((resolve, reject) => {
 
       autorun(() => {
+        console.log('autorrun');
         this.path = `/userParameters/${authStore.uid}`;
         this.reset();
-        database.watch(this.path, (snap) => {
-          let userParameters = snap.val();
-          if (userParameters) {
-            if (!userParameters.preferredMuscles) userParameters.preferredMuscles = [];
-            this.parameters = userParameters;
-          }
-          return resolve();
-        })
+        database.watch(this.path,
+          (snap) => {
+            let userParameters = snap.val();
+            if (!!userParameters) {
+              if (!userParameters.preferredMuscles) userParameters.preferredMuscles = [];
+              this.parameters = userParameters;
+            }
+            return resolve();
+          },
+          (err) => {
+            return resolve();
+          })
       })
 
     });

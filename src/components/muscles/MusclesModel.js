@@ -6,12 +6,14 @@ import {Svg} from 'react-native-svg';
 
 import {observer} from 'mobx-react';
 
-import {frontPoints, backPoints} from '../muscles/musclesPoints';
+import {malePoints, femalePoints} from '../muscles/musclesPoints';
 import check from '../utils/checkMusclePolygon';
 import isClick from "../../utils/isClick";
 import ZoomView from "../ZoomView";
 import MusclesModelMuscle from './MusclesModelMuscle';
 import {gs} from "../../globals";
+import authStore from "../../store/authStore";
+import userParametersStore from "../../store/userParametersStore";
 
 // props: MusclesModelStore
 @observer
@@ -25,8 +27,8 @@ export default class MusclesModel extends React.Component {
   constructor(props) {
     super(props);
     // DIMENSIONS OF THE SVG
-    this.svgWidth = 317 * 2;
-    this.svgHeight = 618;
+    this.svgWidth = 300 * 2;
+    this.svgHeight = 600;
 
     if (this.props.width) {
       this.scale = this.props.width / this.svgWidth;
@@ -78,13 +80,10 @@ export default class MusclesModel extends React.Component {
     }
   }
 
-  panResponderFront = PanResponder.create(this._getModelPanResponder(frontPoints));
-  panResponderBack = PanResponder.create(this._getModelPanResponder(backPoints));
-
 
   renderModelSide(sidePoints) {
     return (
-      <Svg width={317} height={618}>
+      <Svg width={300} height={600}>
         {sidePoints.map((muscle) => {
           return muscle.points.map((pointsStr, index) => (
             <MusclesModelMuscle
@@ -100,9 +99,22 @@ export default class MusclesModel extends React.Component {
     )
   }
 
+
   renderModels() {
-    const propsFront = this.state.touchable ? {...this.panResponderFront.panHandlers} : {};
-    const propsBack = this.state.touchable ? {...this.panResponderBack.panHandlers} : {};
+    let frontPoints, backPoints;
+    if (userParametersStore.parameters.gender === 2) {
+      frontPoints = femalePoints.front;
+      backPoints = femalePoints.back;
+    } else {
+      frontPoints = femalePoints.front;
+      backPoints = femalePoints.back;
+    }
+
+    let panResponderFront = PanResponder.create(this._getModelPanResponder(frontPoints));
+    let panResponderBack = PanResponder.create(this._getModelPanResponder(backPoints));
+
+    const propsFront = this.state.touchable ? {...panResponderFront.panHandlers} : {};
+    const propsBack = this.state.touchable ? {...panResponderBack.panHandlers} : {};
     return (
       <Animated.View style={{flexDirection: 'row'}}>
         <View {...propsFront}>
@@ -130,7 +142,7 @@ export default class MusclesModel extends React.Component {
             this.checkMuscleClicked(locationX, locationY, targetId)
           }}
           style={{
-            height: this.props.height ? this.props.height + 10  : this.svgHeight * this.scale,
+            height: this.props.height ? this.props.height + 10 : this.svgHeight * this.scale,
             width: this.props.width ? this.props.width : Dimensions.get('window').width - 12,
             marginLeft: 4,
             backgroundColor: 'transparent',

@@ -31,6 +31,16 @@ export default class Start extends React.Component {
     workouts: []
   };
 
+  constructor(props) {
+    super(props);
+
+    console.log('startt mounter');
+  }
+
+  componentWillMount() {
+
+  }
+
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
       this.goBack();

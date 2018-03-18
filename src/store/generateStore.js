@@ -42,6 +42,7 @@ class GenerateStore {
       try {
         await userParametersStore.saveUserParameters();
         let result = generateSplit(Mobx.toJS(userParametersStore.parameters));
+
         let workouts = [];
         _.forOwn(result, (workout, letter) => {
           workouts.push({

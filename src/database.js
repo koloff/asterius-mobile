@@ -1,8 +1,8 @@
 import firebase from 'react-native-firebase';
 
-function watch(path, callback) {
+function watch(path, callback, error) {
   const ref = firebase.database().ref(path);
-  ref.on('value', callback);
+  ref.on('value', callback, error);
   return ref;
 }
 
