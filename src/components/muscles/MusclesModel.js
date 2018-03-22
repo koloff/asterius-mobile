@@ -106,8 +106,8 @@ export default class MusclesModel extends React.Component {
       frontPoints = femalePoints.front;
       backPoints = femalePoints.back;
     } else {
-      frontPoints = femalePoints.front;
-      backPoints = femalePoints.back;
+      frontPoints = malePoints.front;
+      backPoints = malePoints.back;
     }
 
     let panResponderFront = PanResponder.create(this._getModelPanResponder(frontPoints));

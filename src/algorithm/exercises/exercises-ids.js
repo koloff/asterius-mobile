@@ -5,6 +5,7 @@ module.exports = {
     dumbbellInclineBenchPress: 'dumbbellInclineBenchPress',
     lowCableCrossover: 'lowCableCrossover',
     highCableCrossover: 'highCableCrossover',
+    pecDeck: 'pecDeck',
   },
 
 
@@ -25,12 +26,18 @@ module.exports = {
   biceps: {
     inclineDumbbellCurl: 'inclineDumbbellCurl',
     barbellCurl: 'barbellCurl',
-    overheadCableCurl: 'overheadCableCurl',
+    preacherCurl: 'preacherCurl',
+    reverseGripCurl: 'reverseGripCurl'
+  },
+
+  forearms: {
+    wristCurl: 'wristCurl',
+    reverseWristCurl: 'reverseWristCurl'
   },
 
   triceps: {
     seatedTricepsPress: 'seatedTricepsPress',
-    ropePushdown: 'ropePushdown',
+    tricepsPushdown: 'tricepsPushdown',
     skullCrushers: 'skullCrushers',
   },
 
@@ -43,7 +50,8 @@ module.exports = {
     barbellSquat: 'barbellSquat',
     legExtension: 'legExtension',
     legCurl: 'legCurl',
-    smithMachineCalfRaise: 'smithMachineCalfRaise'
+    legPressCalfRaise: 'legPressCalfRaise',
+    hipThrust: 'hipThrust',
   }
 
 };

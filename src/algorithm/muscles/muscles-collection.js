@@ -16,8 +16,8 @@ let types = {
 let muscles = [
   new Muscle({
     id: ids.shoulders.anteriorHead,
-    mev: 1,
-    mrv: 5,
+    mev: 1.5,
+    mrv: 3.5,
     types: [types.upperBody, types.push],
     info: {
       group: 'Shoulders',
@@ -28,8 +28,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.shoulders.lateralHead,
-    mev: 1,
-    mrv: 5,
+    mev: 1.5,
+    mrv: 3.5,
     types: [types.upperBody, types.push],
     info: {
       group: 'Shoulders',
@@ -40,8 +40,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.shoulders.posteriorHead,
-    mev: 1,
-    mrv: 5,
+    mev: 1.5,
+    mrv: 3.5,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Shoulders',
@@ -53,7 +53,7 @@ let muscles = [
   new Muscle({
     id: ids.chest.clavicularHead,
     mev: 2,
-    mrv: 6,
+    mrv: 5,
     types: [types.upperBody, types.push],
     info: {
       group: 'Chest',
@@ -65,7 +65,7 @@ let muscles = [
   new Muscle({
     id: ids.chest.sternalHead,
     mev: 2,
-    mrv: 6,
+    mrv: 5,
     types: [types.upperBody, types.push],
     info: {
       group: 'Chest',
@@ -76,8 +76,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.back.upperTrapezius,
-    mev: 0.7,
-    mrv: 4,
+    mev: 1,
+    mrv: 3.5,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',
@@ -89,7 +89,7 @@ let muscles = [
   new Muscle({
     id: ids.back.middleBack,
     mev: 1.5,
-    mrv: 6,
+    mrv: 4.5,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',
@@ -100,8 +100,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.back.lats,
-    mev: 1.5,
-    mrv: 6,
+    mev: 2,
+    mrv: 5,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',
@@ -112,7 +112,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.back.rotatorCuff,
-    mev: 0.7,
+    mev: 1,
     mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
@@ -136,7 +136,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.biceps.shortHead,
-    mev: 0.8,
+    mev: 1,
     mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
@@ -148,8 +148,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.triceps.longHead,
-    mev: 1,
-    mrv: 6,
+    mev: 2,
+    mrv: 5,
     types: [types.upperBody, types.push],
     info: {
       group: 'Triceps',
@@ -160,7 +160,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.triceps.shortHead,
-    mev: 0.7,
+    mev: 1.5,
     mrv: 5,
     types: [types.upperBody, types.push],
     info: {
@@ -172,7 +172,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.forearms.brachioradialis,
-    mev: 0.7,
+    mev: 1,
     mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
@@ -184,7 +184,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.forearms.flexors,
-    mev: 0.3,
+    mev: 1,
     mrv: 3,
     types: [types.upperBody, types.other],
     info: {
@@ -196,7 +196,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.forearms.extensors,
-    mev: 0.3,
+    mev: 1,
     mrv: 3,
     types: [types.upperBody, types.other],
     info: {
@@ -208,7 +208,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.core.abs,
-    mev: 1.3,
+    mev: 1.5,
     mrv: 4,
     types: [types.other],
     info: {
@@ -220,7 +220,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.core.obliques,
-    mev: 0.7,
+    mev: 1.5,
     mrv: 4,
     types: [types.other],
     info: {
@@ -232,7 +232,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.legs.quadriceps,
-    mev: 1.5,
+    mev: 3,
     mrv: 7,
     types: [types.lowerBody],
     info: {
@@ -244,8 +244,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.legs.hamstrings,
-    mev: 1.5,
-    mrv: 7,
+    mev: 2.5,
+    mrv: 6.5,
     types: [types.lowerBody],
     info: {
       group: 'Legs',
@@ -256,8 +256,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.legs.glutes,
-    mev: 1,
-    mrv: 7,
+    mev: 2,
+    mrv: 6.5,
     types: [types.lowerBody],
     info: {
       group: 'Legs',
@@ -268,8 +268,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.legs.calves,
-    mev: 0.5,
-    mrv: 5,
+    mev: 1,
+    mrv: 4.5,
     types: [types.lowerBody, types.other],
     info: {
       group: 'Legs',

@@ -9,6 +9,7 @@ let ec = require('./exercises/exercises-collection');
  * Get parameters object and returns exercises array in the form: [{exerciseid: setsCount}]
  */
 function generateVolume(parameters) {
+  let gender = parameters.gender;
   let trainedMuscles = parameters.trainedMuscles;
   let preferredMuscles = parameters.preferredMuscles;
   let sets = parameters.sets;
@@ -20,16 +21,6 @@ function generateVolume(parameters) {
 
   let muscles = mc.muscles;
   let exercises = ec.exercises;
-
-  console.log(parameters);
-
-
-
-  console.log('TRAINED MUSCLES');
-  console.log(trainedMuscles);
-
-  console.log('PREFERRED MUSCLES');
-  console.log(preferredMuscles);
 
 
   // ILPP model constraints
@@ -61,7 +52,10 @@ function generateVolume(parameters) {
     // do not overtrain muscles
     constraints[mId].max = (mc.get(mId).mrv * 100 /*in percentage*/) * mrvMultiplier;
     // do not undertrain muscles
-    constraints[mId].min = (mc.get(mId).mev * 100 /*in percentage*/) * mevMultiplier;
+    // skip traps todo refactor
+    if (gender === 2 && !(preferredMuscles.indexOf(mc.ids.back.upperTrapezius) >= 0)) {
+      constraints[mId].min = (mc.get(mId).mev * 100 /*in percentage*/) * mevMultiplier;
+    }
     // if muscles is preferred, get its isolation exercise
     if (preferredMuscles.indexOf(mId) >= 0) {
       isolationExercisesForPreferredMuscles.push(getIsolationExerciseId(mId));
@@ -71,7 +65,23 @@ function generateVolume(parameters) {
   // create int and binaries variables types
   let ints = {};
   let binaries = {};
-  exercises.forEach((exercise) => {
+
+  for (let i = 0; i < exercises.length; i++) {
+    let exercise = exercises[i];
+    // EXERCISE SIDE CASES
+    if (gender === 1) {
+      if (exercise.id === ec.ids.legs.hipThrust && !(preferredMuscles.indexOf(mc.ids.legs.glutes) >= 0)) {
+        continue;
+      }
+    }
+
+    if (gender === 2) {
+      if (exercise.id === ec.ids.back.dumbbellShrug && !(preferredMuscles.indexOf(mc.ids.back.upperTrapezius) >= 0)) {
+        continue;
+      }
+    }
+
+
     let exerciseVar = {};
 
     // calculate exercise volume for the muscles it trains and are chosen
@@ -108,7 +118,8 @@ function generateVolume(parameters) {
       variables[exercise.id] = exerciseVar;
       ints[exercise.id] = 1;
     }
-  });
+  }
+
 
   // console.log('---------------------------LOGS---------------------------');
   // console.log(constraints);
@@ -137,9 +148,9 @@ function generateVolume(parameters) {
     });
   }
 
-  console.log('__________________________________________');
-  console.log('SOLUTION');
-  console.log(workout);
+  if (result.feasible) {
+    console.log(workout);
+  }
   //
   // trainedMuscles.forEach((mId) => {
   //   console.log(mId);
@@ -156,7 +167,7 @@ function generateVolume(parameters) {
   // });
   // console.log('---------------------------END LOGS---------------------------');
 
-  return workout;
+  return orderWorkout(workout);
 }
 
 
@@ -172,11 +183,38 @@ function getIsolationExerciseId(muscleId) {
     })
   });
 
-  console.log('__________________________');
-  console.log(currentExerciseId, currentMaxPercentage);
-  console.log('________________________');
+  // console.log('__________________________');
+  // console.log(currentExerciseId, currentMaxPercentage);
+  // console.log('________________________');
 
   return currentExerciseId;
 }
+
+function getExerciseLoad(exercise) {
+  let load = 0;
+  _.forOwn(exercise.musclesUsed, (percentage, mId) => {
+    let muscle = mc.get(mId);
+    load += percentage * (muscle.mev + muscle.mrv);
+  });
+  return load;
+}
+
+function orderWorkout(workout) {
+  let result = workout.sort((ex1, ex2) => {
+    let exercise1 = ec.get(ex1.id);
+    let exercise2 = ec.get(ex2.id);
+
+    if (exercise1.type === 'compound' && exercise2.type === 'isolation') {
+      return -1;
+    }
+    if (exercise1.type === 'isolation' && exercise2.type === 'compound') {
+      return 1;
+    }
+
+    return getExerciseLoad(exercise2) - getExerciseLoad(exercise1)
+  });
+  return result;
+}
+
 
 module.exports = generateVolume;

@@ -20,11 +20,15 @@ let exercises = [
     id: ids.chest.dumbbellBenchPress,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.chest.sternalHead]: 45,
-      [mc.ids.chest.clavicularHead]: 15,
+      [mc.ids.chest.sternalHead]: 30,
+      [mc.ids.chest.clavicularHead]: 25,
       [mc.ids.shoulders.anteriorHead]: 20,
-      [mc.ids.triceps.longHead]: 10,
-      [mc.ids.triceps.shortHead]: 10
+      [mc.ids.triceps.longHead]: 12.5,
+      [mc.ids.triceps.shortHead]: 12.5,
+      // stabilizers
+      [mc.ids.forearms.flexors]: 7.5,
+      [mc.ids.forearms.extensors]: 7.5,
+
     },
     info: {
       name: 'Dumbbell Bench Press',
@@ -36,11 +40,14 @@ let exercises = [
     id: ids.chest.dumbbellInclineBenchPress,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.chest.clavicularHead]: 40,
+      [mc.ids.chest.clavicularHead]: 30,
       [mc.ids.chest.sternalHead]: 20,
-      [mc.ids.shoulders.anteriorHead]: 20,
-      [mc.ids.triceps.longHead]: 10,
-      [mc.ids.triceps.shortHead]: 10,
+      [mc.ids.shoulders.anteriorHead]: 25,
+      [mc.ids.triceps.longHead]: 12.5,
+      [mc.ids.triceps.shortHead]: 12.5,
+      // stabilizers
+      [mc.ids.forearms.flexors]: 7.5,
+      [mc.ids.forearms.extensors]: 7.5,
     },
     info: {
       name: 'Incline Dumbbell Bench Press',
@@ -52,9 +59,9 @@ let exercises = [
     id: ids.chest.lowCableCrossover,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.chest.sternalHead]: 70,
+      [mc.ids.chest.sternalHead]: 60,
       [mc.ids.shoulders.anteriorHead]: 20,
-      [mc.ids.chest.clavicularHead]: 10
+      [mc.ids.chest.clavicularHead]: 20
     },
     info: {
       name: 'Low Cable Crossover',
@@ -66,12 +73,26 @@ let exercises = [
     id: ids.chest.highCableCrossover,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.chest.clavicularHead]: 65,
+      [mc.ids.chest.clavicularHead]: 60,
       [mc.ids.shoulders.anteriorHead]: 25,
-      [mc.ids.chest.sternalHead]: 10
+      [mc.ids.chest.sternalHead]: 15
     },
     info: {
       name: 'High Cable Crossover',
+      group: 'Chest'
+    }
+  }),
+
+  new Exercise({
+    id: ids.chest.pecDeck,
+    type: types.isolation,
+    musclesUsed: {
+      [mc.ids.chest.clavicularHead]: 40,
+      [mc.ids.shoulders.anteriorHead]: 20,
+      [mc.ids.chest.sternalHead]: 40
+    },
+    info: {
+      name: 'Pec Deck',
       group: 'Chest'
     }
   }),
@@ -98,11 +119,11 @@ let exercises = [
     id: ids.shoulders.dumbbellShoulderPress,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.shoulders.anteriorHead]: 35,
-      [mc.ids.shoulders.lateralHead]: 35,
+      [mc.ids.shoulders.anteriorHead]: 32.5,
+      [mc.ids.shoulders.lateralHead]: 32.5,
       [mc.ids.shoulders.posteriorHead]: 10,
-      [mc.ids.triceps.longHead]: 10,
-      [mc.ids.triceps.shortHead]: 10,
+      [mc.ids.triceps.longHead]: 12.5,
+      [mc.ids.triceps.shortHead]: 12.5,
     },
     info: {
       name: 'Dumbbell Shoulder Press',
@@ -114,8 +135,8 @@ let exercises = [
     id: ids.shoulders.reversePecDeck,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.shoulders.posteriorHead]: 60,
-      [mc.ids.back.upperTrapezius]: 20,
+      [mc.ids.shoulders.posteriorHead]: 65,
+      [mc.ids.back.upperTrapezius]: 15,
       [mc.ids.back.middleBack]: 20
     },
     info: {
@@ -126,16 +147,19 @@ let exercises = [
 
 
   //Back
-
   new Exercise({
     id: ids.back.latPulldownWideGrip,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.back.lats]: 35,
+      [mc.ids.back.lats]: 32.5,
       [mc.ids.back.middleBack]: 25,
       [mc.ids.back.rotatorCuff]: 15,
-      [mc.ids.biceps.shortHead]: 12,
-      [mc.ids.biceps.longHead]: 13,
+      [mc.ids.biceps.shortHead]: 10,
+      [mc.ids.biceps.longHead]: 10,
+      [mc.ids.triceps.longHead]: 7.5,
+      // stabilizers
+      [mc.ids.forearms.brachioradialis]: 10,
+      [mc.ids.forearms.flexors]: 7.5,
     },
     info: {
       name: 'Wide Grip Lat Pulldown',
@@ -147,13 +171,14 @@ let exercises = [
     id: ids.back.cableRow,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.back.middleBack]: 50,
-      [mc.ids.back.lats]: 30,
-      [mc.ids.shoulders.posteriorHead]: 5,
-      [mc.ids.biceps.shortHead]: 5,
-      [mc.ids.biceps.longHead]: 5,
-      [mc.ids.forearms.brachioradialis]: 5,
-      [mc.ids.forearms.flexors]: 5
+      [mc.ids.back.middleBack]: 37.5,
+      [mc.ids.back.lats]: 32.5,
+      [mc.ids.shoulders.posteriorHead]: 10,
+      [mc.ids.biceps.shortHead]: 10,
+      [mc.ids.biceps.longHead]: 10,
+      // stabilizers
+      [mc.ids.forearms.brachioradialis]: 10,
+      [mc.ids.forearms.flexors]: 7.5,
     },
     info: {
       name: 'Cable Row',
@@ -161,28 +186,15 @@ let exercises = [
     }
   }),
 
-  // new Exercise({
-  //   id: ids.back.straightArmPulldown,
-  //   type: types.isolation,
-  //   musclesUsed: {
-  //     [mc.ids.back.lats]: 60,
-  //     [mc.ids.back.middleBack]: 20,
-  //     [mc.ids.shoulders.posteriorHead]: 10,
-  //     [mc.ids.triceps.longHead]: 10
-  //   },
-  //   info: {
-  //     name: 'Straight Arm Pulldown',
-  //     group: 'Back'
-  //   }
-  // }),
 
   new Exercise({
     id: ids.back.dumbbellShrug,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.back.upperTrapezius]: 80,
-      [mc.ids.back.middleBack]: 10,
-      [mc.ids.forearms.flexors]: 10
+      [mc.ids.back.upperTrapezius]: 85,
+      [mc.ids.back.middleBack]: 15,
+      // stabilizer
+      [mc.ids.forearms.flexors]: 15
     },
     info: {
       name: 'Dumbbell Shrugs',
@@ -194,9 +206,8 @@ let exercises = [
     id: ids.back.cableExternalRotation,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.back.rotatorCuff]: 70,
-      [mc.ids.shoulders.posteriorHead]: 20,
-      [mc.ids.forearms.extensors]: 10
+      [mc.ids.back.rotatorCuff]: 75,
+      [mc.ids.shoulders.posteriorHead]: 25,
     },
     info: {
       name: 'Cable External Rotation',
@@ -211,10 +222,9 @@ let exercises = [
     id: ids.biceps.inclineDumbbellCurl,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.biceps.longHead]: 50,
-      [mc.ids.biceps.shortHead]: 40,
-      [mc.ids.forearms.flexors]: 5,
-      [mc.ids.forearms.brachioradialis]: 5
+      [mc.ids.biceps.longHead]: 45,
+      [mc.ids.biceps.shortHead]: 37.5,
+      [mc.ids.forearms.brachioradialis]: 17.5
     },
     info: {
       name: 'Incline Dumbbell Curl',
@@ -228,8 +238,9 @@ let exercises = [
     musclesUsed: {
       [mc.ids.biceps.longHead]: 45,
       [mc.ids.biceps.shortHead]: 45,
-      [mc.ids.forearms.flexors]: 5,
-      [mc.ids.forearms.brachioradialis]: 5
+      [mc.ids.forearms.brachioradialis]: 10,
+      // stabilizer
+      [mc.ids.forearms.flexors]: 7.5
     },
     info: {
       name: 'Barbell Curl',
@@ -238,17 +249,61 @@ let exercises = [
   }),
 
   new Exercise({
-    id: ids.biceps.overheadCableCurl,
+    id: ids.biceps.preacherCurl,
     type: types.isolation,
     musclesUsed: {
       [mc.ids.biceps.shortHead]: 50,
       [mc.ids.biceps.longHead]: 40,
-      [mc.ids.forearms.flexors]: 5,
-      [mc.ids.forearms.brachioradialis]: 5
+      [mc.ids.forearms.brachioradialis]: 10,
+      // stabilizer
+      [mc.ids.forearms.flexors]: 7.5
     },
     info: {
-      name: 'Overhead Cable Curl',
+      name: 'Preacher Curl',
       group: 'Biceps'
+    }
+  }),
+
+  new Exercise({
+    id: ids.biceps.reverseGripCurl,
+    type: types.isolation,
+    musclesUsed: {
+      [mc.ids.biceps.shortHead]: 35,
+      [mc.ids.biceps.longHead]: 35,
+      [mc.ids.forearms.brachioradialis]: 30,
+      // stabilizer
+      [mc.ids.forearms.extensors]: 10
+    },
+    info: {
+      name: 'Reverse Grip Curl',
+      group: 'Biceps'
+    }
+  }),
+
+
+  // Forearms
+
+  new Exercise({
+    id: ids.forearms.wristCurl,
+    type: types.isolation,
+    musclesUsed: {
+      [mc.ids.forearms.flexors]: 100
+    },
+    info: {
+      name: 'Wrist Curl',
+      group: 'Forearms'
+    }
+  }),
+
+  new Exercise({
+    id: ids.forearms.reverseWristCurl,
+    type: types.isolation,
+    musclesUsed: {
+      [mc.ids.forearms.extensors]: 100
+    },
+    info: {
+      name: 'Reverse Wrist Curl',
+      group: 'Forearms'
     }
   }),
 
@@ -269,31 +324,19 @@ let exercises = [
   }),
 
   new Exercise({
-    id: ids.triceps.ropePushdown,
+    id: ids.triceps.tricepsPushdown,
     type: types.isolation,
     musclesUsed: {
       [mc.ids.triceps.longHead]: 50,
-      [mc.ids.triceps.shortHead]: 50
+      [mc.ids.triceps.shortHead]: 50,
+      // stabilizer
+      [mc.ids.forearms.extensors]: 10
     },
     info: {
-      name: 'Rope Pushdown',
+      name: 'Triceps Pushdown',
       group: 'Triceps'
     }
   }),
-
-  new Exercise({
-    id: ids.triceps.skullCrushers,
-    type: types.isolation,
-    musclesUsed: {
-      [mc.ids.triceps.longHead]: 60,
-      [mc.ids.triceps.shortHead]: 40
-    },
-    info: {
-      name: 'Skull Crusher',
-      group: 'Triceps'
-    }
-  }),
-
 
   //Abs
 
@@ -301,8 +344,8 @@ let exercises = [
     id: ids.core.crunches,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.core.abs]: 70,
-      [mc.ids.core.obliques]: 30
+      [mc.ids.core.abs]: 60,
+      [mc.ids.core.obliques]: 40
     },
     info: {
       name: 'Crunch',
@@ -314,8 +357,8 @@ let exercises = [
     id: ids.core.twistedCrunch,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.core.abs]: 55,
-      [mc.ids.core.obliques]: 45
+      [mc.ids.core.abs]: 40,
+      [mc.ids.core.obliques]: 60
     },
     info: {
       name: 'Twisted Crunch',
@@ -323,6 +366,18 @@ let exercises = [
     }
   }),
 
+  new Exercise({
+    id: ids.core.twistedCrunch,
+    type: types.isolation,
+    musclesUsed: {
+      [mc.ids.core.abs]: 40,
+      [mc.ids.core.obliques]: 60
+    },
+    info: {
+      name: 'Twisted Crunch',
+      group: 'Core'
+    }
+  }),
 
   //Legs
 
@@ -331,10 +386,10 @@ let exercises = [
     type: types.compound,
     musclesUsed: {
       [mc.ids.legs.quadriceps]: 35,
-      [mc.ids.legs.hamstrings]: 15,
       [mc.ids.legs.glutes]: 30,
-      [mc.ids.legs.calves]: 10,
-      [mc.ids.legs.hamstrings]: 10
+      [mc.ids.legs.hamstrings]: 25,
+      // stabilizer + some work
+      [mc.ids.legs.calves]: 15,
     },
     info: {
       name: 'Barbell Squat',
@@ -342,7 +397,18 @@ let exercises = [
     }
   }),
 
-
+  new Exercise({
+    id: ids.legs.hipThrust,
+    type: types.compound,
+    musclesUsed: {
+      [mc.ids.legs.glutes]: 60,
+      [mc.ids.legs.hamstrings]: 40,
+    },
+    info: {
+      name: 'Hip Thrust',
+      group: 'Legs'
+    }
+  }),
 
   new Exercise({
     id: ids.legs.legExtension,
@@ -360,8 +426,10 @@ let exercises = [
     id: ids.legs.legCurl,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.legs.hamstrings]: 75,
-      [mc.ids.legs.glutes]: 25
+      [mc.ids.legs.hamstrings]: 60,
+      [mc.ids.legs.glutes]: 25,
+      [mc.ids.legs.calves]: 15,
+
     },
     info: {
       name: 'Leg Curl',
@@ -370,17 +438,16 @@ let exercises = [
   }),
 
   new Exercise({
-    id: ids.legs.smithMachineCalfRaise,
+    id: ids.legs.legPressCalfRaise,
     type: types.isolation,
     musclesUsed: {
       [mc.ids.legs.calves]: 100
     },
     info: {
-      name: 'Smith Machine Calf Raise',
+      name: 'Leg Press Calf Raise',
       group: 'Legs'
     }
   })
-
 ];
 
 

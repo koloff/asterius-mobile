@@ -60,8 +60,10 @@ export default class MiniWorkoutGenerated extends React.Component {
               alignItems: 'center',
               justifyContent: 'space-between',
               borderRadius: 5,
-              padding: 3,
+              paddingLeft: 3,
               paddingRight: 7,
+              paddingTop: 10,
+              paddingBottom: 10,
               backgroundColor: '#131313',
               borderWidth: 0,
               borderColor: '#171717'

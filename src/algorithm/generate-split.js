@@ -6,58 +6,64 @@ let calculateFitnessLevel = require('./calculate-fitness-level');
 let splits = require('./splits');
 
 
-let PARAMS = {
-  gender: 1, // 1 - malePoints, 2 - femalePoints
-  measuringUnit: 1, // 1 - metric, 2 - imperial
-  age: '',
-  weight: '',
-  height: '',
-  experience: 2, // 1-4
-  days: 2, // 1-3 (1/2, 3/4, 5/6)
-  duration: 70, // minutes
-  preferredMuscles: [],
-  activity: 3,
-  goal: 3, // 1-5 (1-loose fat, 5 - gain weight),
-  fitnessLevel: 1
-};
-
 function generateSingleWorkout(options) {
-  console.log('generating...');
-  let workout = generateVolume(options);
+  let workout;
 
-  console.log('generated');
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('111111111 try');
+    return workout;
+  }
 
-  if (!workout.length) {
-    // if preferred muscles are too much, reduce mev
-    options.mevMultiplier = options.mevMultiplier / 2;
-    workout = generateVolume(options);
+  // if preferred muscles are too much, reduce mev
+  options.mevMultiplier = options.mevMultiplier / 2;
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('222222222 try');
+    return workout;
+  }
 
-    if (!workout.length) {
-      // if preferred muscles are too much, replace isolation exercises with compound lifts
-      options.mevMultiplier = options.mevMultiplier * 2;
-      options.preferredMuscles = [];
-      workout = generateVolume(options);
-
-      if (!workout.length) {
-        // if still cannot generate, reduce mev
-        options.mevMultiplier = options.mevMultiplier / 2;
-        workout = generateVolume(options);
-      }
-    }
+  // if preferred muscles are too much, reduce isolation sets
+  options.minIsolationSetsCount = 2;
+  options.minExerciseSetsCount = 2;
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('333333333 try');
+    return workout;
   }
 
 
-  return workout;
+  // if preferred muscles are too much, replace isolation exercises with compound lifts
+  options.mevMultiplier = options.mevMultiplier * 2;
+  options.preferredMuscles = [];
+  // options.minIsolationSetsCount = 0;
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('4444444444 try');
+    return workout;
+  }
+
+
+
+  // if still cannot generate, reduce mev
+  options.mevMultiplier = options.mevMultiplier / 2;
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('55555555555 try');
+    return workout;
+  }
+
+  console.log('WARNIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIING');
 }
 
-function generateSplit(userParameters) {
-  let userPreferredMuscles = userParameters.preferredMuscles;
-  let fitnessLevel = userParameters.fitnessLevel;
-  let sets = Math.round((userParameters.duration - 5) / 2.5);
+function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
+  console.log(arguments);
+  let sets = Math.round((duration - 5) / 2.5);
 
   // At 1-2 training sessions per week generate FULL BODY workouts
-  if (userParameters.days === 1) {
+  if (days === 1) {
     let fullBodyOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -70,17 +76,18 @@ function generateSplit(userParameters) {
 
     // generate full body workoutStore
     fullBodyOptions.trainedMuscles = _.clone(splits.fullBody);
-    fullBodyOptions.preferredMuscles = _.clone(userPreferredMuscles);
+    fullBodyOptions.preferredMuscles = _.clone(preferredMuscles);
 
     let A = generateSingleWorkout(fullBodyOptions);
     return {A};
   }
 
   // At 3-4 training sessions per week generate upper/lower workouts
-  else if (userParameters.days === 2) {
+  else if (days === 2) {
 
     // Training A: UPPER BODY
     let upperOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -92,7 +99,7 @@ function generateSplit(userParameters) {
     };
 
     upperOptions.trainedMuscles = _.clone(splits.upperBody);
-    userPreferredMuscles.forEach(mId => {
+    preferredMuscles.forEach(mId => {
       let muscle = mc.get(mId);
       if (muscle.types.indexOf('upperBody') >= 0) {
         upperOptions.preferredMuscles.push(muscle.id)
@@ -104,6 +111,7 @@ function generateSplit(userParameters) {
 
     // Training B: LOWER BODY
     let lowerOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -115,7 +123,7 @@ function generateSplit(userParameters) {
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);
-    userPreferredMuscles.forEach(mId => {
+    preferredMuscles.forEach(mId => {
       let muscle = mc.get(mId);
       if (muscle.types.indexOf('lowerBody') >= 0 || muscle.info.group === 'Core') {
         lowerOptions.preferredMuscles.push(muscle.id)
@@ -133,6 +141,7 @@ function generateSplit(userParameters) {
   else {
     // training A: PUSH
     let pushOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -144,7 +153,7 @@ function generateSplit(userParameters) {
     };
 
     pushOptions.trainedMuscles = _.clone(splits.push);
-    userPreferredMuscles.forEach(mId => {
+    preferredMuscles.forEach(mId => {
       let muscle = mc.get(mId);
       if (muscle.types.indexOf('push') >= 0) {
         pushOptions.preferredMuscles.push(muscle.id)
@@ -155,6 +164,7 @@ function generateSplit(userParameters) {
 
     // training B: PULL
     let pullOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -166,7 +176,7 @@ function generateSplit(userParameters) {
     };
 
     pullOptions.trainedMuscles = _.clone(splits.pull);
-    userPreferredMuscles.forEach(mId => {
+    preferredMuscles.forEach(mId => {
       let muscle = mc.get(mId);
       if (muscle.types.indexOf('pull') >= 0) {
         pullOptions.preferredMuscles.push(muscle.id)
@@ -177,6 +187,7 @@ function generateSplit(userParameters) {
 
     // training C: LOWER BODY
     let lowerOptions = {
+      gender,
       trainedMuscles: [],
       preferredMuscles: [],
       sets: sets,
@@ -188,7 +199,7 @@ function generateSplit(userParameters) {
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);
-    userPreferredMuscles.forEach(mId => {
+    preferredMuscles.forEach(mId => {
       let muscle = mc.get(mId);
       if (muscle.types.indexOf('lowerBody') >= 0 || muscle.info.group === 'Core') {
         lowerOptions.preferredMuscles.push(muscle.id)

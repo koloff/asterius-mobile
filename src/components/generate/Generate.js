@@ -35,8 +35,8 @@ import {withNavigation} from "react-navigation";
 export default class Generate extends React.Component {
   state = {
     loading: true,
-    slide: 0,
-    durationSliderValue: 65,
+    slide: 4,
+    durationSliderValue: userParametersStore.parameters.duration,
     keyboardOpen: false,
     generating: false,
   };
@@ -102,6 +102,8 @@ export default class Generate extends React.Component {
   onMusclePress(id) {
     generateStore.musclesModelStore.switchMuscleSelected(id);
     userParametersStore.switchMuscle(id);
+
+
   }
 
   async generateWorkouts() {
@@ -184,7 +186,7 @@ export default class Generate extends React.Component {
         </View>
 
         <Swiper
-          index={0}
+          index={4}
           ref={(ref) => {
             this._swiper = ref
           }}
@@ -236,7 +238,9 @@ export default class Generate extends React.Component {
           <Slide1/>
           <Slide2 keyboardOpen={this.state.keyboardOpen}/>
           <Slide3 getExperienceColor={this.getExperienceColor} getExperienceTexts={this.getExperienceTexts}/>
-          <Slide4/>
+          <Slide4
+            durationSliderValue={this.state.durationSliderValue}
+          />
           <Slide5
             generateWorkouts={this.generateWorkouts.bind(this)}
             onMusclePress={this.onMusclePress.bind(this)}
@@ -418,15 +422,15 @@ const Slide4 = observer((props) => {
       onSelectedChange={(value) => {
         switch (value) {
           case 1:
-            this.durationSlider.setNativeProps({value: 75});
+            this.durationSlider.setNativeProps({value: 80});
             userParametersStore.parameters.duration = 80;
             break;
           case 2:
-            this.durationSlider.setNativeProps({value: 65});
+            this.durationSlider.setNativeProps({value: 70});
             userParametersStore.parameters.duration = 70;
             break;
           case 3:
-            this.durationSlider.setNativeProps({value: 55});
+            this.durationSlider.setNativeProps({value: 60});
             userParametersStore.parameters.duration = 60;
             break;
         }
@@ -479,14 +483,14 @@ const Slide4 = observer((props) => {
       ref={(ref) => {
         this.durationSlider = ref
       }}
-      maximumValue={90}
-      minimumValue={30}
+      maximumValue={80}
+      minimumValue={60}
       step={1}
       thumbTintColor={'#B0BEC5'}
       maximumTrackTintColor={'#B0BEC5'}
       minimumTrackTintColor={'#616161'}
       style={{height: 100, width: '100%', top: -30}}
-      value={65}
+      value={props.durationSliderValue}
       onValueChange={(val) => {
         userParametersStore.parameters.duration = val;
       }}
