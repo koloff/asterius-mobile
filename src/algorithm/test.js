@@ -45,12 +45,11 @@ function getRandomMuscles(option) {
 }
 
 
-// make 5 tests
-for (let i = 0; i < 21; i++) {
-  let gender = getRandomGender(getRandomInt(0, 1));
+for (let i = 0; i < 10; i++) {
+  let gender = getRandomGender(getRandomInt(0, 0));
   let days = getRandomDays(getRandomInt(0, 0));
-  let duration = getRandomDuration(getRandomInt(0, 2));
-  let fitnessLevel = getRandomFitnessLevel(getRandomInt(0, 2));
+  let duration = getRandomDuration(getRandomInt(0, 0));
+  let fitnessLevel = getRandomFitnessLevel(getRandomInt(2, 2));
   let preferredMuscles = getRandomMuscles(getRandomInt(1, 2));
 
   console.log('---------------------');

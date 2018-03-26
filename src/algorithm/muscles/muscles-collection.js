@@ -16,7 +16,7 @@ let types = {
 let muscles = [
   new Muscle({
     id: ids.shoulders.anteriorHead,
-    mev: 1.5,
+    mev: 1.7,
     mrv: 3.5,
     types: [types.upperBody, types.push],
     info: {
@@ -28,7 +28,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.shoulders.lateralHead,
-    mev: 1.5,
+    mev: 1.7,
     mrv: 3.5,
     types: [types.upperBody, types.push],
     info: {
@@ -40,7 +40,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.shoulders.posteriorHead,
-    mev: 1.5,
+    mev: 1.7,
     mrv: 3.5,
     types: [types.upperBody, types.pull],
     info: {
@@ -52,7 +52,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.chest.clavicularHead,
-    mev: 2,
+    mev: 2.5,
     mrv: 5,
     types: [types.upperBody, types.push],
     info: {
@@ -64,7 +64,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.chest.sternalHead,
-    mev: 2,
+    mev: 2.5,
     mrv: 5,
     types: [types.upperBody, types.push],
     info: {
@@ -113,7 +113,7 @@ let muscles = [
   new Muscle({
     id: ids.back.rotatorCuff,
     mev: 1,
-    mrv: 4,
+    mrv: 4.5,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',

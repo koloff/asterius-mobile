@@ -44,6 +44,13 @@ function generateVolume(parameters) {
   trainedMuscles.forEach((mId) => {
     if (allMuscles.indexOf(mId) < 0) {
       allMuscles.push(mId);
+
+      //for women only
+      if (gender === 2) {
+        if (mId === mc.ids.back.upperTrapezius) {
+          allMuscles.splice(-1, 1);
+        }
+      }
     }
   });
 
@@ -52,10 +59,7 @@ function generateVolume(parameters) {
     // do not overtrain muscles
     constraints[mId].max = (mc.get(mId).mrv * 100 /*in percentage*/) * mrvMultiplier;
     // do not undertrain muscles
-    // skip traps todo refactor
-    if (gender === 2 && !(preferredMuscles.indexOf(mc.ids.back.upperTrapezius) >= 0)) {
-      constraints[mId].min = (mc.get(mId).mev * 100 /*in percentage*/) * mevMultiplier;
-    }
+    constraints[mId].min = (mc.get(mId).mev * 100 /*in percentage*/) * mevMultiplier;
     // if muscles is preferred, get its isolation exercise
     if (preferredMuscles.indexOf(mId) >= 0) {
       isolationExercisesForPreferredMuscles.push(getIsolationExerciseId(mId));
@@ -148,9 +152,6 @@ function generateVolume(parameters) {
     });
   }
 
-  if (result.feasible) {
-    console.log(workout);
-  }
   //
   // trainedMuscles.forEach((mId) => {
   //   console.log(mId);
@@ -167,7 +168,9 @@ function generateVolume(parameters) {
   // });
   // console.log('---------------------------END LOGS---------------------------');
 
-  return orderWorkout(workout);
+  let ordered = orderWorkout(workout);
+  console.log(ordered);
+  return ordered;
 }
 
 

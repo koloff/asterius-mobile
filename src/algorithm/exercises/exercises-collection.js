@@ -135,9 +135,10 @@ let exercises = [
     id: ids.shoulders.reversePecDeck,
     type: types.isolation,
     musclesUsed: {
-      [mc.ids.shoulders.posteriorHead]: 65,
+      [mc.ids.shoulders.posteriorHead]: 50,
+      [mc.ids.back.middleBack]: 20,
       [mc.ids.back.upperTrapezius]: 15,
-      [mc.ids.back.middleBack]: 20
+      [mc.ids.back.rotatorCuff]: 15
     },
     info: {
       name: 'Reverse Pec-Deck',
@@ -147,6 +148,7 @@ let exercises = [
 
 
   //Back
+
   new Exercise({
     id: ids.back.latPulldownWideGrip,
     type: types.compound,
@@ -171,8 +173,9 @@ let exercises = [
     id: ids.back.cableRow,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.back.middleBack]: 37.5,
-      [mc.ids.back.lats]: 32.5,
+      [mc.ids.back.middleBack]: 30,
+      [mc.ids.back.lats]: 30,
+      [mc.ids.back.rotatorCuff]: 10,
       [mc.ids.shoulders.posteriorHead]: 10,
       [mc.ids.biceps.shortHead]: 10,
       [mc.ids.biceps.longHead]: 10,
@@ -349,19 +352,6 @@ let exercises = [
     },
     info: {
       name: 'Crunch',
-      group: 'Core'
-    }
-  }),
-
-  new Exercise({
-    id: ids.core.twistedCrunch,
-    type: types.isolation,
-    musclesUsed: {
-      [mc.ids.core.abs]: 40,
-      [mc.ids.core.obliques]: 60
-    },
-    info: {
-      name: 'Twisted Crunch',
       group: 'Core'
     }
   }),

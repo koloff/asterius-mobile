@@ -15,27 +15,26 @@ function generateSingleWorkout(options) {
     return workout;
   }
 
+  // if preferred muscles are too much, reduce isolation sets
+  options.minIsolationSetsCount = 2;
+  workout = generateVolume(options);
+  if (workout.length) {
+    console.log('22222222222 try');
+    return workout;
+  }
+
+
   // if preferred muscles are too much, reduce mev
   options.mevMultiplier = options.mevMultiplier / 2;
   workout = generateVolume(options);
   if (workout.length) {
-    console.log('222222222 try');
-    return workout;
-  }
-
-  // if preferred muscles are too much, reduce isolation sets
-  options.minIsolationSetsCount = 2;
-  options.minExerciseSetsCount = 2;
-  workout = generateVolume(options);
-  if (workout.length) {
-    console.log('333333333 try');
+    console.log('333333333333 try');
     return workout;
   }
 
 
   // if preferred muscles are too much, replace isolation exercises with compound lifts
-  options.mevMultiplier = options.mevMultiplier * 2;
-  options.preferredMuscles = [];
+  options.minIsolationSetsCount = 0;
   // options.minIsolationSetsCount = 0;
   workout = generateVolume(options);
   if (workout.length) {
@@ -44,20 +43,19 @@ function generateSingleWorkout(options) {
   }
 
 
-
-  // if still cannot generate, reduce mev
-  options.mevMultiplier = options.mevMultiplier / 2;
+  // if still cannot generate, increase time
+  options.sets += 4;
   workout = generateVolume(options);
   if (workout.length) {
-    console.log('55555555555 try');
+    console.log('5555555555 try');
     return workout;
   }
+
 
   console.log('WARNIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIING');
 }
 
 function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
-  console.log(arguments);
   let sets = Math.round((duration - 5) / 2.5);
 
   // At 1-2 training sessions per week generate FULL BODY workouts
@@ -71,7 +69,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     // generate full body workoutStore
@@ -95,7 +93,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel * 1.1,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     upperOptions.trainedMuscles = _.clone(splits.upperBody);
@@ -119,7 +117,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);
@@ -149,7 +147,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     pushOptions.trainedMuscles = _.clone(splits.push);
@@ -172,7 +170,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     pullOptions.trainedMuscles = _.clone(splits.pull);
@@ -195,7 +193,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
       mevMultiplier: fitnessLevel,
       minIsolationSetsCount: 3,
       minExerciseSetsCount: 3,
-      maxExerciseSetsCount: 5
+      maxExerciseSetsCount: 4
     };
 
     lowerOptions.trainedMuscles = _.clone(splits.lowerBody);

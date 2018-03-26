@@ -1,6 +1,6 @@
 import * as React from "react";
 import {observer} from 'mobx-react';
-import {Image, View} from "react-native";
+import {Image, View, Text, TouchableOpacity} from "react-native";
 
 import authStore from './store/authStore';
 import {StackNavigator, TabBarBottom, TabNavigator, withNavigation} from 'react-navigation';
@@ -13,12 +13,11 @@ import WeightScreen from "./components/weight/WeightScreen";
 import EatScreen from "./components/eat/EatScreen";
 import SettingsScreen from "./components/settings/SettingsScreen";
 import GenerateStack from './components/generate/GenerateStack';
-// import ExerciseDetails from "./components/exercises/ExerciseDetails";
+import Principles from './components/principles/Principles';
+import DarkModal from './components/DarkModal';
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-
-import Test from './components/Test';
+import {gs} from "./globals";
 
 const MainTabNavigator = TabNavigator({
   Workouts: {screen: WorkoutsScreen},
@@ -111,17 +110,17 @@ class MainTabNavigatorWithBackground extends React.Component {
         backgroundColor: '#000'
       }}/>
       <MainTabNavigator navigation={this.props.navigation}/>
+      {authStore.newUser && <NewUserModal navigation={this.props.navigation}/>}
     </View>;
   }
 }
 
 MainTabNavigatorWithBackground.router = MainTabNavigator.router;
 const MainNavigator = StackNavigator({
-  // ExerciseDetails: {
-  //   screen: ExerciseDetails,
-  //   path: 'exercise/:id'
-  // },
   Main: {screen: MainTabNavigatorWithBackground},
+  Principles: {
+    screen: Principles
+  },
   WorkoutLog: {
     screen: WorkoutLog,
     path: 'log/:workoutLogDateStr'
@@ -162,5 +161,41 @@ export default class Router extends React.Component {
     } else {
       return <MainNavigator/>;
     }
+  }
+}
+
+class NewUserModal extends React.Component {
+  state = {
+    modalVisible: false
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({modalVisible: true});
+    }, 1000)
+  }
+
+  render() {
+    return <DarkModal
+      modalVisible={this.state.modalVisible}
+      onModalClose={() => {
+        this.setState({modalVisible: false})
+      }}
+    >
+      <Text style={[gs.text, gs.shadow, {fontSize: 14, textAlign: 'center', color: '#999'}]}>
+        Read the training principles?
+      </Text>
+      <TouchableOpacity
+        style={{padding: 10}}
+      onPress={() => {
+        this.setState({modalVisible: false});
+        this.props.navigation.navigate('Principles');
+      }}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 20, textAlign: 'center', color: '#EF6C00'}]}>
+          <MaterialCommunityIcons size={20} name={'dumbbell'} />
+          &nbsp; SHOW ME
+        </Text>
+      </TouchableOpacity>
+    </DarkModal>
   }
 }

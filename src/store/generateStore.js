@@ -37,7 +37,7 @@ class GenerateStore {
     });
   }
 
-  async generateWorkout() {
+  async generateWorkouts() {
     return new Promise(async (resolve, reject) => {
       try {
         await userParametersStore.saveUserParameters();
@@ -61,10 +61,10 @@ class GenerateStore {
         if (authStore.isAnonymous) {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
-        //todo
-        for (let i = 0; i < workouts.length; i++) {
+
+        for (let i = workouts.length - 1; i >=0 ; i--) {
           let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, workouts[i]);
-          this.workoutsTemplatesStore.workouts.push({
+          this.workoutsTemplatesStore.workouts.unshift({
             workoutStore: new WorkoutTemplateStore(workouts[i], ref.path),
             key: ref.key
           });

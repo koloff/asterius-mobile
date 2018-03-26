@@ -50,14 +50,15 @@ class Option extends React.Component {
           borderRadius: 5,
         }}>
           <TouchableWithoutFeedback
-            style={{}}
+            style={{flex: 1}}
             onPress={() => {
               this.props.onSelectedChange(this.props.value)
             }}>
             <View style={[this.props.optionStyle, {
               borderWidth: StyleSheet.hairlineWidth,
               borderColor: '#222',
-              borderRadius: 5
+              borderRadius: 5,
+              flex: 1
             }]}>
               {this.props.child}
             </View>
@@ -76,7 +77,7 @@ export default class RadioButtons extends React.Component {
 
   render() {
     return (
-      <View style={[this.props.style, {flex: 1}]}>
+      <View style={[{flex: 1}, this.props.style,]}>
         {
           React.Children.map(
             this.props.children,

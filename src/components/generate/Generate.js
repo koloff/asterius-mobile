@@ -110,7 +110,7 @@ export default class Generate extends React.Component {
     generateStore.generating = true;
     this._swiper.scrollBy(1);
     try {
-      await generateStore.generateWorkout();
+      await generateStore.generateWorkouts();
       setTimeout(() => {
         generateStore.generating = false;
         generateStore.generated = true;

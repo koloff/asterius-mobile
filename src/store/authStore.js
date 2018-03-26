@@ -1,7 +1,9 @@
-import {computed, action, extendObservable} from 'mobx';
+import {computed, action, observable, extendObservable} from 'mobx';
 import firebase from 'react-native-firebase';
 
 class AuthStore {
+  @observable newUser = true;
+
   constructor() {
     this.reset();
   }
@@ -68,6 +70,7 @@ class AuthStore {
       firebase.auth().currentUser.linkWithCredential(credential).then(async (user) => {
         console.log("Anonymous account successfully upgraded", user);
         // link does not trigger onAuthStateChanged
+        this.newUser = true;
         await this.init();
         return resolve(user);
       }, function(error) {

@@ -1,6 +1,9 @@
 import * as React from "react";
 import {observer} from 'mobx-react';
-import {Text, TouchableOpacity, View, StyleSheet, Animated, Slider} from 'react-native';
+import {
+  Text, TouchableOpacity, View, StyleSheet, Animated, Slider, Modal,
+  TouchableWithoutFeedback, TouchableNativeFeedback
+} from 'react-native';
 import {gs} from "../../globals";
 import {PieChart} from "react-native-svg-charts";
 import {Circle, G, Line, TSpan} from "react-native-svg";
@@ -8,27 +11,31 @@ import * as SVG from 'react-native-svg';
 import eatStore from "../../store/eatStore";
 import ElevatedView from "../ElevatedView";
 import userParametersStore from "../../store/userParametersStore";
+import tweakerStore from "../../store/tweakerStore";
+import RadioButtons from "../RadioButtons";
 
 const goals = [
-  'LOOSE THE MOST FAT\nRISK THE MOST MUSCLE',
-  'LOOSE MORE FAT\nRISK SOME MUSCLE',
-  'GAIN LEAN MUSCLE STEADY\nRECOMMENDED',
-  'GAIN MORE MUSCLE\nGAIN SOME FAT',
-  'GAIN THE MOST MUSCLE\nGAIN THE MOST FAT',
+  'Loose the most fat\nRisk the most muscle',
+  'Loose fat\nRisk some muscle',
+  'Gain lean muscle\nBalanced',
+  'Gain more muscle\nGain some fat',
+  'Gain the most muscle\nGain the most fat',
 ];
 
 const activities = [
-  'SEDENTARY LIFESTYLE\nINFREQUENT WORKOUTS',
-  'LIGHTLY ACTIVE LIFESTYLE\nFEW WORKOUTS PER WEEK',
-  'MODERATELY ACTIVE LIFESTYLE\nWORKOUT FREQUENTLY',
-  'VERY ACTIVE LIFESTYLE\nWORKOUT FREQUENTLY',
-  'ATHLETE\nHIGH INTENSITY',
+  'Sedentary lifestyle\nInfrequent workouts',
+  'Lightly active\nFew workouts weekly',
+  'Moderately active\nWorkout frequently',
+  'Very active\nWorkout frequently',
+  'Athlete\nHigh intensity',
 ];
 
 @observer
 export default class EatScreen extends React.Component {
   state = {
-    animation: new Animated.Value(0)
+    animation: new Animated.Value(0),
+    modalVisible: false,
+    modalView: ''
   };
 
   constructor(props) {
@@ -47,75 +54,84 @@ export default class EatScreen extends React.Component {
     }, 100)
   }
 
+  openOptionModal(option) {
+    this.setState({
+      modalVisible: true
+    });
+    this.setState({
+      modalView: option
+    })
+  }
+
   render() {
     return (
       <Animated.View style={{opacity: this.state.animation, flex: 1, justifyContent: 'center'}}>
 
         <View style={{
-          flexDirection: 'row'
+          flex: 1,
+          width: '100%',
+          height: 130,
+          flexDirection: 'row',
+          marginBottom: 10,
+          position: 'absolute',
+          top: 0,
+          padding: 20,
         }}>
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={[gs.text, gs.shadow, {
-              color: '#fff',
-              fontSize: 10,
-              textAlign: 'center',
-              position: 'absolute',
-              top: 18
-            }]}>{goals[userParametersStore.parameters.goal - 1]}</Text>
-            <Slider
-              thumbTintColor={'#F57C00'}
-              minimumTrackTintColor={'#F57C00'}
-              maximumTrackTintColor={'#888'}
-              step={1}
-              minimumValue={1}
-              maximumValue={5}
-              value={this.loadedGoal}
-              onValueChange={(val) => {
-                userParametersStore.setParameterImmediate('goal', val)
-              }}
-              onSlidingComplete={(val) => {
-                userParametersStore.setParameterFinish('goal', val)
-              }}
+
+          <ElevatedView elevation={3} style={{flex: 1, marginRight: 10, borderRadius: 5,}}>
+            <TouchableOpacity
               style={{
-                top: 25,
-                width: '100%',
-                height: 100
+                flex: 1,
+                borderRadius: 5,
+                padding: 15,
+                justifyContent: 'center',
+                backgroundColor: '#151515',
+                borderColor: '#222',
+                borderWidth: StyleSheet.hairlineWidth
               }}
-            />
-          </View>
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={[gs.text, gs.shadow, {
-              color: '#fff',
-              fontSize: 10,
-              textAlign: 'center',
-              position: 'absolute',
-              top: 18
-            }]}>{activities[userParametersStore.parameters.activity - 1]}</Text>
-            <Slider
-              thumbTintColor={'#F57C00'}
-              minimumTrackTintColor={'#F57C00'}
-              maximumTrackTintColor={'#888'}
-              step={1}
-              minimumValue={1}
-              maximumValue={5}
-              value={this.loadedActivity}
-              onValueChange={(val) => {
-                userParametersStore.setParameterImmediate('activity', val)
+              onPress={() => {
+                this.openOptionModal('goal');
               }}
-              onSlidingComplete={(val) => {
-                userParametersStore.setParameterFinish('activity', val)
-              }}
+            >
+              <View>
+                <Text style={[gs.text, gs.shadow, {fontSize: 17, color: '#ddd',}]}>GOAL</Text>
+                <Text style={[gs.text, gs.shadow, {
+                  color: '#999',
+                  fontSize: 11,
+                }]}>{goals[userParametersStore.parameters.goal - 1]}</Text>
+              </View>
+            </TouchableOpacity>
+          </ElevatedView>
+
+          <ElevatedView elevation={3} style={{flex: 1, marginLeft: 10, borderRadius: 5,}}>
+            <TouchableOpacity
               style={{
-                top: 25,
-                width: '100%',
-                height: 100
+                flex: 1,
+                borderRadius: 5,
+                padding: 15,
+                justifyContent: 'center',
+                backgroundColor: '#151515',
+                borderColor: '#222',
+                borderWidth: StyleSheet.hairlineWidth
               }}
-            />
-          </View>
+              onPress={() => {
+                this.openOptionModal('activity');
+              }}
+            >
+              <Text style={[gs.text, gs.shadow, {fontSize: 17, textAlign: 'left', color: '#ddd'}]}>LIFESTYLE</Text>
+              <Text style={[gs.text, gs.shadow, {
+                textAlign: 'left',
+                color: '#999',
+                fontSize: 11
+              }]}>{activities[userParametersStore.parameters.activity - 1]}</Text>
+            </TouchableOpacity>
+          </ElevatedView>
+
+
         </View>
 
 
-        <View style={{height: 400, width: 400, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{height: 400, width: 400, top: 30, alignItems: 'center', justifyContent: 'center'}}>
           <Text style={[gs.text, gs.shadow, {
             position: 'absolute',
             top: 165,
@@ -159,6 +175,84 @@ export default class EatScreen extends React.Component {
           />
         </View>
 
+        <Modal
+          visible={this.state.modalVisible}
+          transparent={true}
+          animationType={'fade'}
+          onRequestClose={() =>
+            this.setState({modalVisible: false})}
+        >
+          <TouchableWithoutFeedback
+            style={{
+              flex: 1,
+            }}
+            onPress={() => {
+              console.log('pressed');
+              this.setState({modalVisible: false})
+            }}
+          >
+            <View style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.95)',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+
+
+              {this.state.modalView === 'goal' && <RadioButtons
+                selected={userParametersStore.parameters.goal}
+                onSelectedChange={(value) => {
+                  userParametersStore.parameters.goal = value
+                }}
+                optionStyle={styles.optionStyle}
+                style={{width: 200, maxHeight: 500}}>
+                <View value={1}>
+                  <Text style={[gs.text, styles.optionText]}>Loose the most fat{'\n'}Risk more muscle</Text>
+                </View>
+                <View value={2}>
+                  <Text style={[gs.text, styles.optionText]}>Loose fat{'\n'}Risk some muscle</Text>
+                </View>
+                <View value={3}>
+                  <Text style={[gs.text, styles.optionText]}>Gain lean muscle{'\n'}Balanced</Text>
+                </View>
+                <View value={4}>
+                  <Text style={[gs.text, styles.optionText]}>Gain more muscle{'\n'}Gain some fat</Text>
+                </View>
+                <View value={5}>
+                  <Text style={[gs.text, styles.optionText]}>Gain the most muscle{'\n'}Gain more fat</Text>
+                </View>
+              </RadioButtons>}
+
+              {this.state.modalView === 'activity' && <RadioButtons
+                selected={userParametersStore.parameters.activity}
+                onSelectedChange={(value) => {
+                  userParametersStore.parameters.activity = value
+                }}
+                optionStyle={styles.optionStyle}
+                style={{width: 200, maxHeight: 500}}>
+                <View value={1}>
+                  <Text style={[gs.text, styles.optionText]}>Sedentary lifestyle{'\n'}Infrequent workouts</Text>
+                </View>
+                <View value={2}>
+                  <Text style={[gs.text, styles.optionText]}>Lightly active{'\n'}Few workouts weekly</Text>
+                </View>
+                <View value={3}>
+                  <Text style={[gs.text, styles.optionText]}>Moderately active{'\n'}Workout frequently</Text>
+                </View>
+                <View value={4}>
+                  <Text style={[gs.text, styles.optionText]}>Very active{'\n'}Workout frequently</Text>
+                </View>
+                <View value={5}>
+                  <Text style={[gs.text, styles.optionText]}>Athlete{'\n'}High intensity</Text>
+                </View>
+
+              </RadioButtons>}
+
+            </View>
+          </TouchableWithoutFeedback>
+
+        </Modal>
+
 
       </Animated.View>
     )
@@ -168,5 +262,15 @@ export default class EatScreen extends React.Component {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1
+  },
+  optionStyle: {
+    backgroundColor: '#222',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  optionText: {
+    color: '#fff',
+    textAlign: 'center'
   }
+
 });
