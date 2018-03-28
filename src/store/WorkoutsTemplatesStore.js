@@ -7,6 +7,10 @@ import WorkoutTemplateStore from './WorkoutTemplateStore';
 export default class WorkoutsTemplatesStore {
   @observable path;
   @observable workouts = [];
+  // user added new custom workout
+  // doing it with flag, because I don't know when listenChildAdded is fired
+  @observable addedCustomWorkout = false;
+  @observable addedCustomWorkoutToArray = false;
 
   constructor() {
     //todo
@@ -20,7 +24,12 @@ export default class WorkoutsTemplatesStore {
         key: snap.key
       };
       this.workouts.unshift(workout);
+      if (this.addedCustomWorkout) {
+        console.log('added custom workout');
+        this.addedCustomWorkoutToArray = true;
+      }
     });
+
   }
 
   listenChildRemoved() {
@@ -28,6 +37,7 @@ export default class WorkoutsTemplatesStore {
       let index = this.workouts.findIndex((item) => item.key === snap.key);
       this.workouts.splice(index, 1);
     })
+
   }
 
   removeWorkoutsInCurrentStore() {
@@ -38,6 +48,7 @@ export default class WorkoutsTemplatesStore {
 
   async addWorkout() {
     try {
+      this.addedCustomWorkout = true;
       let {key, path} = await database.push(this.path, {name: 'Custom workout'});
     } catch (err) {
       console.log(err);

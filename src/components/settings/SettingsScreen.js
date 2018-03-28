@@ -1,10 +1,12 @@
 import * as React from "react";
-import {Text, TouchableOpacity, View, Animated, Keyboard} from 'react-native';
+import {Text, TouchableOpacity, View, Animated, Keyboard, StyleSheet} from 'react-native';
 import {gs} from "../../globals";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import authStore from '../../store/authStore';
 import {withNavigation} from 'react-navigation';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import userParametersStore from "../../store/userParametersStore";
+import ElevatedView from "../ElevatedView";
 
 @withNavigation
 export default class SettingsScreen extends React.Component {
@@ -22,36 +24,65 @@ export default class SettingsScreen extends React.Component {
         opacity: this.state.opacity,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
       }}>
-        <View>
+
+
+        <ElevatedView elevation={3} style={{width: '100%', height: 100, marginBottom: 15, borderRadius: 5}}>
           <TouchableOpacity
             style={{
-              width: '100%',
-              marginTop: 10,
-              padding: 4
-            }}
-            onPress={async () => {
-              await authStore.logout();
-            }}>
-            <Text style={[gs.text, gs.shadow, {color: '#fff', fontSize: 31}]}>
-              <SimpleLineIcons name='logout' size={31} color='#fff'/> Logout
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '100%',
-              marginTop: 10,
-              padding: 4
+              flex: 1,
+              borderRadius: 5,
+              padding: 15,
+              justifyContent: 'center',
+              backgroundColor: '#151515',
+              borderColor: '#222',
+              borderWidth: StyleSheet.hairlineWidth
             }}
             onPress={async () => {
               this.props.navigation.navigate('Principles');
-            }}>
-            <Text style={[gs.text, gs.shadow, {color: '#fff', fontSize: 31}]}>
-              <MaterialCommunityIcons size={31} name={'dumbbell'}/> Principles
+            }}
+          >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                <MaterialCommunityIcons color={'#fff'} size={21} name={'dumbbell'}/> &nbsp;&nbsp;
+              </Text>
+              <View>
+                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                  Principles
+                </Text>
+                <Text style={[gs.text, gs.shadow, {
+                  textAlign: 'left',
+                  color: '#999',
+                  fontSize: 14
+                }]}>Learn the most important aspects</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </ElevatedView>
+
+        <ElevatedView elevation={3} style={{width: '100%', height: 100, marginBottom: 10, borderRadius: 5}}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderRadius: 5,
+              padding: 15,
+              justifyContent: 'center',
+              backgroundColor: '#151515',
+              borderColor: '#222',
+              borderWidth: StyleSheet.hairlineWidth
+            }}
+            onPress={async () => {
+              await authStore.logout();
+            }}
+          >
+            <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+              <SimpleLineIcons name='logout' size={21} color='#fff' /> &nbsp;&nbsp;Logout
             </Text>
           </TouchableOpacity>
-        </View>
+        </ElevatedView>
+
       </Animated.View>
     )
   }

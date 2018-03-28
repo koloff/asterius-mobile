@@ -7,7 +7,7 @@ import ElevatedView from "../ElevatedView";
 import Generate from './Generate';
 
 @observer
-export default class WorkoutsScreen extends React.Component {
+export default class GenerateStack extends React.Component {
 
 
   render() {

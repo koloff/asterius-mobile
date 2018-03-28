@@ -2,7 +2,7 @@ import {computed, action, observable, extendObservable} from 'mobx';
 import firebase from 'react-native-firebase';
 
 class AuthStore {
-  @observable newUser = true;
+  @observable newUser = false;
 
   constructor() {
     this.reset();
@@ -67,7 +67,7 @@ class AuthStore {
   async register(email, password) {
     return new Promise((resolve, reject) => {
       let credential = firebase.auth.EmailAuthProvider.credential(email, password);
-      firebase.auth().currentUser.linkWithCredential(credential).then(async (user) => {
+      firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential).then(async (user) => {
         console.log("Anonymous account successfully upgraded", user);
         // link does not trigger onAuthStateChanged
         this.newUser = true;
@@ -83,6 +83,9 @@ class AuthStore {
 
   async login(email, password) {
     return new Promise((resolve, reject) => {
+      if (!email || !password) {
+        return reject({message: 'Provide email and password!'});
+      }
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((user) => {
           return resolve(user);

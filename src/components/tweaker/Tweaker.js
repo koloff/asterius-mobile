@@ -23,6 +23,7 @@ import ExerciseWithMuscles from '../exercises/ExerciseWithMuscles';
 import ExerciseInWorkoutInTweaker from "../exercises/ExerciseInWorkoutInTweaker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DarkModal from "../DarkModal";
 
 @withNavigation
 @observer
@@ -148,34 +149,30 @@ export default class Tweaker extends Component {
           : <ActivityIndicator style={{top: '50%', marginTop: -50}} size="large" color="#777"/>}
 
 
-        <Modal
-          visible={this.state.modalVisible}
-          transparent={true}
-          animationType={'fade'}
-          onRequestClose={() =>
-            this.setState({modalVisible: false})}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.innerContainer}>
-              <Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>
-              <View style={{flexDirection: 'row', paddingTop: 10}}>
-                <View style={{marginRight: 10}}><Button
-                  color={'red'}
-                  onPress={() => {
-                    tweakerStore.workoutTemplateStore.removeWorkout();
-                    this.props.navigation.goBack();
-                    this.setState({modalVisible: false})
-                  }}
-                  title="Delete"
-                /></View>
-                <View><Button
-                  onPress={() => this.setState({modalVisible: false})}
-                  title="Close"
-                /></View>
-              </View>
+        <DarkModal
+          modalVisible={this.state.modalVisible}
+          onModalClose={() => {
+            this.setState({modalVisible: false})
+          }}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>
+            <View style={{flexDirection: 'row', paddingTop: 10}}>
+              <View style={{marginRight: 10}}><Button
+                color={'red'}
+                onPress={() => {
+                  tweakerStore.workoutTemplateStore.removeWorkout();
+                  this.props.navigation.goBack();
+                  this.setState({modalVisible: false})
+                }}
+                title="Delete"
+              /></View>
+              <View><Button
+                onPress={() => this.setState({modalVisible: false})}
+                title="Close"
+              /></View>
             </View>
           </View>
-        </Modal>
+        </DarkModal>
 
 
       </View>
@@ -378,13 +375,5 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     alignSelf: 'center'
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.9)',
-  },
-  innerContainer: {
-    alignItems: 'center',
-  },
+  }
 });

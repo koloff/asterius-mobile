@@ -218,11 +218,15 @@ class ExerciseLogSetStore {
     this.weight = set.weight;
     this.removed = set.removed;
 
-    autorunAsync(() => {
+    autorun(() => {
       if (this.exerciseLogStore.workoutTemplateExerciseStore) {
         this.removed = this.exerciseLogStore.workoutTemplateExerciseStore.sets <= this.index;
-        database.save(this.path + '/removed', this.removed);
+      }
+    });
 
+    autorunAsync(() => {
+      if (this.exerciseLogStore.workoutTemplateExerciseStore) {
+        database.save(this.path + '/removed', this.removed);
       }
     }, 500);
   }

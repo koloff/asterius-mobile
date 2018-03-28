@@ -187,12 +187,12 @@ class NewUserModal extends React.Component {
       </Text>
       <TouchableOpacity
         style={{padding: 10}}
-      onPress={() => {
-        this.setState({modalVisible: false});
-        this.props.navigation.navigate('Principles');
-      }}>
-        <Text style={[gs.text, gs.shadow, {fontSize: 20, textAlign: 'center', color: '#EF6C00'}]}>
-          <MaterialCommunityIcons size={20} name={'dumbbell'} />
+        onPress={() => {
+          this.setState({modalVisible: false});
+          this.props.navigation.navigate('Principles');
+        }}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 20, textAlign: 'center', color: '#ccc'}]}>
+          <MaterialCommunityIcons size={20} name={'dumbbell'}/>
           &nbsp; SHOW ME
         </Text>
       </TouchableOpacity>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Observer, observer} from 'mobx-react';
+import {autorun} from 'mobx';
 import * as Mobx from 'mobx';
 import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image, Animated, ActivityIndicator} from 'react-native';
 
@@ -159,6 +160,17 @@ class MiniWorkoutsList extends React.Component {
     this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
     this.workoutsTemplatesStore.listenChildAdded();
     this.workoutsTemplatesStore.listenChildRemoved();
+
+    autorun(() => {
+      if (this.workoutsTemplatesStore.addedCustomWorkoutToArray) {
+        this.props.navigation.navigate('Tweaker', {
+          workoutTemplateStore: this.workoutsTemplatesStore.workouts[0].workoutStore,
+          canDelete: true
+        });
+        this.workoutsTemplatesStore.addedCustomWorkout = false;
+        this.workoutsTemplatesStore.addedCustomWorkoutToArray = false;
+      }
+    })
   }
 
   _renderItem = ({item, index}) => {

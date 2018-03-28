@@ -3,6 +3,7 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {observer} from 'mobx-react';
 import _ from 'lodash';
 import {gs} from "../../globals";
+import userParametersStore from '../../store/userParametersStore';
 
 @observer
 export default class SetLog extends React.Component {
@@ -63,7 +64,7 @@ export default class SetLog extends React.Component {
             keyboardType={'numeric'}
             placeholderTextColor={'#444'}
             selectionColor={'#F57C00'}
-            placeholder={'kg'}
+            placeholder={userParametersStore.parameters.measuringUnit === 1 ? 'kg' : 'lbs'}
             ref={(ref) => {
               this._weightInput = ref
             }}

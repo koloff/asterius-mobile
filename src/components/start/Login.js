@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Toast from 'react-native-root-toast';
-
+import userParametersStore from '../../store/userParametersStore';
 import {gs} from "../../globals";
 
 
@@ -154,6 +154,10 @@ export default class Login extends React.Component {
               }}
               onPress={() => {
                 authStore.loginAnonymously();
+                if (!userParametersStore.parameters.gender) {
+                  this.props.onTransition && this.props.onTransition('Generate');
+                  return;
+                }
                 this.props.onTransition && this.props.onTransition('Register');
               }}>
               <Text style={[gs.text, {

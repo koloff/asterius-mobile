@@ -53,8 +53,7 @@ export default class ExerciseLog extends React.Component {
               fontSize: 18,
               marginBottom: 12
             }]}>
-              {this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}.
-              {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}
+              {this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}
             </Text>
           </TouchableOpacity>
 

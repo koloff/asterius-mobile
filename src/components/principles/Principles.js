@@ -65,7 +65,7 @@ export default class Principles extends React.Component {
         source={{
           html: `<style>
 html {padding: 1.5em;}
-p {text-align: justify; text-indent: 2em;}
+p {color: #101010; text-align: justify; text-indent: 2em;}
 h1 {text-align: center; font-size: 1.2em}
 li {text-align: justify; margin-top: 1.1em; }
 li a {text-decoration: none;}

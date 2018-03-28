@@ -12,6 +12,7 @@ import exercisesLogsStore from "../../store/exercisesLogsStore";
 import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import DarkModal from "../DarkModal";
 
 
 @withNavigation
@@ -40,7 +41,7 @@ export default class WorkoutLog extends React.Component {
     await Promise.all(promises)
       .then(() => {
         this.exerciseLogsStore =
-          this.setState({loading: false})
+          this.setState({loading: false});
         //todo move
         if (!this.exercises.length) {
           this.animateContent();
@@ -193,55 +194,40 @@ export default class WorkoutLog extends React.Component {
                   />
                 )
               })}
+              <View style={{height: 340}}/>
             </ScrollView>}
         </Animated.View>}
 
       </View>
 
 
-      <Modal
-        visible={this.state.modalVisible}
-        transparent={true}
-        animationType={'fade'}
-        onRequestClose={() =>
-          this.setState({modalVisible: false})}
+      <DarkModal
+        modalVisible={this.state.modalVisible}
+        onModalClose={() => {
+          this.setState({modalVisible: false})
+        }}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.innerContainer}>
-            <Text style={[gs.text, gs.shadow]}>Delete this workout log?</Text>
-            <View style={{flexDirection: 'row', paddingTop: 10}}>
-              <View style={{marginRight: 10}}><Button
-                color={'red'}
-                onPress={() => {
-                  requestAnimationFrame(() => {
-                    this.workoutLogStore.remove();
-                    this.props.navigation.goBack();
-                    this.setState({modalVisible: false})
-                  })
-                }}
-                title="Delete"
-              /></View>
-              <View><Button
-                onPress={() => this.setState({modalVisible: false})}
-                title="Close"
-              /></View>
-            </View>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={[gs.text, gs.shadow]}>Delete this workout log?</Text>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <View style={{marginRight: 10}}><Button
+              color={'red'}
+              onPress={() => {
+                this.workoutLogStore.remove();
+                this.props.navigation.goBack();
+                this.setState({modalVisible: false})
+              }}
+              title="Delete"
+            /></View>
+            <View><Button
+              onPress={() => this.setState({modalVisible: false})}
+              title="Close"
+            /></View>
           </View>
         </View>
-      </Modal>
+      </DarkModal>
+
 
     </View>
   }
 }
-
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.9)',
-  },
-  innerContainer: {
-    alignItems: 'center',
-  },
-});

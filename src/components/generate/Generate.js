@@ -35,7 +35,7 @@ import {withNavigation} from "react-navigation";
 export default class Generate extends React.Component {
   state = {
     loading: true,
-    slide: 4,
+    slide: 0,
     durationSliderValue: userParametersStore.parameters.duration,
     keyboardOpen: false,
     generating: false,
@@ -186,7 +186,7 @@ export default class Generate extends React.Component {
         </View>
 
         <Swiper
-          index={4}
+          index={0}
           ref={(ref) => {
             this._swiper = ref
           }}
