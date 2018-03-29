@@ -5,6 +5,7 @@ import {
   StatusBar,
   View, Text, YellowBox
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import Router from './Router';
 
 import authStore from './store/authStore';
@@ -17,35 +18,19 @@ export default class App extends Component {
     isReady: false
   };
 
-  async componentDidMount() {
+  async componentWillMount() {
     await authStore.init();
     await userParametersStore.init();
     this.setState({isReady: true});
-
-    // SEED DATA
-    // database.save(`workoutsLogs/${authStore.uid}`, {
-    //   '2018-02-10': {
-    //     workoutTemplate: {
-    //       name: 'Workout A',
-    //       exercises: [
-    //         {id: 'reversePecDeck', sets: 3},
-    //         {id: 'highCableCrossover', sets: 3},
-    //         {id: 'ropePushdown', sets: 77},
-    //         {id: 'dumbbellShoulderPress', sets: 4},
-    //         {id: 'lowCableCrossover', sets: 3},
-    //         {id: 'dumbbellInclineBenchPress', sets: 4},
-    //         {id: 'seatedTricepsPress', sets: 3}
-    //       ]
-    //     }
-    //   },
-    // })
-
+    setTimeout(() => {
+      SplashScreen.hide();
+    })
   }
 
   render() {
 
     if (!this.state.isReady) {
-      return <View></View>
+      return <View style={styles.container}/>
     }
     return (
       <View style={styles.container}>
