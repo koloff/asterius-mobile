@@ -225,9 +225,7 @@ class ExerciseLogSetStore {
     });
 
     autorunAsync(() => {
-      if (this.exerciseLogStore.workoutTemplateExerciseStore) {
-        database.save(this.path + '/removed', this.removed);
-      }
+      database.save(this.path + '/removed', this.removed);
     }, 500);
   }
 

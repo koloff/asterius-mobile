@@ -38,7 +38,7 @@ export default class Generate extends React.Component {
     slide: 0,
     durationSliderValue: userParametersStore.parameters.duration,
     keyboardOpen: false,
-    generating: false,
+    generating: false
   };
 
   constructor(props) {
@@ -104,6 +104,20 @@ export default class Generate extends React.Component {
     userParametersStore.switchMuscle(id);
 
 
+    if (this.musclesToast) {
+      Toast.hide(this.musclesToast);
+      this.musclesToast = null;
+    }
+
+    if (!generateStore.enoughTimeForIsolation) {
+      this.musclesToast = Toast.show(`Your overall training time might not be enough to include isolation exercises. 
+      Select only the most important muscles or increase the duration or frequency of training.`, {
+        duration: 6000,
+        shadow: true,
+        backgroundColor: 'rgba(255,160,0 ,1)',
+        position: -10,
+      });
+    }
   }
 
   async generateWorkouts() {
@@ -248,8 +262,10 @@ export default class Generate extends React.Component {
           />
 
           <View style={{flex: 1, width: '100%', height: '100%', padding: 6, paddingTop: 100}}>
-            {generateStore.generating && <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', top: -50}}>
-              <Text style={[gs.text, {color: '#999', textAlign: 'center', marginBottom: 10}]}>This might take time</Text>
+            {generateStore.generating &&
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', top: -50}}>
+              <Text style={[gs.text, {color: '#999', textAlign: 'center', marginBottom: 10}]}>This might take
+                time</Text>
               <ActivityIndicator size={'large'} color={'#999'}/>
             </View>}
             {generateStore.generated && <GeneratedWorkoutsSlide

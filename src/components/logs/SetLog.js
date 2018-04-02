@@ -62,7 +62,7 @@ export default class SetLog extends React.Component {
             style={[gs.text, styles.input]}
             underlineColorAndroid={'transparent'}
             keyboardType={'numeric'}
-            placeholderTextColor={'#444'}
+            placeholderTextColor={'#555'}
             selectionColor={'#F57C00'}
             placeholder={userParametersStore.parameters.measuringUnit === 1 ? 'kg' : 'lbs'}
             ref={(ref) => {

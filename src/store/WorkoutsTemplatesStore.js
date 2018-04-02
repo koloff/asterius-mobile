@@ -29,7 +29,6 @@ export default class WorkoutsTemplatesStore {
         this.addedCustomWorkoutToArray = true;
       }
     });
-
   }
 
   listenChildRemoved() {
@@ -37,7 +36,6 @@ export default class WorkoutsTemplatesStore {
       let index = this.workouts.findIndex((item) => item.key === snap.key);
       this.workouts.splice(index, 1);
     })
-
   }
 
   removeWorkoutsInCurrentStore() {

@@ -2,7 +2,7 @@ import * as React from "react";
 import {observer} from 'mobx-react';
 import {
   Text, TouchableOpacity, View, StyleSheet, Animated, Slider, Modal,
-  TouchableWithoutFeedback, TouchableNativeFeedback
+  TouchableWithoutFeedback, Dimensions
 } from 'react-native';
 import {gs} from "../../globals";
 import {PieChart} from "react-native-svg-charts";
@@ -42,6 +42,8 @@ export default class EatScreen extends React.Component {
     super(props);
     this.loadedGoal = userParametersStore.parameters.goal;
     this.loadedActivity = userParametersStore.parameters.activity;
+
+    this.width = Dimensions.get('window').width;
   }
 
   componentDidMount() {
@@ -64,8 +66,14 @@ export default class EatScreen extends React.Component {
   }
 
   render() {
+    // noinspection JSSuspiciousNameCombination
     return (
-      <Animated.View style={{opacity: this.state.animation, flex: 1, justifyContent: 'center'}}>
+      <Animated.View style={{
+        opacity: this.state.animation,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
 
         <View style={{
           flex: 1,
@@ -126,24 +134,22 @@ export default class EatScreen extends React.Component {
               }]}>{activities[userParametersStore.parameters.activity - 1]}</Text>
             </TouchableOpacity>
           </ElevatedView>
-
-
         </View>
 
 
-        <View style={{height: 400, width: 400, top: 30, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{height: this.width, width: this.width, top: 30, alignItems: 'center', justifyContent: 'center'}}>
           <Text style={[gs.text, gs.shadow, {
             position: 'absolute',
-            top: 165,
+            top: (this.width) / 2 - 35,
             fontSize: 29,
             textAlign: 'center'
           }]}>{eatStore.calories}{'\n'}<Text style={{fontSize: 21}}>KCal</Text></Text>
           <PieChart
-            style={{height: 400, width: 400}}
+            style={{height: this.width, width: this.width}}
             data={eatStore.macrosChartData}
-            innerRadius={58}
-            outerRadius={80}
-            labelRadius={150}
+            innerRadius={'30%'}
+            outerRadius={'40%'}
+            labelRadius={this.width / 2 - 50}
             contentInset={{top: 0, left: 0, right: 0, bottom: 0}}
             renderDecorator={({item, pieCentroid, labelCentroid, index}) => (
               <G key={index}>
@@ -152,12 +158,13 @@ export default class EatScreen extends React.Component {
                   y1={labelCentroid[1]}
                   x2={pieCentroid[0]}
                   y2={pieCentroid[1]}
+                  strokeWidth={3}
                   stroke={item.svg.fill}
                 />
                 <Circle
                   cx={labelCentroid[0]}
                   cy={labelCentroid[1]}
-                  r={50}
+                  r={40}
                   fill={item.svg.fill}
                 />
                 <SVG.Text

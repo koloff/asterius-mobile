@@ -124,7 +124,7 @@ export default class Tweaker extends Component {
             <Text style={[gs.text, {
               fontSize: 12,
               color: '#999'
-            }]}>Estimated {tweakerStore.workoutTemplateStore.workoutDurationText}</Text>
+            }]}>{tweakerStore.workoutTemplateStore.workoutDurationText}</Text>
           </View>
 
           {this.canDelete && <TouchableOpacity

@@ -244,7 +244,7 @@ class MiniWorkoutsList extends React.Component {
         </View>
 
         <View style={{
-          flex: 1, justifyContent: 'center', padding: 30, paddingTop: 0, paddingBottom: 0
+          flex: 1, justifyContent: 'center', padding: 15, paddingTop: 0, paddingBottom: 0
         }}>
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.4)']}

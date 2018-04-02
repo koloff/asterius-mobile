@@ -50,11 +50,11 @@ export default class WorkoutTemplateStore {
     let leftMinutes = Math.floor(minutes - hours * 60);
 
     if (hours && leftMinutes) {
-      return `${hours} hr ${leftMinutes} min`;
+      return `${hours} HR ${leftMinutes} MIN`;
     } else if (hours) {
-      return `${hours} hr`
+      return `${hours} HR`
     } else {
-      return `${leftMinutes} min`;
+      return `${leftMinutes} MIN`;
     }
   }
 

@@ -79,7 +79,9 @@ class LogsScroll extends React.Component {
 
 
         {this.props.exerciseLogsStore.exerciseLogs.map((exerciseLogStore) => {
-          return <Log key={exerciseLogStore.dateStr} exerciseLogStore={exerciseLogStore}/>
+          if (!exerciseLogStore.sets[0].removed) {
+            return <Log key={exerciseLogStore.dateStr} exerciseLogStore={exerciseLogStore}/>
+          }
         })}
 
       </ScrollView>

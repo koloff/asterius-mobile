@@ -1,4 +1,4 @@
-import {observable, extendObservable, reaction} from 'mobx';
+import {observable, extendObservable, computed} from 'mobx';
 import database from '../database';
 import authStore from './authStore';
 import _ from 'lodash';
@@ -62,7 +62,7 @@ class GenerateStore {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
 
-        for (let i = workouts.length - 1; i >=0 ; i--) {
+        for (let i = workouts.length - 1; i >= 0; i--) {
           let ref = await database.push(`/workoutsTemplates/${authStore.uid}`, workouts[i]);
           this.workoutsTemplatesStore.workouts.unshift({
             workoutStore: new WorkoutTemplateStore(workouts[i], ref.path),
@@ -77,6 +77,17 @@ class GenerateStore {
         return reject(false);
       }
     })
+  }
+
+  @computed get enoughTimeForIsolation() {
+    let preferredMusclesCount = userParametersStore.parameters.preferredMuscles.length;
+    let days = userParametersStore.parameters.days;
+    let duration = userParametersStore.parameters.duration;
+
+    if (!preferredMusclesCount) {
+      return true;
+    }
+    return (days * duration) / preferredMusclesCount >= 23
   }
 
   deleteGeneratedWorkouts() {

@@ -131,7 +131,7 @@ const MainNavigator = StackNavigator({
   },
   Generate: {
     screen: GenerateStack
-  }
+  },
 }, {
   headerMode: 'none',
   cardStyle: {

@@ -22,13 +22,10 @@ export default class App extends Component {
     await authStore.init();
     await userParametersStore.init();
     this.setState({isReady: true});
-    setTimeout(() => {
-      SplashScreen.hide();
-    })
+    SplashScreen.hide();
   }
 
   render() {
-
     if (!this.state.isReady) {
       return <View style={styles.container}/>
     }
@@ -50,4 +47,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#000'
   }
 });
-
