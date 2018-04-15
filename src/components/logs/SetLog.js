@@ -26,12 +26,21 @@ export default class SetLog extends React.Component {
   }
 
 
+  componentDidMount() {
+    if (!this.state.reps && this.props.exerciseIndex === 0 && this.exerciseLogSetStore.index === 0) {
+      this.repsRef.focus();
+    }
+  }
+
   @observer
   render() {
     return (
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View style={{alignItems: 'center'}}>
           <TextInput
+            ref={(ref) => {
+              this.repsRef = ref;
+            }}
             style={[gs.text, styles.input]}
             underlineColorAndroid={'transparent'}
             placeholder={'reps'}
@@ -84,10 +93,10 @@ export default class SetLog extends React.Component {
           />
         </View>
         {/*<View style={{*/}
-          {/*width: 0,*/}
-          {/*borderWidth: StyleSheet.hairlineWidth,*/}
-          {/*borderColor: '#333',*/}
-          {/*height: 52*/}
+        {/*width: 0,*/}
+        {/*borderWidth: StyleSheet.hairlineWidth,*/}
+        {/*borderColor: '#333',*/}
+        {/*height: 52*/}
         {/*}}>*/}
         {/*</View>*/}
       </View>

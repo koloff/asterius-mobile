@@ -48,13 +48,20 @@ export default class ExerciseLog extends React.Component {
             onPress={() => {
               Linking.openURL(`https://www.youtube.com/results?search_query=${this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}`)
             }}>
-            <Text style={[gs.text, {
-              color: '#999',
-              fontSize: 18,
-              marginBottom: 12
-            }]}>
-              {this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}
-            </Text>
+            <View
+              style={{flexDirection: 'row'}}>
+              <Text
+                numberOfLines={1}
+                style={[gs.text, {
+                  color: '#999',
+                  fontSize: 18,
+                  marginBottom: 12
+                }]}>
+                {this.exerciseLogStore.workoutTemplateExerciseStore.index + 1}. {this.exerciseLogStore.workoutTemplateExerciseStore.details.info.name}&nbsp;
+              </Text>
+              <MaterialCommunityIcons style={{top: 5}} color={'#B0BEC5'} name={'youtube-play'} size={18}/>
+            </View>
+
           </TouchableOpacity>
 
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>

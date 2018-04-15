@@ -21,10 +21,12 @@ class WeightLogsStore {
     let timestamp = new Date();
     timestamp.setDate(timestamp.getDate() - days);
     let ref = firebase.database().ref(this.path);
+    ref.off('child_added');
     ref
       .orderByChild('time')
       .startAt(timestamp.getTime())
       .on('child_added', (ref) => {
+        console.log('log added');
         let log = {...ref.val(), key: ref.key};
         this.logs.unshift(log);
       });

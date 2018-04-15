@@ -22,7 +22,7 @@ function getRandomFitnessLevel(option) {
 }
 
 function getRandomDuration(option) {
-  let durationsOptions = [getRandomInt(55, 60), getRandomInt(65, 70), getRandomInt(80, 80)];
+  let durationsOptions = [getRandomInt(60, 60), getRandomInt(65, 75), getRandomInt(75, 80)];
   return durationsOptions[option];
 }
 
@@ -50,7 +50,7 @@ for (let i = 0; i < 10; i++) {
   let days = getRandomDays(getRandomInt(0, 0));
   let duration = getRandomDuration(getRandomInt(0, 0));
   let fitnessLevel = getRandomFitnessLevel(getRandomInt(2, 2));
-  let preferredMuscles = getRandomMuscles(getRandomInt(1, 2));
+  let preferredMuscles = getRandomMuscles(getRandomInt(0,0));
 
   console.log('---------------------');
   console.log(gender, days, duration, fitnessLevel, preferredMuscles);

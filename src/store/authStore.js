@@ -67,6 +67,9 @@ class AuthStore {
 
   async register(email, password) {
     return new Promise((resolve, reject) => {
+      if (!email || !password) {
+        return reject({message: 'Provide email and password!'});
+      }
       let credential = firebase.auth.EmailAuthProvider.credential(email, password);
       firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential).then(async (user) => {
         console.log("Anonymous account successfully upgraded", user);

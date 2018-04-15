@@ -15,9 +15,10 @@ class GenerateStore {
   musclesModelStore;
   workoutsTemplatesStore;
 
+
   @observable generating = false;
   @observable generated = false;
-
+  @observable registerFocused = false;
 
   init() {
     this.musclesModelStore = new MusclesModelStore();

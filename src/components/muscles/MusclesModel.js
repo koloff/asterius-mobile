@@ -59,13 +59,12 @@ export default class MusclesModel extends React.Component {
   // have to use pan responder because TouchableWithoutFeedback does not transform scale well
   _getModelPanResponder(sidePoints) {
     return {
-      onMoveShouldSetPanResponderCapture: (e, gestureState) => {
+      onStartShouldSetPanResponderCapture: (e, gestureState) => {
         return isClick(e, gestureState);
       },
 
       onPanResponderMove: (e, gestureState) => {
         let click = isClick(e, gestureState);
-
         if (!click) {
           this.setState({isClick: false});
         }

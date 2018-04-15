@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Modal, Button, Image, ImageBackground} from 'react-native';
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 import * as Mobx from "mobx";
 import {gs} from "../../globals";
 
@@ -29,6 +30,16 @@ export default class MiniWorkoutInList extends React.Component {
     this.setState({loading: false});
   }
 
+  @computed get performedString(){
+    let days = Math.abs(moment(this.props.workoutTemplateStore.lastPerformedDate).diff(moment(), 'days'));
+    if (days === 0) {
+      return 'TODAY';
+    }
+    if (days === 1) {
+      return 'YESTERDAY'
+    }
+    return `${days} DAYS AGO`;
+  }
 
   @observer
   render() {
@@ -64,6 +75,7 @@ export default class MiniWorkoutInList extends React.Component {
               }}>
 
               <View style={{
+                top: -5,
                 padding: 6,
                 paddingLeft: 10,
                 flex: 1,
@@ -77,10 +89,21 @@ export default class MiniWorkoutInList extends React.Component {
                 }]}>{this.props.workoutTemplateStore.name}</Text>
                 <Text style={[gs.text, {
                   marginTop: 1,
-                  fontSize: 12,
-                  color: '#777'
+                  fontSize: 11,
+                  color: '#999'
                 }]}>{this.workoutTemplateStore.workoutDurationText}</Text>
               </View>
+
+              {this.props.workoutTemplateStore.lastPerformedDate && <Text style={[gs.text, {
+                position: 'absolute',
+                bottom: 3,
+                width: '100%',
+                fontSize: 10,
+                textAlign: 'center',
+                color: '#555'
+              }]}><Entypo name={'back-in-time'} size={9}/>
+                 &nbsp;{this.performedString}
+              </Text>}
             </TouchableOpacity>
           </ElevatedView>
 
@@ -125,19 +148,6 @@ export default class MiniWorkoutInList extends React.Component {
                 </Text>
               </TouchableOpacity>
             </View>}
-
-
-            {this.props.workoutTemplateStore.lastPerformedDate && <Text style={[gs.text, {
-              position: 'absolute',
-              bottom: -2,
-              width: '100%',
-              fontSize: 10,
-              textAlign: 'center',
-              color: '#999'
-            }]}><Entypo name={'back-in-time'} size={9}/> {moment(this.props.workoutTemplateStore.lastPerformedDate).format('D MMM')}
-            </Text>}
-
-
           </View>
 
 

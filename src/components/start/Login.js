@@ -19,26 +19,10 @@ export default class Login extends React.Component {
   state = {
     email: '',
     password: '',
-    keyboardOpen: false,
     loading: false
   };
 
-  componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      this.setState({keyboardOpen: true})
-    });
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      this.setState({keyboardOpen: false})
-    });
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
   render() {
-
     return (
       <Animated.View style={[styles.wrapper, {
         zIndex: this.props.isActive ? 200 : 1,
@@ -61,8 +45,7 @@ export default class Login extends React.Component {
           flex: 1,
           padding: 40,
           justifyContent: 'center',
-          alignItems: 'center',
-          // marginBottom: this.state.keyboardOpen ? 100 : 0
+          alignItems: 'center'
         }}>
 
           <TextInput

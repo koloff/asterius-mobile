@@ -159,7 +159,7 @@ export default class Router extends React.Component {
     if (!authStore.logged) {
       return <StartNavigator/>
     } else {
-      return <MainNavigator/>;
+      return <MainNavigator/>;m
     }
   }
 }

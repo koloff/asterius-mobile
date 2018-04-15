@@ -1,4 +1,7 @@
 export default function(e, gestureState) {
+
+
+
   const belowDx = Math.abs(gestureState.dx) < 2.5;
   const belowDy = Math.abs(gestureState.dy) < 2.5;
   const belowVx = Math.abs(gestureState.vx) < 0.1;

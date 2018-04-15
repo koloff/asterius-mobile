@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Toast from 'react-native-root-toast';
+import {autorun} from 'mobx';
 
 import {gs} from "../../globals";
 
@@ -13,33 +14,25 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import authStore from '../../store/authStore';
 import ElevatedView from "../ElevatedView";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import generateStore from "../../store/generateStore";
 
 @observer
 export default class Register extends React.Component {
   state = {
     email: '',
     password: '',
-    keyboardOpen: false,
     loading: false
   };
 
   componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      this.setState({keyboardOpen: true})
-    });
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      this.setState({keyboardOpen: false})
-    });
+    autorun(() => {
+      if (generateStore.registerFocused) {
+        this.generateEmailRef.focus();
+      }
+    })
   }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
 
   render() {
-
     return (
       <Animated.View style={[styles.wrapper, {
         zIndex: this.props.isActive ? 200 : 1,
@@ -63,8 +56,7 @@ export default class Register extends React.Component {
           flex: 1,
           padding: 40,
           justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: this.state.keyboardOpen ? 100 : 0
+          alignItems: 'center'
         }}>
 
           <TextInput
@@ -76,6 +68,7 @@ export default class Register extends React.Component {
               color: '#fff',
               borderRadius: 5
             }]}
+            ref={(ref) => {this.generateEmailRef = ref}}
             placeholderTextColor={'#777'}
             onChangeText={(text) => this.setState({email: text})}
             placeholder={'EMAIL'}

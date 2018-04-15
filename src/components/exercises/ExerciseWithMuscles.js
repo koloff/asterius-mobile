@@ -8,6 +8,7 @@ import * as ec from '../../algorithm/exercises/exercises-collection';
 import tweakerStore from '../../store/tweakerStore';
 import {gs} from "../../globals";
 import SetCount from "./SetCount";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 // props - id
@@ -34,10 +35,17 @@ export default class ExerciseWithMuscles extends React.Component {
               onPress={() => {
                 Linking.openURL(`https://www.youtube.com/results?search_query=${this.state.exercise.info.name}`)
               }}>
-              <Text style={[gs.text, styles.exerciseName, {
-                color: '#B0BEC5',
-                fontSize: 16
-              }]}>{this.state.exercise.info.name}</Text>
+
+              <View
+                style={{flexDirection: 'row'}}>
+                <Text
+                  numberOfLines={1}
+                  style={[gs.text, styles.exerciseName, {
+                    fontSize: 16,
+                    color: '#B0BEC5'
+                  }]}>{this.state.exercise.info.name}&nbsp;</Text>
+                <MaterialCommunityIcons style={{top: 4}} color={'#B0BEC5'} name={'youtube-play'} size={16}/>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={styles.musclesUsedBox}>

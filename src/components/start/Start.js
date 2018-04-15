@@ -11,6 +11,7 @@ import Welcome from './Welcome';
 import Register from './Register';
 import Generate from '../generate/Generate';
 import Login from './Login';
+import generateStore from "../../store/generateStore";
 
 let {height, width} = Dimensions.get('window');
 
@@ -18,7 +19,6 @@ let {height, width} = Dimensions.get('window');
 export default class Start extends React.Component {
   state = {
     view: 'Welcome',
-
     transitions: [
       {key: 'logo', value: new Animated.Value(1)},
       {key: 'Welcome', value: new Animated.Value(1)},
@@ -61,6 +61,8 @@ export default class Start extends React.Component {
   }
 
   onTransition(view) {
+    generateStore.registerFocused = this.state.view === 'Generate' && view === 'Register';
+
     this.setState({view});
 
 

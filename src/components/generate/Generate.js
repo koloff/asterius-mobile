@@ -293,7 +293,7 @@ const Question = (props) => {
 
 const Slide1 = observer((props) => {
   return <View style={[styles.slide1]}>
-    <Question text={'What is your gender?'}/>
+    <Question text={'What is your sex?'}/>
 
     <RadioButtons
       selected={userParametersStore.parameters.gender}
@@ -478,7 +478,6 @@ const Slide4 = observer((props) => {
     <View style={{paddingLeft: 14, paddingRight: 14, width: '100%'}}>
       <ElevatedView
         style={{
-          top: -10,
           borderWidth: 1,
           borderColor: 'rgba(255,143,0 ,1)',
           height: 70,
@@ -490,7 +489,7 @@ const Slide4 = observer((props) => {
           {userParametersStore.parameters.duration} MINUTES
         </Text>
         <Text style={[gs.text, {textAlign: 'center', color: '#999', fontSize: 12}]}>
-          5 minutes of them are for warmup
+          10 minutes of them are for warmup
         </Text>
       </ElevatedView>
     </View>
@@ -505,7 +504,7 @@ const Slide4 = observer((props) => {
       thumbTintColor={'#B0BEC5'}
       maximumTrackTintColor={'#B0BEC5'}
       minimumTrackTintColor={'#616161'}
-      style={{height: 100, width: '100%', top: -30}}
+      style={{height: 60, width: '100%'}}
       value={props.durationSliderValue}
       onValueChange={(val) => {
         userParametersStore.parameters.duration = val;

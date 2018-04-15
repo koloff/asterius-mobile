@@ -9,7 +9,8 @@
     "cleanstart": "cd .. && react-native run-android",
     "logs": "adb logcat *:S ReactNative:V ReactNativeJS:V -v raw",
     "restart": "adb shell input text \"RR\"",
-    "build": "react-native run-android --variant=release"
+    "build": "react-native run-android --variant=release",
+    "compile": "cd android && gradlew assembleRelease"
   },
   "dependencies": {
     "d3-shape": "^1.2.0",

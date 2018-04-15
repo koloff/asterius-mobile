@@ -1,5 +1,6 @@
 let _ = require('lodash');
 let mc = require('./muscles/muscles-collection');
+let ecIds = require('./exercises/exercises-ids');
 
 let generateVolume = require('./generate-volume');
 let calculateFitnessLevel = require('./calculate-fitness-level');
@@ -42,6 +43,19 @@ function generateSingleWorkout(options) {
     return workout;
   }
 
+  //  todo move SIDE CASE
+  if (options.single) {
+    return [
+      {id: ecIds.legs.barbellSquat, sets: 4},
+      {id: ecIds.chest.dumbbellBenchPress, sets: 4},
+      {id: ecIds.back.latPulldownWideGrip, sets: 4},
+      {id: ecIds.shoulders.lateralRaise, sets: 2},
+      {id: ecIds.shoulders.reversePecDeck, sets: 2},
+      {id: ecIds.triceps.tricepsPushdown, sets: 2},
+      {id: ecIds.biceps.barbellCurl, sets: 2},
+    ]
+  }
+
 
   // if still cannot generate, increase time
   options.sets += 4;
@@ -76,7 +90,7 @@ function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
     fullBodyOptions.trainedMuscles = _.clone(splits.fullBody);
     fullBodyOptions.preferredMuscles = _.clone(preferredMuscles);
 
-    let A = generateSingleWorkout(fullBodyOptions);
+    let A = generateSingleWorkout({...fullBodyOptions, single: true});
     return {A};
   }
 

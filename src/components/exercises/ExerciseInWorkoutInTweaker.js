@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import tweakerStore from '../../store/tweakerStore';
 import {gs} from "../../globals";
 import SetCount from "./SetCount";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // props: workoutTemplateExerciseStore
 @observer
@@ -48,14 +49,19 @@ export default class ExerciseInWorkoutInTweaker extends React.Component {
         <View style={styles.exerciseDetailsBox}>
           <View style={styles.exerciseNameBox}>
             <TouchableOpacity
-              style={{left: -17}}
               onPress={() => {
                 Linking.openURL(`https://www.youtube.com/results?search_query=${this.props.workoutTemplateExerciseStore.details.info.name}`)
               }}>
-              <Text style={[gs.text, styles.exerciseName, {
-                fontSize: 15,
-                color: '#B0BEC5'
-              }]}>{this.props.workoutTemplateExerciseStore.details.info.name}</Text>
+              <View
+                style={{marginRight: 33, flexDirection: 'row'}}>
+                <Text
+                  numberOfLines={1}
+                  style={[gs.text, styles.exerciseName, {
+                    fontSize: 15,
+                    color: '#B0BEC5'
+                  }]}>{this.props.workoutTemplateExerciseStore.details.info.name}&nbsp;</Text>
+                <MaterialCommunityIcons style={{top: 4}} color={'#B0BEC5'} name={'youtube-play'} size={15}/>
+              </View>
             </TouchableOpacity>
           </View>
           <SetCount id={this.props.workoutTemplateExerciseStore.id}/>
