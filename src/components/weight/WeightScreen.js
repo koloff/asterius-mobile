@@ -1,11 +1,12 @@
 import * as React from "react";
 import {observer} from 'mobx-react';
-import {Text, TouchableOpacity, View, StyleSheet, Animated, TextInput, ScrollView} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet, Animated, TextInput, ScrollView, Keyboard} from 'react-native';
 import {gs} from "../../globals";
 import {Defs, LinearGradient, Stop} from 'react-native-svg'
 import {LineChart} from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 import Ionicons from "react-native-vector-icons/Ionicons";
+import userParametersStore from '../../store/userParametersStore';
 import weightLogsStore from '../../store/weightLogsStore';
 import moment from "moment";
 import ElevatedView from "../ElevatedView";
@@ -28,6 +29,13 @@ export default class WeightScreen extends React.Component {
         duration: 400
       }).start();
     }, 200)
+  }
+
+  submitLog() {
+    if (this.state.value) {
+      weightLogsStore.addLog(this.state.value);
+      this.setState({value: ''})
+    }
   }
 
   render() {
@@ -113,10 +121,12 @@ export default class WeightScreen extends React.Component {
           </View>
 
           <ScrollView
+            keyboardShouldPersistTaps={'always'}
             style={{backgroundColor: 'transparent'}}>
             <View style={{paddingLeft: 30, paddingRight: 30, paddingBottom: 20}}>
               <ElevatedView elevation={3} style={{
                 borderRadius: 5,
+                height: 85,
                 padding: 10,
                 borderColor: '#222',
                 borderWidth: StyleSheet.hairlineWidth,
@@ -127,37 +137,46 @@ export default class WeightScreen extends React.Component {
                 <View style={{padding: 10, paddingLeft: 5}}>
                   <Text style={[gs.text, {fontSize: 19, color: '#ccc'}]}>NOW</Text>
                 </View>
-                <TextInput
-                  keyboardType={'numeric'}
-                  underlineColorAndroid={'transparent'}
-                  placeholder={'ADD WEIGHT'}
-                  placeholderTextColor={'#F57C00'}
-                  selectionColor={'#F57C00'}
-                  value={isNaN(this.state.value) ? '' : this.state.value.toString()}
-                  onChangeText={(val) => {
-                    this.setState({value: val});
-                  }}
-                  onSubmitEditing={() => {
-                    if (this.state.value) {
-                      weightLogsStore.addLog(this.state.value);
-                      this.setState({value: ''})
-                    }
-                  }}
-                  style={[gs.shadow, {
-                    position: 'absolute',
-                    right: 0,
-                    width: 150,
-                    height: 50,
-                    // borderWidth: 1,
-                    // borderColor: '#F57C00',
-                    color: '#F57C00',
-                    // backgroundColor: 'rgba(51, 51, 51, 0.4)',
-                    fontSize: 19,
-                    fontFamily: 'Montserrat',
-                    margin: 3,
-                    textAlign: 'center',
-                    borderRadius: 3,
-                  }]}/>
+                <View style={{
+                  position: 'absolute',
+                  right: 3,
+                  marginTop: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  <TextInput
+                    keyboardType={'numeric'}
+                    underlineColorAndroid={'transparent'}
+                    placeholder={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'}
+                    placeholderTextColor={'#F57C00'}
+                    selectionColor={'#F57C00'}
+                    value={isNaN(this.state.value) ? '' : this.state.value.toString()}
+                    onChangeText={(val) => {
+                      this.setState({value: val});
+                    }}
+                    onSubmitEditing={this.submitLog.bind(this)}
+                    style={[gs.shadow, {
+                      padding: 5,
+                      // paddingBottom: 9,
+                      // borderBottomWidth: 1,
+                      borderColor: '#F57C00',
+                      width: 55,
+                      color: '#F57C00',
+                      fontSize: 19,
+                      fontFamily: 'Montserrat',
+                      margin: 3,
+                      textAlign: 'center',
+                      // borderRadius: 5,
+                    }]}/>
+                  <TouchableOpacity
+                    style={{padding: 10, paddingTop: 2, paddingBottom: 5, marginTop: 3}}
+                    onPress={() => {
+                      this.submitLog();
+                      Keyboard.dismiss();
+                    }}>
+                    <Ionicons name={'md-checkmark'} color={'#F57C00'} size={27}/>
+                  </TouchableOpacity>
+                </View>
               </ElevatedView>
             </View>
             {weightLogsStore.logs.map((log, index) => {
