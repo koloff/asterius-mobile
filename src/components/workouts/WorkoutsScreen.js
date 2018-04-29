@@ -68,6 +68,7 @@ export default class WorkoutsScreen extends React.Component {
               // borderColor: '#222',
               justifyContent: 'center',
               borderRadius: 5,
+              height: 300
               // borderWidth: StyleSheet.hairlineWidth,
             }}>
               <Calendar

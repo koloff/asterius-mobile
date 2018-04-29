@@ -160,7 +160,6 @@ export default class Router extends React.Component {
       return <StartNavigator/>
     } else {
       return <MainNavigator/>;
-      m
     }
   }
 }

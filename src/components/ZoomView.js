@@ -143,6 +143,7 @@ export default class ZoomView extends Component {
         {...this._panResponder.panHandlers}
         style={{
           ...this.props.style,
+          overflow: 'hidden',
           alignContent: 'center',
           alignItems: 'center',
           justifyContent: 'center'

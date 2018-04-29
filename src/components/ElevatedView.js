@@ -19,7 +19,7 @@ export default class ElevatedView extends React.Component {
 
     if (elevation === 0) {
       return (
-        <View style={style} {...otherProps}>
+        <View style={[style, {backgroundColor: 'transparent'}]} {...otherProps}>
           {this.props.children}
         </View>
       )

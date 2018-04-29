@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "start": "react-native run-android",
+    "startios": "react-native run-ios && ./watch-ios-logs.js",
     "test": "jest",
     "clean": "cd android && gradlew clean",
     "cleanstart": "cd .. && react-native run-android",
-    "logs": "adb logcat *:S ReactNative:V ReactNativeJS:V -v raw",
+    "logs-android": "adb logcat *:S ReactNative:V ReactNativeJS:V -v raw",
+    "logs-ios": "log stream --predicate '(processImagePath contains \"Asterius\") and senderImageUUID == processImageUUID' --style compact",
     "restart": "adb shell input text \"RR\"",
     "build": "react-native run-android --variant=release",
-    "compile": "cd android && gradlew assembleRelease"
+    "compile": "cd android && ./gradlew assembleRelease",
+    "clean-start-ios": "rm -rf node_modules && yarn install && rm -rf $TMPDIR/react* && npm start --reset-cache"
   },
   "dependencies": {
     "d3-shape": "^1.2.0",

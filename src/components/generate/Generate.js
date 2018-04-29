@@ -7,7 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Animated,
-  ActivityIndicator, ScrollView
+  ActivityIndicator, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Swiper from 'react-native-swiper';
@@ -200,6 +200,7 @@ export default class Generate extends React.Component {
         </View>
 
         <Swiper
+          scrollEnabled={this.state.slide !== 4}
           index={0}
           ref={(ref) => {
             this._swiper = ref
@@ -319,59 +320,59 @@ const Slide1 = observer((props) => {
 });
 
 const Slide2 = observer((props) => {
-  return <View style={[styles.slide2, {
-    marginTop: 23
-  }]}>
-    {/*<View style={{marginBottom: props.keyboardOpen ? 200 : 0}}>*/}
-    <Question text={'What are your units?'}/>
+  return <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
+    <View style={[styles.slide2, {
+      marginTop: 23
+    }]}>
 
-    <RadioButtons
-      selected={userParametersStore.parameters.measuringUnit}
-      onSelectedChange={(value) => {
-        userParametersStore.parameters.measuringUnit = value
-      }}
-      optionStyle={styles.optionStyle}
-      style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
-    >
-      <View value={1}>
-        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-          Metric
-        </Text>
-        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-          CM and KG
-        </Text>
+      <Question text={'What are your units?'}/>
+      <RadioButtons
+        selected={userParametersStore.parameters.measuringUnit}
+        onSelectedChange={(value) => {
+          userParametersStore.parameters.measuringUnit = value
+        }}
+        optionStyle={styles.optionStyle}
+        style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
+      >
+        <View value={1}>
+          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+            Metric
+          </Text>
+          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+            CM and KG
+          </Text>
+        </View>
+
+        <View value={2}>
+          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+            Imperial
+          </Text>
+          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+            IN and LBS
+          </Text>
+        </View>
+      </RadioButtons>
+
+      <Question text={'What are your measurements?'}/>
+      <View style={{flexDirection: 'row'}}>
+        <ParameterInputNumber title={'Age'} unit={'YEARS'} value={userParametersStore.parameters.age} onChangeText={(val) => {
+          userParametersStore.parameters.age = val;
+        }}/>
+        <ParameterInputNumber title={'Height'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'CM' : 'IN'} value={userParametersStore.parameters.height} onChangeText={(val) => {
+          userParametersStore.parameters.height = val;
+        }}/>
+        <ParameterInputNumber title={'Weight'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={userParametersStore.parameters.weight} onChangeText={(val) => {
+          userParametersStore.parameters.weight = val;
+        }}/>
       </View>
-
-      <View value={2}>
-        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-          Imperial
-        </Text>
-        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-          IN and LBS
-        </Text>
-      </View>
-    </RadioButtons>
-
-    <Question text={'What are your measurements?'}/>
-    <View style={{flexDirection: 'row'}}>
-      <ParameterInputNumber title={'Age'} unit={'YEARS'} value={userParametersStore.parameters.age} onChangeText={(val) => {
-        userParametersStore.parameters.age = val;
-      }}/>
-      <ParameterInputNumber title={'Height'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'CM' : 'IN'} value={userParametersStore.parameters.height} onChangeText={(val) => {
-        userParametersStore.parameters.height = val;
-      }}/>
-      <ParameterInputNumber title={'Weight'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={userParametersStore.parameters.weight} onChangeText={(val) => {
-        userParametersStore.parameters.weight = val;
-      }}/>
     </View>
-    {/*</View>*/}
-  </View>
+  </KeyboardAvoidingView>
 });
 
 const Slide3 = observer((props) => {
   return <View style={[styles.slide3, {marginTop: 0, padding: 10}]}>
     <Question text={'What is your experience?'} style={{marginBottom: 15, marginTop: 0}}/>
-
+    m
     <RadioButtons
       selected={userParametersStore.parameters.experience}
       onSelectedChange={(value) => {

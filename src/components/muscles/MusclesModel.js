@@ -82,7 +82,7 @@ export default class MusclesModel extends React.Component {
 
   renderModelSide(sidePoints) {
     return (
-      <Svg width={300} height={600}>
+      <Svg width={300} height={600} style={{}}>
         {sidePoints.map((muscle) => {
           return muscle.points.map((pointsStr, index) => (
             <MusclesModelMuscle
@@ -134,17 +134,14 @@ export default class MusclesModel extends React.Component {
           scale={this.scale}
           minScale={this.minScale}
           maxScale={this.maxScale}
-          // onScale={(percentage) => {
-          //   this.setState({zoomTextOpacity: 100 - percentage})
-          // }}
           onPress={(locationX, locationY, targetId) => {
             this.checkMuscleClicked(locationX, locationY, targetId)
           }}
           style={{
+            ...this.props.style,
             height: this.props.height ? this.props.height + 10 : this.svgHeight * this.scale,
             width: this.props.width ? this.props.width : Dimensions.get('window').width - 12,
-            marginLeft: 4,
-            backgroundColor: 'transparent',
+            marginLeft: 4
           }}>
           {this.renderModels()}
           <View style={styles.zoomTextBox}>

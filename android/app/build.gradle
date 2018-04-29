@@ -101,7 +101,7 @@ android {
         applicationId "com.asterius"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 3
+        versionCode 4
         versionName "4"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -114,7 +114,10 @@ android {
                 storePassword MYAPP_RELEASE_STORE_PASSWORD
                 keyAlias MYAPP_RELEASE_KEY_ALIAS
                 keyPassword MYAPP_RELEASE_KEY_PASSWORD
+                v2SigningEnabled true
+                v1SigningEnabled true
             }
+
         }
     }
     splits {

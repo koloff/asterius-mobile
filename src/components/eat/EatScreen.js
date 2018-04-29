@@ -11,7 +11,6 @@ import * as SVG from 'react-native-svg';
 import eatStore from "../../store/eatStore";
 import ElevatedView from "../ElevatedView";
 import userParametersStore from "../../store/userParametersStore";
-import tweakerStore from "../../store/tweakerStore";
 import RadioButtons from "../RadioButtons";
 
 const goals = [
@@ -37,6 +36,7 @@ export default class EatScreen extends React.Component {
     modalVisible: false,
     modalView: ''
   };
+
 
   constructor(props) {
     super(props);

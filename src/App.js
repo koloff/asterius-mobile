@@ -3,7 +3,7 @@ import {
   Platform,
   StyleSheet,
   StatusBar,
-  View, Text, YellowBox
+  View, Text, SafeAreaView
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import Router from './Router';
@@ -31,11 +31,13 @@ export default class App extends Component {
     }
     return (
       <View style={styles.container}>
-        <StatusBar
-          backgroundColor="#000"
-          barStyle="light-content"
-        />
-        <Router/>
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar
+            backgroundColor="#000"
+            barStyle="light-content"
+          />
+          <Router/>
+        </SafeAreaView>
       </View>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, Animated, TextInput, TouchableOpacity, Keyboard, ActivityIndicator
+  StyleSheet, View, Text, Animated, TextInput, TouchableOpacity, Keyboard, ActivityIndicator, KeyboardAvoidingView
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Toast from 'react-native-root-toast';
@@ -28,6 +28,7 @@ export default class Login extends React.Component {
         zIndex: this.props.isActive ? 200 : 1,
         opacity: this.props.opacity || 1,
       }]}>
+        <KeyboardAvoidingView style={{flex:1}} behavior={'padding'}>
         <View style={{
           position: 'absolute',
           padding: 25,
@@ -157,6 +158,7 @@ export default class Login extends React.Component {
           </View>
 
         </View>
+        </KeyboardAvoidingView>
       </Animated.View>
     )
   }

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  Animated, Easing, TouchableOpacity, ActivityIndicator, Modal, Button, TextInput, TouchableNativeFeedback
+  Animated, Easing, TouchableOpacity, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,7 +16,6 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 
 import tweakerStore from '../../store/tweakerStore';
 import MusclesModelStore from '../../store/MusclesModelStore';
-import WorkoutTemplateStore from '../../store/WorkoutTemplateStore';
 
 import MusclesModel from '../muscles/MusclesModel';
 import ExerciseWithMuscles from '../exercises/ExerciseWithMuscles';
@@ -101,7 +100,7 @@ export default class Tweaker extends Component {
                 onChangeText={(text) => this.setState({name: text})}
                 value={this.state.name}
               />
-              <TouchableNativeFeedback
+              <TouchableWithoutFeedback
                 onPress={() => {
                   this.workoutTemplateStore.rename(this.state.name);
                   this.setState({editingName: false})
@@ -119,7 +118,7 @@ export default class Tweaker extends Component {
                   onPress={() => {
                     console.log('press');
                   }}/>
-              </TouchableNativeFeedback>
+              </TouchableWithoutFeedback>
             </View>}
             <Text style={[gs.text, {
               fontSize: 12,
