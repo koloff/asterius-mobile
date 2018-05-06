@@ -48,7 +48,7 @@ class AuthStore {
             return resolve(true);
           }
           else {
-            user.getIdToken(/* forceRefresh */ true)
+            user.getIdToken(false)
               .then((idToken) => {
                 this.isAnonymous = false;
                 this.idToken = idToken;

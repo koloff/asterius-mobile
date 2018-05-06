@@ -2,9 +2,11 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {observer} from 'mobx-react';
 import _ from 'lodash';
+import {withNavigation} from 'react-navigation';
 import {gs} from "../../globals";
 import userParametersStore from '../../store/userParametersStore';
 
+@withNavigation
 @observer
 export default class SetLog extends React.Component {
 
@@ -28,7 +30,9 @@ export default class SetLog extends React.Component {
 
   componentDidMount() {
     if (!this.state.reps && this.props.exerciseIndex === 0 && this.exerciseLogSetStore.index === 0) {
-      this.repsRef.focus();
+      if (!this.props.tweakerOpened) {
+        this.repsRef.focus();
+      }
     }
   }
 

@@ -14,7 +14,7 @@ export default class ParameterInputNumber extends React.Component {
 
   render() {
     return (
-      <ElevatedView style={{top: -15, flex: 1, padding: 4, paddingTop: 0}}>
+      <View style={{top: -15, flex: 1, padding: 4, paddingTop: 0}}>
         <View><Text style={[gs.text, gs.shadow, {
           position: 'relative',
           zIndex: 99,
@@ -54,7 +54,7 @@ export default class ParameterInputNumber extends React.Component {
             fontSize: 10,
             textAlign: 'center'
           }]}>{this.props.unit}</Text></View>
-      </ElevatedView>
+      </View>
     )
   }
 }

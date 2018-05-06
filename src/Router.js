@@ -28,35 +28,46 @@ const MainTabNavigator = TabNavigator({
   navigationOptions: ({navigation}) => ({
     tabBarIcon: ({focused}) => {
       const {routeName} = navigation.state;
-      let iconName;
       switch (routeName) {
         case 'Workouts':
           return <MaterialCommunityIcons
             name={'dumbbell'}
             size={focused ? 26 : 20}
-            style={{marginBottom: -1}}
             color={focused ? '#ccc' : '#555'}
+            style={{
+              width: 55,
+              textAlign: 'center'
+            }}
           />;
         case 'Weight':
           return <MaterialCommunityIcons
             name={'scale-bathroom'}
             size={focused ? 27 : 20}
-            style={{marginBottom: -1}}
             color={focused ? '#ccc' : '#555'}
+            style={{
+              width: 55,
+              textAlign: 'center'
+            }}
           />;
         case 'Eat':
           return <MaterialCommunityIcons
             name={'food-fork-drink'}
             size={focused ? 27 : 20}
-            style={{marginBottom: -1}}
             color={focused ? '#ccc' : '#555'}
+            style={{
+              width: 55,
+              textAlign: 'center'
+            }}
           />;
         case 'Settings':
           return <MaterialCommunityIcons
             name={'account-settings-variant'}
             size={focused ? 27 : 20}
-            style={{marginBottom: -1}}
             color={focused ? '#ccc' : '#555'}
+            style={{
+              width: 55,
+              textAlign: 'center'
+            }}
           />;
       }
 
@@ -64,7 +75,7 @@ const MainTabNavigator = TabNavigator({
   }),
   tabBarComponent: TabBarBottom,
   tabBarPosition: 'bottom',
-  animationEnabled: false,
+  animationEnabled: true,
   tabBarOptions: {
     showLabel: false,
     activeTintColor: 'white',

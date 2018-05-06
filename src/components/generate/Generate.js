@@ -7,6 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Animated,
+  Platform,
   ActivityIndicator, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import {observer} from 'mobx-react';
@@ -195,8 +196,6 @@ export default class Generate extends React.Component {
             }}>
             <Ionicons name={'md-close'} size={37} color={'#888'}/>
           </TouchableOpacity>
-
-
         </View>
 
         <Swiper
@@ -225,7 +224,11 @@ export default class Generate extends React.Component {
             }
           }}
           buttonWrapperStyle={{
-            alignItems: 'flex-end'
+            alignItems: 'flex-end',
+            paddingBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 240 : 10
+          }}
+          paginationStyle={{
+            marginBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 230 : 0
           }}
           dot={<View style={{
             backgroundColor: '#555',
@@ -372,7 +375,7 @@ const Slide2 = observer((props) => {
 const Slide3 = observer((props) => {
   return <View style={[styles.slide3, {marginTop: 0, padding: 10}]}>
     <Question text={'What is your experience?'} style={{marginBottom: 15, marginTop: 0}}/>
-    m
+
     <RadioButtons
       selected={userParametersStore.parameters.experience}
       onSelectedChange={(value) => {
@@ -477,7 +480,7 @@ const Slide4 = observer((props) => {
 
     <Question text={'For how long?'} style={{marginTop: 35, marginBottom: 20}}/>
     <View style={{paddingLeft: 14, paddingRight: 14, width: '100%'}}>
-      <ElevatedView
+      <View
         style={{
           borderWidth: 1,
           borderColor: 'rgba(255,143,0 ,1)',
@@ -492,7 +495,7 @@ const Slide4 = observer((props) => {
         <Text style={[gs.text, {textAlign: 'center', color: '#999', fontSize: 12}]}>
           10 minutes of them are for warmup
         </Text>
-      </ElevatedView>
+      </View>
     </View>
 
     <Slider
@@ -503,8 +506,8 @@ const Slide4 = observer((props) => {
       minimumValue={60}
       step={1}
       thumbTintColor={'#B0BEC5'}
-      maximumTrackTintColor={'#B0BEC5'}
-      minimumTrackTintColor={'#616161'}
+      maximumTrackTintColor={'#999'}
+      minimumTrackTintColor={'#999'}
       style={{height: 60, width: '100%'}}
       value={props.durationSliderValue}
       onValueChange={(val) => {

@@ -86,16 +86,20 @@ export default class EatScreen extends React.Component {
           padding: 20,
         }}>
 
-          <ElevatedView elevation={3} style={{flex: 1, marginRight: 10, borderRadius: 5,}}>
+          <ElevatedView elevation={3} style={{
+            flex: 1,
+            marginRight: 10,
+            borderRadius: 5,
+            backgroundColor: '#151515',
+            borderColor: '#222',
+            borderWidth: StyleSheet.hairlineWidth
+          }}>
             <TouchableOpacity
               style={{
                 flex: 1,
                 borderRadius: 5,
                 padding: 15,
                 justifyContent: 'center',
-                backgroundColor: '#151515',
-                borderColor: '#222',
-                borderWidth: StyleSheet.hairlineWidth
               }}
               onPress={() => {
                 this.openOptionModal('goal');
@@ -111,16 +115,20 @@ export default class EatScreen extends React.Component {
             </TouchableOpacity>
           </ElevatedView>
 
-          <ElevatedView elevation={3} style={{flex: 1, marginLeft: 10, borderRadius: 5,}}>
+          <ElevatedView elevation={3} style={{
+            flex: 1,
+            marginLeft: 10,
+            borderRadius: 5,
+            backgroundColor: '#151515',
+            borderColor: '#222',
+            borderWidth: StyleSheet.hairlineWidth
+          }}>
             <TouchableOpacity
               style={{
                 flex: 1,
                 borderRadius: 5,
                 padding: 15,
-                justifyContent: 'center',
-                backgroundColor: '#151515',
-                borderColor: '#222',
-                borderWidth: StyleSheet.hairlineWidth
+                justifyContent: 'center'
               }}
               onPress={() => {
                 this.openOptionModal('activity');
@@ -209,7 +217,8 @@ export default class EatScreen extends React.Component {
               {this.state.modalView === 'goal' && <RadioButtons
                 selected={userParametersStore.parameters.goal}
                 onSelectedChange={(value) => {
-                  userParametersStore.parameters.goal = value
+                  userParametersStore.parameters.goal = value;
+                  userParametersStore.setParameterFinish('goal', value);
                 }}
                 optionStyle={styles.optionStyle}
                 style={{width: 200, maxHeight: 500}}>
@@ -234,6 +243,7 @@ export default class EatScreen extends React.Component {
                 selected={userParametersStore.parameters.activity}
                 onSelectedChange={(value) => {
                   userParametersStore.parameters.activity = value
+                  userParametersStore.setParameterFinish('activity', value);
                 }}
                 optionStyle={styles.optionStyle}
                 style={{width: 200, maxHeight: 500}}>

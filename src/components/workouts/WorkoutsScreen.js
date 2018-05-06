@@ -23,10 +23,6 @@ import AnimatedLoading from "../AnimatedLoading";
 
 @observer
 export default class WorkoutsScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: 'WORKOUT',
-  };
-
   state = {
     opacity: new Animated.Value(0)
   };
@@ -60,16 +56,12 @@ export default class WorkoutsScreen extends React.Component {
             padding: 15,
             paddingBottom: 0,
             paddingTop: 15
-            // borderColor: '#222',
-            // borderBottomWidth: StyleSheet.hairlineWidth,
-            // borderTopWidth: StyleSheet.hairlineWidth
           }}>
             <ElevatedView elevation={4} style={{
-              // borderColor: '#222',
+              backgroundColor: '#151515',
               justifyContent: 'center',
               borderRadius: 5,
               height: 300
-              // borderWidth: StyleSheet.hairlineWidth,
             }}>
               <Calendar
                 style={{
@@ -188,22 +180,25 @@ class MiniWorkoutsList extends React.Component {
     return (
       <View style={{flex: 1}}>
         <View style={{flexDirection: 'row', padding: 15, height: 90}}>
-          <ElevatedView style={{flex: 1, marginRight: 7}}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Generate');
-              }}
-              style={{
-                flex: 1,
-                borderRadius: 5,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 5,
-                backgroundColor: '#151515',
-                borderColor: '#222',
-                borderWidth: StyleSheet.hairlineWidth,
-              }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Generate');
+            }}
+            style={{
+              flex: 1,
+              marginRight: 7,
+            }}>
+            <ElevatedView style={{
+              flex: 1,
+              borderRadius: 5,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 5,
+              backgroundColor: '#151515',
+              borderColor: '#222',
+              borderWidth: StyleSheet.hairlineWidth,
+            }}>
               <View style={{marginRight: 10}}>
                 <MaterialIcons size={26} color={'#ccc'} name={'playlist-add'}/>
               </View>
@@ -212,10 +207,14 @@ class MiniWorkoutsList extends React.Component {
                   GENERATE
                 </Text>
               </View>
-            </TouchableOpacity>
-          </ElevatedView>
-          <ElevatedView style={{flex: 1, marginLeft: 7}}>
-            <TouchableOpacity
+            </ElevatedView>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{flex: 1, marginLeft: 7}}
+            onPress={() => {
+              this.workoutsTemplatesStore.addWorkout();
+            }}>
+            <ElevatedView
               style={{
                 flex: 1,
                 borderRadius: 5,
@@ -228,9 +227,6 @@ class MiniWorkoutsList extends React.Component {
                 borderColor: '#222',
                 borderWidth: StyleSheet.hairlineWidth
               }}
-              onPress={() => {
-                this.workoutsTemplatesStore.addWorkout();
-              }}
             >
               <View style={{marginRight: 10}}>
                 <Ionicons size={26} color={'#ccc'} name={'md-add'}/>
@@ -240,8 +236,8 @@ class MiniWorkoutsList extends React.Component {
                   CUSTOM
                 </Text>
               </View>
-            </TouchableOpacity>
-          </ElevatedView>
+            </ElevatedView>
+          </TouchableOpacity>
         </View>
 
         <View style={{

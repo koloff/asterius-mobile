@@ -30,16 +30,17 @@ export default class SettingsScreen extends React.Component {
       }}>
 
 
-        <ElevatedView elevation={3} style={{width: '100%', height: 100, marginBottom: 15, borderRadius: 5}}>
+        <ElevatedView elevation={3} style={{
+          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          borderColor: '#222',
+          borderWidth: StyleSheet.hairlineWidth
+        }}>
           <TouchableOpacity
             style={{
               flex: 1,
               borderRadius: 5,
               padding: 15,
-              justifyContent: 'center',
-              backgroundColor: '#151515',
-              borderColor: '#222',
-              borderWidth: StyleSheet.hairlineWidth
+              justifyContent: 'center'
             }}
             onPress={async () => {
               this.props.navigation.navigate('Principles');
@@ -64,16 +65,17 @@ export default class SettingsScreen extends React.Component {
         </ElevatedView>
 
 
-        <ElevatedView elevation={3} style={{width: '100%', height: 100, marginBottom: 15, borderRadius: 5}}>
+        <ElevatedView elevation={3} style={{
+          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          borderColor: '#222',
+          borderWidth: StyleSheet.hairlineWidth
+        }}>
           <TouchableOpacity
             style={{
               flex: 1,
               borderRadius: 5,
               padding: 15,
-              justifyContent: 'center',
-              backgroundColor: '#151515',
-              borderColor: '#222',
-              borderWidth: StyleSheet.hairlineWidth
+              justifyContent: 'center'
             }}
             onPress={() => {
               Linking.openURL('mailto:info@getasterius.com');
@@ -114,11 +116,10 @@ export default class SettingsScreen extends React.Component {
             }}
           >
             <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-              <SimpleLineIcons name='logout' size={21} color='#fff' /> &nbsp;&nbsp;Logout
+              <SimpleLineIcons name='logout' size={21} color='#fff'/> &nbsp;&nbsp;Logout
             </Text>
           </TouchableOpacity>
         </ElevatedView>
-
 
 
       </Animated.View>

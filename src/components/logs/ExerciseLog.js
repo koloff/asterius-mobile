@@ -19,6 +19,9 @@ export default class ExerciseLog extends React.Component {
 
   componentWillMount() {
     this.exerciseLogsStore = exercisesLogsStore.getExerciseLogs(this.props.workoutTemplateExerciseStore.id);
+    if (!this.exerciseLogsStore.loaded) {
+      this.exerciseLogsStore.loadExerciseLogs();
+    }
     this.exerciseLogStore = this.exerciseLogsStore.getLog(this.props.dateStr);
     this.props.renderedExerciseLog();
   }
@@ -72,7 +75,9 @@ export default class ExerciseLog extends React.Component {
                   scrollToExercise={this.props.scrollToExercise}
                   exerciseIndex={this.props.exerciseIndex}
                   containerHeight={containerHeight}
-                  exerciseLogSetStore={set}/>
+                  exerciseLogSetStore={set}
+                  tweakerOpened={this.props.tweakerOpened}
+                />
               }
             })}
             <View style={{flexDirection: 'row', marginLeft: 4}}>

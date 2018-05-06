@@ -46,7 +46,8 @@ class Option extends React.Component {
           }
         ]}>
         <ElevatedView elevation={4} style={{
-          padding: 0, flex: 1, backgroundColor: '#333',
+          padding: 0, flex: 1,
+          backgroundColor: '#333',
           borderRadius: 5,
         }}>
           <TouchableWithoutFeedback

@@ -4,6 +4,7 @@ import authStore from './authStore';
 import {extendObservable} from "mobx";
 import calculateFitnessLevel from '../algorithm/calculate-fitness-level';
 import _ from 'lodash';
+import connectionStore from "./connectionStore";
 
 class UserParametersStore {
   @observable path;
@@ -79,6 +80,7 @@ class UserParametersStore {
 
   async saveUserParameters() {
     this.parameters.fitnessLevel = calculateFitnessLevel(this.parameters);
+    console.log(this.path, this.parameters);
     await database.save(this.path, this.parameters);
   }
 

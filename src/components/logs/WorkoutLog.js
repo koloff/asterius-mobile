@@ -13,6 +13,7 @@ import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DarkModal from "../DarkModal";
+import {observable} from "mobx/lib/mobx";
 
 
 @withNavigation
@@ -25,7 +26,8 @@ export default class WorkoutLog extends React.Component {
     renderedLogs: 0,
     renderedAllLogs: false,
     contentOpacity: new Animated.Value(0),
-    modalVisible: false
+    modalVisible: false,
+    tweakerOpened: false
   };
 
   async componentWillMount() {
@@ -47,7 +49,6 @@ export default class WorkoutLog extends React.Component {
           this.animateContent();
         }
       });
-
   }
 
   renderingExerciseLog() {
@@ -142,6 +143,9 @@ export default class WorkoutLog extends React.Component {
               justifyContent: 'center'
             }}
             onPress={() => {
+              // react-navigation says WorkoutLog is current screen even when we are editing workout
+              // need a way to focus reps input when editing workout in tweaker
+              this.setState({tweakerOpened: true});
               this.props.navigation.navigate('Tweaker', {
                 canDelete: false,
                 workoutTemplateStore: this.workoutLogStore.workoutTemplateStore
@@ -191,6 +195,7 @@ export default class WorkoutLog extends React.Component {
                     exerciseIndex={index}
                     dateStr={this.dateStr}
                     workoutTemplateExerciseStore={workoutTemplateExerciseStore}
+                    tweakerOpened={this.state.tweakerOpened}
                   />
                 )
               })}

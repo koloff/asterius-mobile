@@ -91,6 +91,7 @@ class WorkoutLogStore {
   path;
   dateStr;
 
+
   async init(workoutsLogsStore, workoutLogDateStr) {
     this.workoutsLogsStore = workoutsLogsStore;
     this.path = `workoutsLogs/${authStore.uid}/${workoutLogDateStr}`;

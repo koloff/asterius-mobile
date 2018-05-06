@@ -100,43 +100,42 @@ export default class Register extends React.Component {
               secureTextEntry={true}
             />
 
-            {!this.state.loading ? <ElevatedView elevation={2} style={{borderRadius: 5, width: '100%',}}>
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 5,
-                    backgroundColor: 'rgba(245,127,23 , 1)',
-                    padding: 7,
-                    paddingLeft: 20,
-                    paddingRight: 20
-                  }}
-                  onPress={async () => {
-                    Keyboard.dismiss();
-                    this.setState({loading: true});
-                    try {
-                      let user = await authStore.register(this.state.email, this.state.password);
-                      console.log(user);
-                    } catch (error) {
-                      this.setState({loading: false});
-                      console.log(error);
-                      let toast = Toast.show(error.message, {
-                        shadow: true,
-                        position: -10,
-                        backgroundColor: 'red'
-                      });
-                    }
-                    // this.setState({loading: false});
-                  }}>
-                  <Text style={[gs.text, {
-                    fontSize: 21,
-                    textAlign: 'center',
-                    textShadowColor: 'rgba(0,0,0,0.5)',
-                    textShadowRadius: 7,
-                    textShadowOffset: {width: 1, height: 1}
-                  }]}>
-                    <FontAwesome name='user' size={21} color='#fff'/> REGISTER
-                  </Text>
-                </TouchableOpacity>
-              </ElevatedView>
+            {!this.state.loading ? <TouchableOpacity
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: 'rgba(245,127,23 , 1)',
+                  padding: 7,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  width: '100%'
+                }}
+                onPress={async () => {
+                  Keyboard.dismiss();
+                  this.setState({loading: true});
+                  try {
+                    let user = await authStore.register(this.state.email, this.state.password);
+                    console.log(user);
+                  } catch (error) {
+                    this.setState({loading: false});
+                    console.log(error);
+                    let toast = Toast.show(error.message, {
+                      shadow: true,
+                      position: -10,
+                      backgroundColor: 'red'
+                    });
+                  }
+                  // this.setState({loading: false});
+                }}>
+                <Text style={[gs.text, {
+                  fontSize: 21,
+                  textAlign: 'center',
+                  textShadowColor: 'rgba(0,0,0,0.5)',
+                  textShadowRadius: 7,
+                  textShadowOffset: {width: 1, height: 1}
+                }]}>
+                  <FontAwesome name='user' size={21} color='#fff'/> REGISTER
+                </Text>
+              </TouchableOpacity>
               :
               <ActivityIndicator style={{marginTop: 10, padding: 4, height: 40}} size="large" color="#444"/>
             }

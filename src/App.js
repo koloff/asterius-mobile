@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import {
-  Platform,
   StyleSheet,
   StatusBar,
-  View, Text, SafeAreaView
+  View, YellowBox, SafeAreaView
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import Router from './Router';
 
 import authStore from './store/authStore';
-import database from './database';
+import connectionStore from './store/connectionStore';
 import userParametersStore from "./store/userParametersStore";
-
+import firebase from 'react-native-firebase';
 
 export default class App extends Component {
   state = {
@@ -19,15 +18,25 @@ export default class App extends Component {
   };
 
   async componentWillMount() {
+    await connectionStore.init();
+    if (!connectionStore.connected) {
+      firebase.database().goOffline();
+    } else {
+
+    }
+
+
     await authStore.init();
     await userParametersStore.init();
+
+
     this.setState({isReady: true});
     SplashScreen.hide();
   }
 
   render() {
     if (!this.state.isReady) {
-      return <View style={styles.container}/>
+      return <View style={[styles.container, {backgroundColor: '#fff'}]}/>
     }
     return (
       <View style={styles.container}>

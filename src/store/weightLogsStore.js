@@ -21,6 +21,7 @@ class WeightLogsStore {
     let timestamp = new Date();
     timestamp.setDate(timestamp.getDate() - days);
     let ref = firebase.database().ref(this.path);
+    ref.keepSynced(true);
     ref.off('child_added');
     ref
       .orderByChild('time')

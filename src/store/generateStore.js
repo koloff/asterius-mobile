@@ -42,6 +42,7 @@ class GenerateStore {
     return new Promise(async (resolve, reject) => {
       try {
         await userParametersStore.saveUserParameters();
+        console.log('saved params');
         let userParameters = Mobx.toJS(userParametersStore.parameters);
         let result = generateSplit(
           userParameters.gender,
@@ -59,6 +60,7 @@ class GenerateStore {
           })
         });
 
+
         if (authStore.isAnonymous) {
           await database.save(`/workoutsTemplates/${authStore.uid}`, {});
         }
@@ -69,6 +71,7 @@ class GenerateStore {
             workoutStore: new WorkoutTemplateStore(workouts[i], ref.path),
             key: ref.key
           });
+          ref.keepSynced(true);
         }
 
         return resolve();

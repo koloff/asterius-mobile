@@ -3,44 +3,51 @@ import firebase from 'react-native-firebase';
 function watch(path, callback, error) {
   const ref = firebase.database().ref(path);
   ref.on('value', callback, error);
+  ref.keepSynced(true);
   return ref;
 }
 
 function childAdded(path, callback) {
   const ref = firebase.database().ref(path);
   ref.on('child_added', callback);
+  ref.keepSynced(true);
   return ref;
 }
 
 function childRemoved(path, callback) {
   const ref = firebase.database().ref(path);
   ref.on('child_removed', callback);
+  ref.keepSynced(true);
   return ref;
 }
 
 function childChanged(path, callback) {
   const ref = firebase.database().ref(path);
   ref.on('child_changed', callback);
+  ref.keepSynced(true);
   return ref;
 }
 
 async function get(path) {
   return new Promise((resolve, reject) => {
-    // console.log('downloading', path);
-    firebase.database().ref(path).once('value', (snapshot) => {
+    let ref = firebase.database().ref(path);
+    ref.once('value', (snapshot) => {
       const data = snapshot.val();
       // console.log('downloaded', path);
       return resolve(data);
     }, (err) => {
       return reject(err);
     });
+
+    ref.keepSynced(true);
   });
 }
 
 async function save(path, data) {
   return new Promise((resolve, reject) => {
     const parsedData = JSON.parse(JSON.stringify(data));
-    firebase.database().ref(path).set(parsedData)
+    let ref = firebase.database().ref(path);
+    ref.set(parsedData)
       .then((success) => {
         return resolve(success);
       })
@@ -48,12 +55,15 @@ async function save(path, data) {
         console.log(err);
         return reject(err);
       });
+
+    ref.keepSynced(true);
   })
 }
 
 async function remove(path) {
   return new Promise((resolve, reject) => {
-    firebase.database().ref(path).remove()
+    let ref = firebase.database().ref(path);
+    ref.remove()
       .then((success) => {
         return resolve(success);
       })
@@ -61,9 +71,9 @@ async function remove(path) {
         console.log(err);
         return reject(err);
       });
+    ref.keepSynced(true);
   })
 }
-
 
 
 async function push(path, data) {
@@ -79,8 +89,9 @@ async function push(path, data) {
       } else {
         return resolve({path: resPath, key: resKey});
       }
-    })
+    });
 
+    ref.keepSynced(true);
   })
 }
 

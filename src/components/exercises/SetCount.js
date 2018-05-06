@@ -29,8 +29,8 @@ export default class SetCount extends React.Component {
           minimumValue={0}
           step={1}
           thumbTintColor={'#B0BEC5'}
-          maximumTrackTintColor={'#B0BEC5'}
-          minimumTrackTintColor={'#616161'}
+          maximumTrackTintColor={'#999'}
+          minimumTrackTintColor={'#999'}
           style={{flex: 1, height: 30}}
           value={this.state.initialSets}
           onSlidingComplete={(val) => {

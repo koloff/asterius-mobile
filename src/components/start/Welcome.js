@@ -15,19 +15,22 @@ export default class Welcome extends React.Component {
           opacity: this.props.opacity || 1,
           zIndex: this.props.isActive ? 200 : 1
         }]}>
-        <ElevatedView elevation={2} style={{borderRadius: 5, width: 315,}}>
-          <TouchableOpacity
-            style={{
-              borderRadius: 5,
-              backgroundColor: 'rgba(245,127,23 , 1)',
-              padding: 6,
-              paddingLeft: 20,
-              paddingRight: 20
-            }}
-            onPress={() => {
-              this.props.onTransition && this.props.onTransition('Generate');
-              authStore.loginAnonymously();
-            }}>
+        <TouchableOpacity
+          style={{
+            borderRadius: 5,
+            paddingLeft: 20,
+            paddingRight: 20
+          }}
+          onPress={() => {
+            this.props.onTransition && this.props.onTransition('Generate');
+            authStore.loginAnonymously();
+          }}>
+          <ElevatedView elevation={3} style={{
+            padding: 6,
+            borderRadius: 5,
+            width: 315,
+            backgroundColor: 'rgba(245,127,23 , 1)'
+          }}>
             <Text style={[gs.text, {
               fontSize: 23,
               textAlign: 'center',
@@ -37,8 +40,8 @@ export default class Welcome extends React.Component {
             }]}>
               START
             </Text>
-          </TouchableOpacity>
-        </ElevatedView>
+          </ElevatedView>
+        </TouchableOpacity>
 
 
         <View style={{

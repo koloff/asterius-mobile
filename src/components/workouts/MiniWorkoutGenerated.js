@@ -45,36 +45,29 @@ export default class MiniWorkoutGenerated extends React.Component {
         marginBottom: 3,
         opacity: this.props.animation,
       }}>
-
-        <ElevatedView elevation={3} style={{
-          borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth,
-          borderRadius: 5
-        }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('Tweaker', {workoutTemplateStore: this.props.workoutTemplateStore});
-            }}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              borderRadius: 5,
-              paddingLeft: 3,
-              paddingRight: 7,
-              paddingTop: 10,
-              paddingBottom: 10,
-              backgroundColor: '#131313',
-              borderWidth: 0,
-              borderColor: '#171717'
-            }}>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('Tweaker', {workoutTemplateStore: this.props.workoutTemplateStore});
+          }}>
+          <ElevatedView elevation={3} style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderRadius: 5,
+            paddingLeft: 3,
+            paddingRight: 7,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderWidth: 0,
+            backgroundColor: '#131313',
+            borderColor: '#171717'
+          }}>
             <MusclesModel
               musclesModelStore={this.musclesModelStore}
               touchable={false}
               scalable={false}
               width={200}
             />
-
             <View style={{flex: 1, paddingLeft: 14}}>
               <Text style={[gs.text, {color: '#ccc'}]}>{this.workoutTemplateStore.name}</Text>
               <Text style={[gs.text, {
@@ -88,9 +81,8 @@ export default class MiniWorkoutGenerated extends React.Component {
                 )
               })}
             </View>
-
-          </TouchableOpacity>
-        </ElevatedView>
+          </ElevatedView>
+        </TouchableOpacity>
       </Animated.View>
     )
   }

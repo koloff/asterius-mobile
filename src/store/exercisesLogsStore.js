@@ -131,6 +131,7 @@ class ExerciseLogsStore {
           _.forOwnRight(logs, (log, dateStr) => {
             this.pushExerciseLogStore(dateStr, log)
           });
+          this.loaded = true;
           return resolve();
         } catch (err) {
           console.log(err);
