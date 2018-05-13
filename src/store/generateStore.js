@@ -9,6 +9,7 @@ import MusclesModelStore from "./MusclesModelStore";
 import WorkoutTemplateStore from "./WorkoutTemplateStore";
 import WorkoutsTemplatesStore from "./WorkoutsTemplatesStore";
 import generateSplit from '../algorithm/generate-split';
+import connectionStore from "./connectionStore";
 
 
 class GenerateStore {
@@ -42,7 +43,7 @@ class GenerateStore {
     return new Promise(async (resolve, reject) => {
       try {
         await userParametersStore.saveUserParameters();
-        console.log('saved params');
+
         let userParameters = Mobx.toJS(userParametersStore.parameters);
         let result = generateSplit(
           userParameters.gender,
@@ -71,7 +72,6 @@ class GenerateStore {
             workoutStore: new WorkoutTemplateStore(workouts[i], ref.path),
             key: ref.key
           });
-          ref.keepSynced(true);
         }
 
         return resolve();

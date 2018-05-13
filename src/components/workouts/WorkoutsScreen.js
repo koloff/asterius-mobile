@@ -153,6 +153,7 @@ class MiniWorkoutsList extends React.Component {
     this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
     this.workoutsTemplatesStore.listenChildAdded();
     this.workoutsTemplatesStore.listenChildRemoved();
+    this.workoutsTemplatesStore.listenChildChanged();
 
     autorun(() => {
       if (this.workoutsTemplatesStore.addedCustomWorkoutToArray) {

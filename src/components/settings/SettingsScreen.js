@@ -5,9 +5,9 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import authStore from '../../store/authStore';
 import {withNavigation} from 'react-navigation';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import userParametersStore from "../../store/userParametersStore";
 import ElevatedView from "../ElevatedView";
 import Foundation from "react-native-vector-icons/Foundation";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 @withNavigation
 export default class SettingsScreen extends React.Component {
@@ -78,6 +78,40 @@ export default class SettingsScreen extends React.Component {
               justifyContent: 'center'
             }}
             onPress={() => {
+              this.props.navigation.navigate('PremiumScreen');
+            }}
+          >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                <FontAwesome color={'#fff'} size={21} name={'star'}/> &nbsp;&nbsp;
+              </Text>
+              <View>
+                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                  Asterius Premium
+                </Text>
+                <Text style={[gs.text, gs.shadow, {
+                  textAlign: 'left',
+                  color: '#999',
+                  fontSize: 14
+                }]}>Get to the next level</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </ElevatedView>
+
+        <ElevatedView elevation={3} style={{
+          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          borderColor: '#222',
+          borderWidth: StyleSheet.hairlineWidth
+        }}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderRadius: 5,
+              padding: 15,
+              justifyContent: 'center'
+            }}
+            onPress={() => {
               Linking.openURL('mailto:info@getasterius.com');
             }}
           >
@@ -100,16 +134,17 @@ export default class SettingsScreen extends React.Component {
         </ElevatedView>
 
 
-        <ElevatedView elevation={3} style={{width: '100%', height: 100, borderRadius: 5}}>
+        <ElevatedView elevation={3} style={{
+          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          borderColor: '#222',
+          borderWidth: StyleSheet.hairlineWidth
+        }}>
           <TouchableOpacity
             style={{
               flex: 1,
               borderRadius: 5,
               padding: 15,
-              justifyContent: 'center',
-              backgroundColor: '#151515',
-              borderColor: '#222',
-              borderWidth: StyleSheet.hairlineWidth
+              justifyContent: 'center'
             }}
             onPress={async () => {
               await authStore.logout();

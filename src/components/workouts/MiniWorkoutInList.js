@@ -91,7 +91,7 @@ export default class MiniWorkoutInList extends React.Component {
                   marginTop: 1,
                   fontSize: 11,
                   color: '#999'
-                }]}>{this.workoutTemplateStore.workoutDurationText}</Text>
+                }]}>{this.props.workoutTemplateStore.workoutDurationText}</Text>
               </View>
 
               {this.props.workoutTemplateStore.lastPerformedDate && <Text style={[gs.text, {

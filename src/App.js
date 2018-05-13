@@ -19,17 +19,8 @@ export default class App extends Component {
 
   async componentWillMount() {
     await connectionStore.init();
-    if (!connectionStore.connected) {
-      firebase.database().goOffline();
-    } else {
-
-    }
-
-
     await authStore.init();
     await userParametersStore.init();
-
-
     this.setState({isReady: true});
     SplashScreen.hide();
   }

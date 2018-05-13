@@ -31,6 +31,16 @@ export default class WorkoutsTemplatesStore {
     });
   }
 
+  listenChildChanged() {
+    database.childChanged(this.path, (snap) => {
+      let index = this.workouts.findIndex((item) => item.key === snap.key);
+      this.workouts[index] = {
+        workoutStore: new WorkoutTemplateStore(snap.val(), this.path + '/' + snap.key),
+        key: snap.key
+      };
+    })
+  }
+
   listenChildRemoved() {
     database.childRemoved(this.path, (snap) => {
       let index = this.workouts.findIndex((item) => item.key === snap.key);

@@ -24,7 +24,6 @@ lg.stdout.on('data', data => {
 
   all.forEach(({timestamp, eventMessage}) => {
     console.log(eventMessage);
-    console.log('\n');
 
     // const time = moment(timestamp).format("H:mm:ss");
     // console.log([time, eventMessage].join(": "));

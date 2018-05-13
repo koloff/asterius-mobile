@@ -1,4 +1,6 @@
 import firebase from 'react-native-firebase';
+import connectionStore from './store/connectionStore';
+
 
 function watch(path, callback, error) {
   const ref = firebase.database().ref(path);
@@ -29,17 +31,25 @@ function childChanged(path, callback) {
 }
 
 async function get(path) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let ref = firebase.database().ref(path);
+
     ref.once('value', (snapshot) => {
       const data = snapshot.val();
-      // console.log('downloaded', path);
       return resolve(data);
     }, (err) => {
       return reject(err);
     });
 
     ref.keepSynced(true);
+
+    setTimeout(async () => {
+      if (!connectionStore.connected) {
+        console.log('not synceeed');
+        return resolve(null);
+      }
+    }, 100);
+
   });
 }
 
@@ -57,6 +67,10 @@ async function save(path, data) {
       });
 
     ref.keepSynced(true);
+
+    if (!connectionStore.connected) {
+      return resolve();
+    }
   })
 }
 
@@ -71,7 +85,12 @@ async function remove(path) {
         console.log(err);
         return reject(err);
       });
+
     ref.keepSynced(true);
+
+    if (!connectionStore.connected) {
+      return resolve();
+    }
   })
 }
 
@@ -92,6 +111,10 @@ async function push(path, data) {
     });
 
     ref.keepSynced(true);
+
+    if (!connectionStore.connected) {
+      return resolve({path: resPath, key: resKey});
+    }
   })
 }
 

@@ -27,7 +27,6 @@ class WeightLogsStore {
       .orderByChild('time')
       .startAt(timestamp.getTime())
       .on('child_added', (ref) => {
-        console.log('log added');
         let log = {...ref.val(), key: ref.key};
         this.logs.unshift(log);
       });
