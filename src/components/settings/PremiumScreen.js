@@ -1,15 +1,42 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {Text, View, Image, StyleSheet, TouchableOpacity, Animated, ActivityIndicator} from 'react-native';
 import {gs} from '../../globals';
 import Swiper from 'react-native-swiper';
-import workoutsLogsStore from "../../store/workoutsLogsStore";
-import moment from "moment/moment";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import ElevatedView from "../ElevatedView";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 
+import subscriptionStore from '../../store/subscriptionsStore';
+import Toast from "react-native-root-toast";
+
 export default class PremiumScreen extends React.Component {
+
+  state = {
+    loadingPrices: true,
+    animation: new Animated.Value(0)
+  };
+
+
+  async componentDidMount() {
+    try {
+      await subscriptionStore.getPrices();
+      this.setState({loadingPrices: false});
+      Animated.timing(this.state.animation, {
+        toValue: 1,
+        duration: 500
+      }).start();
+
+
+    } catch (err) {
+      console.log(err);
+      let toast = Toast.show('This device is not allowed to make purchases. Please check restrictions!', {
+        shadow: true,
+        duration: 3000,
+        position: -10,
+        backgroundColor: 'orange'
+      });
+    }
+  }
 
 
   render() {
@@ -55,13 +82,13 @@ export default class PremiumScreen extends React.Component {
       </View>
 
       <Swiper
-        index={0}
         containerStyle={{
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
           // backgroundColor: '#fff'
         }}
+        loop={false}
         showsButtons={false}
         autoplayDirection={false}
         paginationStyle={{
@@ -167,24 +194,41 @@ export default class PremiumScreen extends React.Component {
         </View>
 
         <View style={styles.slide}>
-        <Entypo name={'network'} color={'#fff'} size={55} style={{marginBottom: 10}}/>
-        <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
-          Use offline{'\n'}
-          <Text style={{fontSize: 15}}>Use Asterius everywhere anytime.{'\n'}When you come online the data{'\n'}will be synced to our servers.</Text>
-        </Text>
-      </View>
-
+          <Entypo name={'network'} color={'#fff'} size={55} style={{marginBottom: 10}}/>
+          <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
+            Use offline{'\n'}
+            <Text style={{fontSize: 15}}>Use Asterius everywhere anytime.{'\n'}When you come online the data{'\n'}will
+              be synced to our servers.</Text>
+          </Text>
+        </View>
       </Swiper>
 
+      <Animated.View
+        style={{
+          position: 'absolute',
+          width: '100%',
+          bottom: 0,
+          height: 100,
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: this.state.animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0],
+          }),
+        }}>
+        <ActivityIndicator size={'large'} color={'orange'}/>
+      </Animated.View>
 
-      <View style={{
-        flexDirection: 'row', paddingBottom: 10
+      <Animated.View style={{
+        opacity: this.state.animation,
+        flexDirection: 'row',
+        paddingBottom: 10
       }}>
         <View style={{
           flex: 1,
           alignItems: 'flex-end'
         }}>
-          <View style={{
+          <TouchableOpacity style={{
             width: 100,
             height: 100,
             borderColor: '#FFA000',
@@ -194,22 +238,26 @@ export default class PremiumScreen extends React.Component {
             marginTop: 0,
             alignItems: 'center',
             justifyContent: 'center'
-          }}>
+          }}
+            onPress={() => {
+              subscriptionStore.subscribe('month');
+            }}
+          >
             <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
-              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>4</Text>
-              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>99 $</Text>
+              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>{subscriptionStore.monthlyPrice.toString().split('.')[0]}</Text>
+              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>{subscriptionStore.monthlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
             </View>
             <View>
               <Text style={[gs.text, {fontSize: 12}]}>Monthly</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={{
           flex: 1,
           alignItems: 'flex-start'
         }}>
-          <View style={{
+          <TouchableOpacity style={{
             width: 100,
             height: 100,
             borderColor: '#FFA000',
@@ -224,17 +272,17 @@ export default class PremiumScreen extends React.Component {
               <Text style={[gs.text, {fontSize: 14, color: '#FFA000'}]}>SAVE 50%</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
-              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>29</Text>
-              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>99 $</Text>
+              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>{subscriptionStore.yearlyPrice.toString().split('.')[0]}</Text>
+              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>{subscriptionStore.yearlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
             </View>
             <View>
               <Text style={[gs.text, {fontSize: 12}]}>Once a year</Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
         </View>
+      </Animated.View>
 
-      </View>
 
     </View>
   }

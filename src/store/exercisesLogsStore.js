@@ -1,9 +1,8 @@
-import {observable, computed, extendObservable, observe, autorun, autorunAsync} from "mobx";
+import {observable, computed, extendObservable, autorun, autorunAsync} from "mobx";
 import _ from "lodash";
 import authStore from "./authStore";
 import database from "../database";
 import workoutsLogsStore from './workoutsLogsStore';
-import * as Mobx from 'mobx';
 
 class ExercisesLogsStore {
   path;

@@ -13,7 +13,6 @@ import ExerciseLog from './ExerciseLog';
 import moment from "moment/moment";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DarkModal from "../DarkModal";
-import {observable} from "mobx/lib/mobx";
 
 
 @withNavigation

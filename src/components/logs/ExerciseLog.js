@@ -3,7 +3,6 @@ import {
   View, Text, Button, ScrollView, TouchableOpacity, Linking
 } from 'react-native';
 import {observer} from 'mobx-react';
-import {computed} from 'mobx';
 import {gs} from "../../globals";
 import SetLog from './SetLog';
 import ExerciseLogsGraphic from "./ExerciseLogsGraphic";

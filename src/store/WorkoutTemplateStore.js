@@ -1,7 +1,7 @@
 import {computed, observable} from 'mobx';
+import * as Mobx from 'mobx';
 import * as ec from '../algorithm/exercises/exercises-collection';
 import database from "../database";
-import * as Mobx from "mobx";
 import _ from 'lodash';
 
 export default class WorkoutTemplateStore {

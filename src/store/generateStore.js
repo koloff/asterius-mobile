@@ -1,15 +1,14 @@
 import {observable, extendObservable, computed} from 'mobx';
+import * as Mobx from 'mobx';
 import database from '../database';
 import authStore from './authStore';
 import _ from 'lodash';
-import * as Mobx from 'mobx';
 
 import userParametersStore from './userParametersStore';
 import MusclesModelStore from "./MusclesModelStore";
 import WorkoutTemplateStore from "./WorkoutTemplateStore";
 import WorkoutsTemplatesStore from "./WorkoutsTemplatesStore";
 import generateSplit from '../algorithm/generate-split';
-import connectionStore from "./connectionStore";
 
 
 class GenerateStore {

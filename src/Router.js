@@ -128,10 +128,11 @@ class MainTabNavigatorWithBackground extends React.Component {
 
 MainTabNavigatorWithBackground.router = MainTabNavigator.router;
 const MainNavigator = StackNavigator({
-  Main: {screen: MainTabNavigatorWithBackground},
   PremiumScreen: {
     screen: PremiumScreen
   },
+  Main: {screen: MainTabNavigatorWithBackground},
+
   Principles: {
     screen: Principles
   },
