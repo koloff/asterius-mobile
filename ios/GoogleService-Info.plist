@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>254713862614-2mp4q21vuhks562t2ph8jfrb33kmcqgb.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.254713862614-2mp4q21vuhks562t2ph8jfrb33kmcqgb</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA0YHDmXAY-NfWmoWz_9o8GTWAZCN0HKnw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>254713862614</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.asterius.ios</string>
+	<key>PROJECT_ID</key>
+	<string>asterius-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>asterius-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:254713862614:ios:f3425abeb8c9d0c6</string>
+	<key>DATABASE_URL</key>
+	<string>https://asterius-app.firebaseio.com</string>
+</dict>
+</plist>

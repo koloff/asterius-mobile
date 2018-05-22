@@ -99,6 +99,7 @@ export default class ExerciseLog extends React.Component {
             <ExerciseLogsGraphic
               exerciseLogsStore={this.exerciseLogsStore}
               id={this.exerciseLogStore.workoutTemplateExerciseStore.id}
+              dateStr={this.props.dateStr}
             />
           </View>
 

@@ -7,7 +7,7 @@ import {Text, TouchableOpacity, View, StyleSheet, FlatList, Image, Animated, Act
 import {Calendar} from "react-native-calendars";
 import LinearGradient from 'react-native-linear-gradient';
 
-import {withNavigation} from 'react-navigation';
+import firebase from 'react-native-firebase';
 
 import {gs} from "../../globals";
 
@@ -31,7 +31,6 @@ export default class WorkoutsScreen extends React.Component {
     await workoutsLogsStore.init();
     // todo remove
     exercisesLogsStore.init();
-
     Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 333}).start();
   }
 
@@ -65,6 +64,7 @@ export default class WorkoutsScreen extends React.Component {
             }}>
               <Calendar
                 style={{
+                  flex: 1,
                   borderRadius: 5,
                   borderColor: '#222',
                   borderWidth: StyleSheet.hairlineWidth,

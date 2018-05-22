@@ -7,22 +7,18 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import <Firebase.h>
-
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <Firebase.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
   [FIRApp configure];
-
-
-  [FIRDatabase database].persistenceEnabled = YES;
   
   NSURL *jsCodeLocation;
 

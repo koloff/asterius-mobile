@@ -394,10 +394,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-andlog@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/andlog/-/andlog-1.0.1.tgz#afc6512b6e809f5bba63c6646d8685ccead19f11"
-
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
@@ -1292,12 +1288,6 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
-
-bows@^1.6.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/bows/-/bows-1.7.0.tgz#a3598ed9cef61a7a0cab1a7240f291654865ec76"
-  dependencies:
-    andlog "^1.0.0"
 
 bplist-creator@0.0.7:
   version "0.0.7"
@@ -3967,6 +3957,14 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+prop-types@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
@@ -4051,24 +4049,19 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
-react-native-firebase@^3.2.4:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.2.7.tgz#e439e40c8a6f382dff5f08ae313f917d0783c211"
+react-native-firebase@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.2.0.tgz#d44b1e5b5149d65936045c0398e0acc2ebb4c7e9"
   dependencies:
-    bows "^1.6.0"
     opencollective "^1.0.3"
     postinstall-build "^5.0.1"
-    prop-types "^15.6.0"
+    prop-types "^15.6.1"
 
 react-native-iap@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-1.0.3.tgz#b42892f3dd3ee1a29e695288ddebd6c8cd45c82a"
   dependencies:
     dooboolab-welcome "^1.0.5"
-
-react-native-in-app-utils@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-in-app-utils/-/react-native-in-app-utils-6.0.0.tgz#9f0f1cf9b0cf2ef74d52c277ec2b58f6c9a153e2"
 
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"

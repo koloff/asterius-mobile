@@ -2,9 +2,13 @@ import * as React from "react";
 import {observer} from 'mobx-react';
 import {Image, View} from "react-native";
 
-import authStore from './store/authStore';
-import {StackNavigator, TabBarBottom, TabNavigator, } from 'react-navigation';
+import {StackNavigator, TabBarBottom, TabNavigator,} from 'react-navigation';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+
+import authStore from './store/authStore';
+import connectionStore from "./store/connectionStore";
+
 
 import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
@@ -17,6 +21,7 @@ import GenerateStack from './components/generate/GenerateStack';
 import Principles from './components/principles/Principles';
 import PremiumScreen from './components/settings/PremiumScreen';
 import NewUserModal from './components/modals/NewUserModal';
+import OfflineModal from "./components/modals/OfflineModal";
 
 
 const MainTabNavigator = TabNavigator({
@@ -122,17 +127,18 @@ class MainTabNavigatorWithBackground extends React.Component {
       }}/>
       <MainTabNavigator navigation={this.props.navigation}/>
       {authStore.newUser && <NewUserModal navigation={this.props.navigation}/>}
+      <OfflineModal navigation={this.props.navigation}/>
     </View>;
   }
 }
 
 MainTabNavigatorWithBackground.router = MainTabNavigator.router;
 const MainNavigator = StackNavigator({
+
+  Main: {screen: MainTabNavigatorWithBackground},
   PremiumScreen: {
     screen: PremiumScreen
   },
-  Main: {screen: MainTabNavigatorWithBackground},
-
   Principles: {
     screen: Principles
   },

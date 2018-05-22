@@ -40,6 +40,7 @@ export default class ExerciseLogsGraphic extends React.Component {
           />
           <LogsScroll
             // renderingGraphicDone={this.props.renderingGraphicDone}
+            dateStr={this.props.dateStr}
             exerciseLogsStore={this.props.exerciseLogsStore}/>
 
 
@@ -79,7 +80,9 @@ class LogsScroll extends React.Component {
 
 
         {this.props.exerciseLogsStore.exerciseLogs.map((exerciseLogStore) => {
-          if (!exerciseLogStore.sets[0].removed) {
+          if (!exerciseLogStore.sets[0].removed
+            && !((exerciseLogStore.dateStr !== this.props.dateStr) && !exerciseLogStore.sets[0].performed)
+          ) {
             return <Log key={exerciseLogStore.dateStr} exerciseLogStore={exerciseLogStore}/>
           }
         })}

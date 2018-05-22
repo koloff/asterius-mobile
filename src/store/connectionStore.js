@@ -2,14 +2,11 @@ import {observable} from 'mobx';
 import {NetInfo} from 'react-native';
 
 class ConnectionStore {
-  @observable connected = false;
+  @observable connected = true;
 
-  async init() {
-    return new Promise((resolve, reject) => {
-      NetInfo.addEventListener('connectionChange', (connectionInfo) => {
-        this.connected = connectionInfo.type !== 'none';
-        return resolve();
-      })
+  init() {
+    NetInfo.addEventListener('connectionChange', (connectionInfo) => {
+      this.connected = connectionInfo.type !== 'none';
     })
   }
 }

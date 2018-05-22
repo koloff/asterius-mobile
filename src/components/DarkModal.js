@@ -11,14 +11,18 @@ export default class DarkModal extends React.Component {
         transparent={true}
         animationType={'fade'}
         onRequestClose={() => {
-          this.props.onModalClose();
+          if (this.props.onModalClose) {
+            this.props.onModalClose();
+          }
         }}>
         <TouchableWithoutFeedback
           style={{
             flex: 1
           }}
           onPress={() => {
-            this.props.onModalClose();
+            if (this.props.onModalClose) {
+              this.props.onModalClose();
+            }
           }}>
           <View style={{
             flex: 1,

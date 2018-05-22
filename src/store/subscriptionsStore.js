@@ -1,7 +1,7 @@
 import {observable} from 'mobx';
-import {NativeModules, Platform} from 'react-native'
+import {Platform} from 'react-native'
 
-const {InAppUtils} = NativeModules;
+import * as RNIap from 'react-native-iap';
 
 class SubscriptionStore {
   @observable isSubscribed;
@@ -11,60 +11,57 @@ class SubscriptionStore {
 
 
   async init() {
-    this.isSubscribed = false;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.isSubscribed = false;
+        return resolve();
+      }, 200)
+    })
   }
 
   async getPrices() {
-    return new Promise((resolve, reject) => {
-      let products = [
-        '0001', '0002'
-      ];
-      InAppUtils.loadProducts(products, (error, products) => {
-        if (error) {
-          return reject(error);
-        }
+    return new Promise(async (resolve, reject) => {
+      const PURCHASE_ITEMS = Platform.select({
+        ios: [
+          '0001',
+          '0002',
+        ],
+        android: [
+          'productid_1',
+          'productid_2',
+        ],
+      });
 
-        this.currencySymbol = products[0].currencySymbol;
+      try {
+        await RNIap.prepare();
+        const products = await RNIap.getProducts(PURCHASE_ITEMS);
+
         this.monthlyPrice = products[0].price;
         this.yearlyPrice = products[1].price;
+        this.currencySymbol = products[0].currency;
 
         return resolve(true);
-      });
-    })
-  }
 
-
-  async subscribeIOs(period) {
-    InAppUtils.canMakePayments((canMakePayments) => {
-      if (!canMakePayments) {
-        Alert.alert('Not Allowed', 'This device is not allowed to make purchases. Please check restrictions on device');
-      } else {
-
-        if (period === 'month') {
-          InAppUtils.purchaseProduct('0001', (error, response) => {
-            // NOTE for v3.0: User can cancel the payment which will be available as error object here.
-            console.log(error);
-            console.log(response);
-            if(response && response.productIdentifier) {
-              Alert.alert('Purchase Successful', 'Your Transaction ID is ' + response.transactionIdentifier);
-              //unlock store here.
-              // todo
-            }
-          });
-        }
-        
+      } catch (err) {
+        console.log(err); // standardized err.code and err.message available
       }
+
     })
   }
+
 
   async subscribe(period) {
-    if (Platform.OS === 'ios') {
-      return this.subscribeIOs(period);
-    } else {
-      // todo android
-    }
-  }
 
+
+    return RNIap.buyProduct('0001')
+      .then((purchase) => {
+        console.log(purchase);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+  }
 
 
 }

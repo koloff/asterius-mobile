@@ -4,13 +4,14 @@ import {
   StatusBar,
   View, YellowBox, SafeAreaView
 } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+// import SplashScreen from 'react-native-splash-screen';
 import Router from './Router';
 
 import authStore from './store/authStore';
 import connectionStore from './store/connectionStore';
 import userParametersStore from "./store/userParametersStore";
 import firebase from 'react-native-firebase';
+import subscriptionsStore from "./store/subscriptionsStore";
 
 export default class App extends Component {
   state = {
@@ -18,11 +19,13 @@ export default class App extends Component {
   };
 
   async componentWillMount() {
-    await connectionStore.init();
+    connectionStore.init();
+    subscriptionsStore.init();
     await authStore.init();
     await userParametersStore.init();
     this.setState({isReady: true});
-    SplashScreen.hide();
+    //todo
+    // SplashScreen.hide();
   }
 
   render() {
