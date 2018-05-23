@@ -4,14 +4,14 @@ import {observer} from 'mobx-react';
 import {withNavigation} from 'react-navigation';
 import {TouchableOpacity, Text, View} from "react-native";
 import {BlurView} from "react-native-blur";
-import Entypo from "react-native-vector-icons/Entypo";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ElevatedView from "../ElevatedView";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 @observer
 @withNavigation
-export default class OfflineModal extends React.Component {
+export default class WeightPremium extends React.Component {
   render() {
     return <View style={{
       position: "absolute",
@@ -27,11 +27,9 @@ export default class OfflineModal extends React.Component {
         blurType="dark"
         blurAmount={10}
       />
-      <Text style={[gs.text, gs.shadow, {position: 'absolute', top: 20}]}>You lost internet connection!</Text>
-
-      <Entypo name={'network'} color={'#fff'} size={55} style={{marginBottom: 0}}/>
+      <MaterialCommunityIcons name={'scale-bathroom'} color={'#fff'} size={55} style={{marginBottom: 0}}/>
       <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
-        Use offline{'\n'}
+        Weight logs{'\n'}
         <Text style={{fontSize: 15}}>This is premium feature</Text>
       </Text>
 

@@ -8,7 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import authStore from './store/authStore';
 import connectionStore from "./store/connectionStore";
-
+import subscriptionsStore from "./store/subscriptionsStore";
 
 import Start from './components/start/Start';
 import Tweaker from './components/tweaker/Tweaker';
@@ -105,6 +105,7 @@ const MainTabNavigator = TabNavigator({
   },
 });
 
+@observer
 class MainTabNavigatorWithBackground extends React.Component {
   render() {
     return <View style={{flex: 1}}>
@@ -127,7 +128,7 @@ class MainTabNavigatorWithBackground extends React.Component {
       }}/>
       <MainTabNavigator navigation={this.props.navigation}/>
       {authStore.newUser && <NewUserModal navigation={this.props.navigation}/>}
-      <OfflineModal navigation={this.props.navigation}/>
+      {subscriptionsStore.isSubscribed === false && connectionStore.connected === false && <OfflineModal />}
     </View>;
   }
 }

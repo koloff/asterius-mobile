@@ -7,6 +7,7 @@ class ConnectionStore {
   init() {
     NetInfo.addEventListener('connectionChange', (connectionInfo) => {
       this.connected = connectionInfo.type !== 'none';
+      // this.connected = false;
     })
   }
 }

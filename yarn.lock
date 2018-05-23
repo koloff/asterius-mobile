@@ -4024,6 +4024,12 @@ react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
+react-native-blur@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-blur/-/react-native-blur-3.2.2.tgz#5bfb50638d148982c9560436554ed01d77d6d07d"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-calendars@^1.19.3:
   version "1.19.3"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.19.3.tgz#4a9a6ec9d695b9f5f6003d80fe6c0930453e89eb"
@@ -4057,9 +4063,9 @@ react-native-firebase@^4.2.0:
     postinstall-build "^5.0.1"
     prop-types "^15.6.1"
 
-react-native-iap@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-1.0.3.tgz#b42892f3dd3ee1a29e695288ddebd6c8cd45c82a"
+react-native-iap@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-1.0.5.tgz#25a58dacf4d7cf32774b2460ec24741fc95bf82e"
   dependencies:
     dooboolab-welcome "^1.0.5"
 

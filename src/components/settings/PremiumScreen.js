@@ -1,4 +1,5 @@
 import React from 'react';
+import {observer} from 'mobx-react';
 import {Text, View, Image, StyleSheet, TouchableOpacity, Animated, ActivityIndicator} from 'react-native';
 import {gs} from '../../globals';
 import Swiper from 'react-native-swiper';
@@ -8,7 +9,9 @@ import Entypo from "react-native-vector-icons/Entypo";
 
 import subscriptionStore from '../../store/subscriptionsStore';
 import Toast from "react-native-root-toast";
+import connectionStore from "../../store/connectionStore";
 
+@observer
 export default class PremiumScreen extends React.Component {
 
   state = {
@@ -203,85 +206,114 @@ export default class PremiumScreen extends React.Component {
         </View>
       </Swiper>
 
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: '100%',
-          bottom: 0,
-          height: 100,
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: this.state.animation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
-        }}>
-        <ActivityIndicator size={'large'} color={'orange'}/>
-      </Animated.View>
-
-      <Animated.View style={{
-        opacity: this.state.animation,
-        flexDirection: 'row',
-        paddingBottom: 10
-      }}>
-        <View style={{
-          flex: 1,
-          alignItems: 'flex-end'
-        }}>
-          <TouchableOpacity style={{
-            width: 100,
+      {!connectionStore.connected || subscriptionStore.isSubscribed ?
+        <View
+          style={{
             height: 100,
-            borderColor: '#FFA000',
-            borderWidth: 1,
-            borderRadius: 15,
-            margin: 10,
-            marginTop: 0,
             alignItems: 'center',
-            justifyContent: 'center'
-          }}
-            onPress={() => {
-              subscriptionStore.subscribe('month');
-            }}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
-              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>{subscriptionStore.monthlyPrice.toString().split('.')[0]}</Text>
-              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>{subscriptionStore.monthlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
-            </View>
-            <View>
-              <Text style={[gs.text, {fontSize: 12}]}>Monthly</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{
-          flex: 1,
-          alignItems: 'flex-start'
-        }}>
-          <TouchableOpacity style={{
-            width: 100,
-            height: 100,
-            borderColor: '#FFA000',
-            borderWidth: 1,
-            borderRadius: 15,
-            margin: 10,
-            marginTop: 0,
-            alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}>
-            <View style={{position: 'absolute', top: 5}}>
-              <Text style={[gs.text, {fontSize: 14, color: '#FFA000'}]}>SAVE 50%</Text>
+          <Text style={[gs.text, gs.shadow, {color: '#F57C00'}]}>
+            {subscriptionStore.isSubscribed ? 'You are premium!' : 'Connect to the internet to subscribe.'}
+          </Text>
+        </View>
+
+        : <View>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              width: '100%',
+              bottom: 0,
+              height: 100,
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: this.state.animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+              }),
+            }}>
+            <ActivityIndicator size={'large'} color={'orange'}/>
+          </Animated.View>
+
+          <Animated.View style={{
+            opacity: this.state.animation,
+            flexDirection: 'row',
+            paddingBottom: 10
+          }}>
+            <View style={{
+              flex: 1,
+              alignItems: 'flex-end'
+            }}>
+              <TouchableOpacity
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderColor: '#FFA000',
+                  borderWidth: 1,
+                  borderRadius: 15,
+                  margin: 10,
+                  marginTop: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                onPress={() => {
+                  subscriptionStore.subscribe('month');
+                }}
+              >
+                <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
+                  <Text style={[gs.text, {
+                    fontSize: 25,
+                    lineHeight: 30
+                  }]}>{subscriptionStore.monthlyPrice.toString().split('.')[0]}</Text>
+                  <Text style={[gs.text, {
+                    fontSize: 14,
+                    lineHeight: 21
+                  }]}>{subscriptionStore.monthlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
+                </View>
+                <View>
+                  <Text style={[gs.text, {fontSize: 12}]}>Monthly</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
-              <Text style={[gs.text, {fontSize: 25, lineHeight: 30}]}>{subscriptionStore.yearlyPrice.toString().split('.')[0]}</Text>
-              <Text style={[gs.text, {fontSize: 14, lineHeight: 21}]}>{subscriptionStore.yearlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
+
+            <View style={{
+              flex: 1,
+              alignItems: 'flex-start'
+            }}>
+              <TouchableOpacity style={{
+                width: 100,
+                height: 100,
+                borderColor: '#FFA000',
+                borderWidth: 1,
+                borderRadius: 15,
+                margin: 10,
+                marginTop: 0,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <View style={{position: 'absolute', top: 5}}>
+                  <Text style={[gs.text, {fontSize: 14, color: '#FFA000'}]}>SAVE 50%</Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 7, marginBottom: 3}}>
+                  <Text style={[gs.text, {
+                    fontSize: 25,
+                    lineHeight: 30
+                  }]}>{subscriptionStore.yearlyPrice.toString().split('.')[0]}</Text>
+                  <Text style={[gs.text, {
+                    fontSize: 14,
+                    lineHeight: 21
+                  }]}>{subscriptionStore.yearlyPrice.toString().split('.')[1]} {subscriptionStore.currencySymbol}</Text>
+                </View>
+                <View>
+                  <Text style={[gs.text, {fontSize: 12}]}>Once a year</Text>
+                </View>
+              </TouchableOpacity>
+
             </View>
-            <View>
-              <Text style={[gs.text, {fontSize: 12}]}>Once a year</Text>
-            </View>
-          </TouchableOpacity>
+          </Animated.View>
 
         </View>
-      </Animated.View>
+      }
 
 
     </View>

@@ -1,8 +1,9 @@
 import firebase from 'react-native-firebase';
-
+import {observable} from 'mobx';
 
 class AdStore {
 
+  @observable lastAdSeconds = 0;
 
 
   /**

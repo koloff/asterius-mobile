@@ -23,6 +23,8 @@ import ExerciseInWorkoutInTweaker from "../exercises/ExerciseInWorkoutInTweaker"
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DarkModal from "../DarkModal";
+import Entypo from "react-native-vector-icons/Entypo";
+import subscriptionsStore from "../../store/subscriptionsStore";
 
 @withNavigation
 @observer
@@ -180,6 +182,7 @@ export default class Tweaker extends Component {
   }
 }
 
+@withNavigation
 @observer
 class TweakerMainView extends React.Component {
   state = {
@@ -318,6 +321,27 @@ class TweakerMainView extends React.Component {
               }}>
               {tweakerStore.exercisesToShow.map((exercise) =>
                 <ExerciseWithMuscles key={exercise.id} id={exercise.id}/>)}
+
+              {!subscriptionsStore.isSubscribed && <TouchableOpacity
+                style={{
+                  flex: 1,
+                  backgroundColor: '#151515',
+                  marginBottom: 7,
+                  paddingBottom: 3,
+                  marginLeft: 1,
+                  marginRight: 1,
+                  alignItems: 'center',
+                  height: 50,
+                  justifyContent: 'center'
+                }}
+                onPress={() => {
+                  this.props.navigation.navigate('PremiumScreen');
+                }}>
+                <Text style={[gs.text, gs.shadow, {color: '#FF8F00'}]}>
+                  <Entypo size={14} color={'#FF8F00'} name={'plus'}/>
+                  &nbsp; MORE EXERCISES</Text>
+              </TouchableOpacity>}
+
             </ScrollView>
           </Animated.View>
 

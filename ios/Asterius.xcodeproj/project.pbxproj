@@ -41,6 +41,7 @@
 		5911B08311424076A57F5516 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7611965F033439EBA7ACD89 /* libRNFirebase.a */; };
 		5918D7F020B4651B00AB028F /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5918D7ED20B4650E00AB028F /* libRNSVG.a */; };
 		5918D7F720B465AD00AB028F /* libRNIap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5918D7F620B465A800AB028F /* libRNIap.a */; };
+		5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5985940F20B5C5D700C17238 /* libRNBlur.a */; };
 		59CC4E2020B446FD005833BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */; };
 		59D99C5920B4689B002A62D8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59D99C4E20B4689B002A62D8 /* Octicons.ttf */; };
 		59D99C5A20B4689B002A62D8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59D99C4E20B4689B002A62D8 /* Octicons.ttf */; };
@@ -308,6 +309,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNIap;
 		};
+		5985940E20B5C5D700C17238 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 598593E220B5C5D700C17238 /* RNBlur.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A68BD7BC1BC31318005F02DF;
+			remoteInfo = RNBlur;
+		};
+		5985941020B5C5D700C17238 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 598593E220B5C5D700C17238 /* RNBlur.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64D1BD361EEFE88700F3F219;
+			remoteInfo = "RNBlur-tvOS";
+		};
 		59CC4E1020B446FD005833BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -456,6 +471,7 @@
 		56980B12BBC9C835E16CA006 /* Pods-Asterius-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Asterius-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Asterius-tvOS/Pods-Asterius-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5918D7E720B4650E00AB028F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5918D7F120B465A800AB028F /* RNIap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
+		598593E220B5C5D700C17238 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59D99C4E20B4689B002A62D8 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		59D99C4F20B4689B002A62D8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
@@ -506,6 +522,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */,
 				5918D7F720B465AD00AB028F /* libRNIap.a in Frameworks */,
 				5918D7F020B4651B00AB028F /* libRNSVG.a in Frameworks */,
 				59DE2EB020B46C2700BC13B7 /* libBVLinearGradient.a in Frameworks */,
@@ -720,6 +737,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		598593E320B5C5D700C17238 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5985940F20B5C5D700C17238 /* libRNBlur.a */,
+				5985941120B5C5D700C17238 /* libRNBlur.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		59CC4E3920B44787005833BA /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -785,6 +811,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				598593E220B5C5D700C17238 /* RNBlur.xcodeproj */,
 				59DE2E7E20B46C1900BC13B7 /* BVLinearGradient.xcodeproj */,
 				5918D7F120B465A800AB028F /* RNIap.xcodeproj */,
 				5918D7E720B4650E00AB028F /* RNSVG.xcodeproj */,
@@ -1034,6 +1061,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 598593E320B5C5D700C17238 /* Products */;
+					ProjectRef = 598593E220B5C5D700C17238 /* RNBlur.xcodeproj */;
+				},
+				{
 					ProductGroup = 59CC4E5F20B44788005833BA /* Products */;
 					ProjectRef = F84DC394D1EF4A5FACE180EB /* RNFirebase.xcodeproj */;
 				},
@@ -1244,6 +1275,20 @@
 			fileType = archive.ar;
 			path = libRNIap.a;
 			remoteRef = 5918D7F520B465A800AB028F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5985940F20B5C5D700C17238 /* libRNBlur.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBlur.a;
+			remoteRef = 5985940E20B5C5D700C17238 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5985941120B5C5D700C17238 /* libRNBlur.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBlur.a;
+			remoteRef = 5985941020B5C5D700C17238 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		59CC4E1120B446FD005833BA /* libjsinspector.a */ = {

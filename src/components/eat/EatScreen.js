@@ -12,6 +12,8 @@ import eatStore from "../../store/eatStore";
 import ElevatedView from "../ElevatedView";
 import userParametersStore from "../../store/userParametersStore";
 import RadioButtons from "../RadioButtons";
+import EatPremium from "./EatPremium";
+import subscriptionsStore from "../../store/subscriptionsStore";
 
 const goals = [
   'Loose the most fat\nRisk the most muscle',
@@ -270,6 +272,9 @@ export default class EatScreen extends React.Component {
 
         </Modal>
 
+
+
+        {!subscriptionsStore.isSubscribed && <EatPremium />}
 
       </Animated.View>
     )

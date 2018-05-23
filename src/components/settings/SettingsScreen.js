@@ -8,6 +8,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import ElevatedView from "../ElevatedView";
 import Foundation from "react-native-vector-icons/Foundation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Entypo from "react-native-vector-icons/Entypo";
+import subscriptionsStore from "../../store/subscriptionsStore";
 
 @withNavigation
 export default class SettingsScreen extends React.Component {
@@ -31,7 +33,7 @@ export default class SettingsScreen extends React.Component {
 
 
         <ElevatedView elevation={3} style={{
-          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth
         }}>
@@ -66,7 +68,7 @@ export default class SettingsScreen extends React.Component {
 
 
         <ElevatedView elevation={3} style={{
-          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth
         }}>
@@ -100,7 +102,45 @@ export default class SettingsScreen extends React.Component {
         </ElevatedView>
 
         <ElevatedView elevation={3} style={{
-          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          borderColor: '#222',
+          borderWidth: StyleSheet.hairlineWidth
+        }}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              borderRadius: 5,
+              padding: 15,
+              justifyContent: 'center'
+            }}
+            onPress={() => {
+              if (subscriptionsStore.isSubscribed) {
+                Linking.openURL('mailto:asteriusguidance@gmail.com');
+              } else {
+                this.props.navigation.navigate('PremiumScreen');
+              }
+            }}
+          >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                <Entypo color={'#fff'} size={21} name={'chat'}/> &nbsp;&nbsp;
+              </Text>
+              <View>
+                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
+                  Fitness guidance
+                </Text>
+                <Text style={[gs.text, gs.shadow, {
+                  textAlign: 'left',
+                  color: '#999',
+                  fontSize: 14
+                }]}>Personal fitness support</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </ElevatedView>
+
+        <ElevatedView elevation={3} style={{
+          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth
         }}>
@@ -127,7 +167,7 @@ export default class SettingsScreen extends React.Component {
                   textAlign: 'left',
                   color: '#999',
                   fontSize: 14
-                }]}>Questions, problems and requests</Text>
+                }]}>Questions and bug reports</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -135,7 +175,7 @@ export default class SettingsScreen extends React.Component {
 
 
         <ElevatedView elevation={3} style={{
-          width: '100%', height: 100, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
+          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
           borderColor: '#222',
           borderWidth: StyleSheet.hairlineWidth
         }}>

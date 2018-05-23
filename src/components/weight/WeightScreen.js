@@ -12,6 +12,8 @@ import moment from "moment";
 import ElevatedView from "../ElevatedView";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AnimatedLoading from "../AnimatedLoading";
+import WeightPremium from "./WeightPremium";
+import subscriptionsStore from "../../store/subscriptionsStore";
 
 @observer
 export default class WeightScreen extends React.Component {
@@ -221,6 +223,10 @@ export default class WeightScreen extends React.Component {
               }
             )}
           </ScrollView>
+
+
+          {!subscriptionsStore.isSubscribed && <WeightPremium />}
+
 
         </Animated.View>
       </View>

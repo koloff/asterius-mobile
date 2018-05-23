@@ -13,7 +13,7 @@ class SubscriptionStore {
   async init() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        this.isSubscribed = false;
+        this.isSubscribed = true;
         return resolve();
       }, 200)
     })
@@ -35,6 +35,7 @@ class SubscriptionStore {
       try {
         await RNIap.prepare();
         const products = await RNIap.getProducts(PURCHASE_ITEMS);
+        console.log(products);
 
         this.monthlyPrice = products[0].price;
         this.yearlyPrice = products[1].price;
