@@ -72,7 +72,24 @@ function generateVolume(parameters) {
 
   for (let i = 0; i < exercises.length; i++) {
     let exercise = exercises[i];
+    let exerciseMaxSets = maxExerciseSetsCount;
+    let exerciseMinSets = minExerciseSetsCount;
+
     // EXERCISE SIDE CASES
+    if (exercise.premium) {
+      continue;
+    }
+
+    if (exercise.id === ec.ids.legs.deadlift) {
+      continue;
+    }
+
+    if (exercise.id === ec.ids.back.cableExternalRotation) {
+      exerciseMinSets = 2;
+      exerciseMaxSets = 2;
+      // continue;
+    }
+
     if (gender === 1) {
       if (exercise.id === ec.ids.legs.hipThrust && !(preferredMuscles.indexOf(mc.ids.legs.glutes) >= 0)) {
         continue;
@@ -108,14 +125,14 @@ function generateVolume(parameters) {
       } else {
         // the exercise sets can be 0 or in the range [min, max]
         // there is no SEC type in jsLpSolver, so we create a fix by using a slack variable for each exercise
-        constraints[exercise.id].min = minExerciseSetsCount;
+        constraints[exercise.id].min = exerciseMinSets;
         binaries[`${exercise.id}_slack`] = 1;
         constraints[`${exercise.id}_slack`] = {max: 1};
-        variables[`${exercise.id}_slack`] = {[exercise.id]: maxExerciseSetsCount, [`${exercise.id}_slack`]: 1};
-        exerciseVar[`${exercise.id}_slack`] = 1 / maxExerciseSetsCount;
+        variables[`${exercise.id}_slack`] = {[exercise.id]: exerciseMaxSets, [`${exercise.id}_slack`]: 1};
+        exerciseVar[`${exercise.id}_slack`] = 1 / exerciseMaxSets;
       }
 
-      constraints[exercise.id].max = maxExerciseSetsCount;
+      constraints[exercise.id].max = exerciseMaxSets;
       exerciseVar.sets = 1;
       exerciseVar[exercise.id] = 1;
       exerciseVar['trainedMusclesVolume'] = trainedMusclesVolume;

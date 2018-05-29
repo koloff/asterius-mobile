@@ -5,13 +5,16 @@ import {observer} from 'mobx-react';
 import * as mc from '../../algorithm/muscles/muscles-collection';
 import * as ec from '../../algorithm/exercises/exercises-collection';
 
+import {withNavigation} from 'react-navigation';
 import tweakerStore from '../../store/tweakerStore';
 import {gs} from "../../globals";
 import SetCount from "./SetCount";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import subscriptionsStore from "../../store/subscriptionsStore";
 
 
 // props - id
+@withNavigation
 @observer
 export default class ExerciseWithMuscles extends React.Component {
   state = {
@@ -77,7 +80,16 @@ export default class ExerciseWithMuscles extends React.Component {
           </View>
         </View>
 
-        <SetCount id={this.props.id}/>
+        {this.state.exercise.premium && !subscriptionsStore.isSubscribed ?
+          <TouchableOpacity
+            style={{marginTop: 10, marginBottom: 5}}
+            onPress={() => {
+              this.props.navigation.navigate('PremiumScreen')
+            }}>
+            <Text style={[gs.text, {fontSize: 12, color: '#777'}]}>PREMIUM</Text>
+          </TouchableOpacity>
+          :
+          <SetCount id={this.props.id}/>}
 
       </View>
     )
@@ -88,6 +100,8 @@ const styles = StyleSheet.create({
     box: {
       flex: 1,
       backgroundColor: '#151515',
+      justifyContent: 'center',
+      alignItems: 'center',
       marginBottom: 7,
       paddingBottom: 3,
       marginLeft: 1,

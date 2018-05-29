@@ -74,9 +74,9 @@ export default class WeightScreen extends React.Component {
             }}
             gridMin={weightLogsStore.logsData.min - 1}
             gridMax={weightLogsStore.logsData.max + 1}
-            curve={shape.curveNatural}
-            extras={[Gradient]}
-          />
+            curve={shape.curveNatural}>
+            <Gradient/>
+          </LineChart>
 
 
           <View style={{
@@ -225,7 +225,7 @@ export default class WeightScreen extends React.Component {
           </ScrollView>
 
 
-          {!subscriptionsStore.isSubscribed && <WeightPremium />}
+          {!subscriptionsStore.isSubscribed && <WeightPremium/>}
 
 
         </Animated.View>

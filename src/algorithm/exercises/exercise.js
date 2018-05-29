@@ -6,5 +6,6 @@ module.exports = class Exercise {
 
     // {name, group, images: {first, second}}
     this.info = options.info;
+    this.premium = options.premium;
   }
 };

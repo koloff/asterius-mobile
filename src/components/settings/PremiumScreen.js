@@ -180,13 +180,13 @@ export default class PremiumScreen extends React.Component {
 
         </View>
 
-        <View style={styles.slide}>
-          <Entypo name={'emoji-happy'} color={'#fff'} size={55} style={{marginBottom: 10}}/>
-          <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
-            Remove all ads{'\n'}
-            <Text style={{fontSize: 15}}>No more interruptions,{'\n'}go straight to your dream body!</Text>
-          </Text>
-        </View>
+        {/*<View style={styles.slide}>*/}
+          {/*<Entypo name={'emoji-happy'} color={'#fff'} size={55} style={{marginBottom: 10}}/>*/}
+          {/*<Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>*/}
+            {/*Remove all ads{'\n'}*/}
+            {/*<Text style={{fontSize: 15}}>No more interruptions,{'\n'}go straight to your dream body!</Text>*/}
+          {/*</Text>*/}
+        {/*</View>*/}
 
         <View style={styles.slide}>
           <Entypo name={'chat'} color={'#fff'} size={55} style={{marginBottom: 10}}/>

@@ -25,7 +25,7 @@ export default class EatPremium extends React.Component {
           top: 0, left: 0, bottom: 0, right: 0,
         }}
         blurType="dark"
-        blurAmount={10}
+        blurAmount={5}
       />
       <MaterialCommunityIcons name={'food-fork-drink'} color={'#fff'} size={55} style={{marginBottom: 0}}/>
       <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
@@ -57,7 +57,7 @@ export default class EatPremium extends React.Component {
             textShadowOffset: {width: 1, height: 1}
           }]}>
             <FontAwesome size={23} name={'star'}/>
-            &nbsp; Next level
+            &nbsp; Get it
           </Text>
         </ElevatedView>
       </TouchableOpacity>

@@ -25,11 +25,11 @@ export default class WeightPremium extends React.Component {
           top: 0, left: 0, bottom: 0, right: 0,
         }}
         blurType="dark"
-        blurAmount={10}
+        blurAmount={7}
       />
       <MaterialCommunityIcons name={'scale-bathroom'} color={'#fff'} size={55} style={{marginBottom: 0}}/>
       <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
-        Weight logs{'\n'}
+        Weight{'\n'}
         <Text style={{fontSize: 15}}>This is premium feature</Text>
       </Text>
 
@@ -57,7 +57,7 @@ export default class WeightPremium extends React.Component {
             textShadowOffset: {width: 1, height: 1}
           }]}>
             <FontAwesome size={23} name={'star'}/>
-            &nbsp; Next level
+            &nbsp; Get it
           </Text>
         </ElevatedView>
       </TouchableOpacity>

@@ -88,7 +88,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.back.middleBack,
-    mev: 1.5,
+    mev: 2,
     mrv: 4.5,
     types: [types.upperBody, types.pull],
     info: {
@@ -100,8 +100,8 @@ let muscles = [
   }),
   new Muscle({
     id: ids.back.lats,
-    mev: 2,
-    mrv: 5,
+    mev: 3,
+    mrv: 6,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',
@@ -113,7 +113,7 @@ let muscles = [
   new Muscle({
     id: ids.back.rotatorCuff,
     mev: 1,
-    mrv: 4.5,
+    mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
       group: 'Back',
@@ -124,7 +124,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.biceps.longHead,
-    mev: 1,
+    mev: 3,
     mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
@@ -136,7 +136,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.biceps.shortHead,
-    mev: 1,
+    mev: 3,
     mrv: 4,
     types: [types.upperBody, types.pull],
     info: {
@@ -148,7 +148,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.triceps.longHead,
-    mev: 2,
+    mev: 3,
     mrv: 5,
     types: [types.upperBody, types.push],
     info: {
@@ -160,7 +160,7 @@ let muscles = [
   }),
   new Muscle({
     id: ids.triceps.shortHead,
-    mev: 1.5,
+    mev: 2,
     mrv: 5,
     types: [types.upperBody, types.push],
     info: {

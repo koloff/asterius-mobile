@@ -59,7 +59,7 @@ export default class OfflineModal extends React.Component {
             textShadowOffset: {width: 1, height: 1}
           }]}>
             <FontAwesome size={23} name={'star'}/>
-            &nbsp; Next level
+            &nbsp; Get it
           </Text>
         </ElevatedView>
       </TouchableOpacity>

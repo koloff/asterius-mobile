@@ -67,7 +67,43 @@ export default class EatScreen extends React.Component {
     })
   }
 
+
   render() {
+
+    const Labels = ({slices}) => {
+      return slices.map((slice, index) => {
+        const {labelCentroid, pieCentroid, data} = slice;
+        return (
+          <G key={index}>
+            <Line
+              x1={labelCentroid[0]}
+              y1={labelCentroid[1]}
+              x2={pieCentroid[0]}
+              y2={pieCentroid[1]}
+              strokeWidth={3}
+              stroke={data.svg.fill}
+            />
+            <Circle
+              cx={labelCentroid[0]}
+              cy={labelCentroid[1]}
+              r={40}
+              fill={data.svg.fill}
+            />
+            <SVG.Text
+              fill="white"
+              // fontWeight="bold"
+              // stroke={'rgba(255,255,255,1)'}
+              fontSize="17"
+              fontFamily={'Montserrat'}
+              textAnchor="middle">
+              <TSpan x={labelCentroid[0]} y={labelCentroid[1]}>{data.type}</TSpan>
+              <TSpan x={labelCentroid[0]} y={labelCentroid[1] + 17}>{data.grams + 'g'}</TSpan>
+            </SVG.Text>
+          </G>
+        )
+      })
+    };
+
     // noinspection JSSuspiciousNameCombination
     return (
       <Animated.View style={{
@@ -161,35 +197,7 @@ export default class EatScreen extends React.Component {
             outerRadius={'40%'}
             labelRadius={this.width / 2 - 50}
             contentInset={{top: 0, left: 0, right: 0, bottom: 0}}
-            renderDecorator={({item, pieCentroid, labelCentroid, index}) => (
-              <G key={index}>
-                <Line
-                  x1={labelCentroid[0]}
-                  y1={labelCentroid[1]}
-                  x2={pieCentroid[0]}
-                  y2={pieCentroid[1]}
-                  strokeWidth={3}
-                  stroke={item.svg.fill}
-                />
-                <Circle
-                  cx={labelCentroid[0]}
-                  cy={labelCentroid[1]}
-                  r={40}
-                  fill={item.svg.fill}
-                />
-                <SVG.Text
-                  fill="white"
-                  // fontWeight="bold"
-                  // stroke={'rgba(255,255,255,1)'}
-                  fontSize="17"
-                  fontFamily={'Montserrat'}
-                  textAnchor="middle">
-                  <TSpan x={labelCentroid[0]} y={labelCentroid[1]}>{item.type}</TSpan>
-                  <TSpan x={labelCentroid[0]} y={labelCentroid[1] + 17}>{item.grams + 'g'}</TSpan>
-                </SVG.Text>
-              </G>
-            )}
-          />
+          ><Labels/></PieChart>
         </View>
 
         <Modal
@@ -273,8 +281,7 @@ export default class EatScreen extends React.Component {
         </Modal>
 
 
-
-        {!subscriptionsStore.isSubscribed && <EatPremium />}
+        {!subscriptionsStore.isSubscribed && <EatPremium/>}
 
       </Animated.View>
     )

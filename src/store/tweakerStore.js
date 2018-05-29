@@ -2,6 +2,8 @@ import {computed, observable, action, extendObservable} from 'mobx';
 import * as mc from '../algorithm/muscles/muscles-collection';
 import * as ec from '../algorithm/exercises/exercises-collection';
 import _ from 'lodash';
+import subscriptionsStore from "./subscriptionsStore";
+import authStore from "./authStore";
 
 class TweakerStore {
   workoutTemplateStore;
@@ -43,6 +45,9 @@ class TweakerStore {
       let shouldAddExercise = true;
       let usedMusclesArr = Object.keys(exercise.musclesUsed);
       if (usedMusclesArr.indexOf(this.selectedMuscleId) < 0) {
+        shouldAddExercise = false;
+      }
+      if (authStore.isAnonymous && exercise.premium) {
         shouldAddExercise = false;
       }
       if (shouldAddExercise) {

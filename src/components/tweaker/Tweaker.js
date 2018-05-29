@@ -25,6 +25,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DarkModal from "../DarkModal";
 import Entypo from "react-native-vector-icons/Entypo";
 import subscriptionsStore from "../../store/subscriptionsStore";
+import authStore from "../../store/authStore";
 
 @withNavigation
 @observer
@@ -322,7 +323,7 @@ class TweakerMainView extends React.Component {
               {tweakerStore.exercisesToShow.map((exercise) =>
                 <ExerciseWithMuscles key={exercise.id} id={exercise.id}/>)}
 
-              {!subscriptionsStore.isSubscribed && <TouchableOpacity
+              {authStore.isAnonymous && <View
                 style={{
                   flex: 1,
                   backgroundColor: '#151515',
@@ -333,14 +334,10 @@ class TweakerMainView extends React.Component {
                   alignItems: 'center',
                   height: 50,
                   justifyContent: 'center'
-                }}
-                onPress={() => {
-                  this.props.navigation.navigate('PremiumScreen');
                 }}>
-                <Text style={[gs.text, gs.shadow, {color: '#FF8F00'}]}>
-                  <Entypo size={14} color={'#FF8F00'} name={'plus'}/>
-                  &nbsp; MORE EXERCISES</Text>
-              </TouchableOpacity>}
+                <Text style={[gs.text, gs.shadow, {color: '#FF8F00', textAlign: 'center'}]}>
+                  &nbsp; Save workout and register{'\n'}to see all exercises!</Text>
+              </View>}
 
             </ScrollView>
           </Animated.View>
