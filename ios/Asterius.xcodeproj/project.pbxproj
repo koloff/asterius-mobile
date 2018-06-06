@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -42,6 +43,7 @@
 		5978F34420B8689D0062AC5F /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5978F42220B8BC8A0062AC5F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7611965F033439EBA7ACD89 /* libRNFirebase.a */; };
 		5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5985940F20B5C5D700C17238 /* libRNBlur.a */; };
+		5990A32720C89A4F00C45952 /* libInteractable.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5990A2FB20C89A4100C45952 /* libInteractable.a */; };
 		59CC4E2020B446FD005833BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */; };
 		59D99C5920B4689B002A62D8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59D99C4E20B4689B002A62D8 /* Octicons.ttf */; };
 		59D99C5A20B4689B002A62D8 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59D99C4E20B4689B002A62D8 /* Octicons.ttf */; };
@@ -311,6 +313,13 @@
 			remoteGlobalIDString = 64D1BD361EEFE88700F3F219;
 			remoteInfo = "RNBlur-tvOS";
 		};
+		5990A2FA20C89A4100C45952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5990A2F420C89A4100C45952 /* Interactable.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CC0127971E3ACC3900B23C9F;
+			remoteInfo = Interactable;
+		};
 		59CC4E1020B446FD005833BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -461,6 +470,7 @@
 		5918D7E720B4650E00AB028F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5918D7F120B465A800AB028F /* RNIap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
 		598593E220B5C5D700C17238 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
+		5990A2F420C89A4100C45952 /* Interactable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Interactable.xcodeproj; path = "../node_modules/react-native-interactable/lib/ios/Interactable.xcodeproj"; sourceTree = "<group>"; };
 		59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		59D99C4E20B4689B002A62D8 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		59D99C4F20B4689B002A62D8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
@@ -511,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5978F42220B8BC8A0062AC5F /* libRNFirebase.a in Frameworks */,
+				5990A32720C89A4F00C45952 /* libInteractable.a in Frameworks */,
 				5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */,
 				5918D7F720B465AD00AB028F /* libRNIap.a in Frameworks */,
 				5918D7F020B4651B00AB028F /* libRNSVG.a in Frameworks */,
@@ -733,6 +744,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		5990A2F520C89A4100C45952 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5990A2FB20C89A4100C45952 /* libInteractable.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		59CC4E3920B44787005833BA /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,6 +817,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5990A2F420C89A4100C45952 /* Interactable.xcodeproj */,
 				598593E220B5C5D700C17238 /* RNBlur.xcodeproj */,
 				59DE2E7E20B46C1900BC13B7 /* BVLinearGradient.xcodeproj */,
 				5918D7F120B465A800AB028F /* RNIap.xcodeproj */,
@@ -1001,6 +1021,10 @@
 				{
 					ProductGroup = 59DE2E7F20B46C1900BC13B7 /* Products */;
 					ProjectRef = 59DE2E7E20B46C1900BC13B7 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = 5990A2F520C89A4100C45952 /* Products */;
+					ProjectRef = 5990A2F420C89A4100C45952 /* Interactable.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1279,6 +1303,13 @@
 			fileType = archive.ar;
 			path = libRNBlur.a;
 			remoteRef = 5985941020B5C5D700C17238 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5990A2FB20C89A4100C45952 /* libInteractable.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libInteractable.a;
+			remoteRef = 5990A2FA20C89A4100C45952 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		59CC4E1120B446FD005833BA /* libjsinspector.a */ = {

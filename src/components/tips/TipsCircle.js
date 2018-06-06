@@ -1,73 +1,46 @@
 import {gs} from "../../globals";
 import * as React from "react";
-import {TouchableOpacity, Text, View, Animated, PanResponder} from "react-native";
+import {TouchableOpacity, Button, View, Dimensions} from "react-native";
+import Interactable from 'react-native-interactable';
+
+function getPoints(length, count, windowWidth, windowHeight) {
+  let arr = [];
+  let mult = 0;
+  for (let i = 0; i < count; i++) {
+    arr.push({x: 0, y: windowHeight * mult});
+    mult += 1 / count;
+  }
+  mult = 0;
+  for (let i = 0; i < count; i++) {
+    arr.push({x: windowWidth - length, y: windowHeight * mult});
+    mult += 1 / count;
+  }
+  return arr;
+}
 
 export default class TipsCircle extends React.Component {
 
 
-  state = {
-    pan: new Animated.ValueXY(),
-    scale: new Animated.Value(1)
-  };
-
-
-  _panResponder = PanResponder.create({
-    onMoveShouldSetResponderCapture: () => true,
-    onMoveShouldSetPanResponderCapture: () => true,
-
-    onPanResponderGrant: (e, gestureState) => {
-      // Set the initial value to the current state
-      this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
-      this.state.pan.setValue({x: 0, y: 0});
-
-      Animated.spring(
-        this.state.scale,
-        {toValue: 1.1, friction: 3}
-      ).start();
-    },
-
-    onPanResponderMove: Animated.event([
-      null, {dx: this.state.pan.x, dy: this.state.pan.y},
-    ]),
-
-
-    onPanResponderRelease: (e, {dx, dy, vx, vy}) => {
-      // Flatten the offset to avoid erratic behavior
-      console.log(dx, dy, vx, vy);
-      Animated.timing(this.state.pan,
-        {
-          toValue:
-            {
-              x: this.state.pan * vx,
-              y: this.state.pan * vy,
-            }
-        }
-      ).start();
-      this.state.pan.flattenOffset();
-
-      Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
-    }
-  });
-
   render() {
-    let pan = this.state.pan;
-    let scale = this.state.scale;
-    // Calculate the x and y transform from the pan value
-    let [translateX, translateY] = [pan.x, pan.y];
-    let rotate = '0deg';
+    const size = 70;
+    let {height, width} = Dimensions.get('window');
+    console.log(height, width);
 
-    return <Animated.View
-      {...this._panResponder.panHandlers}
+    return <Interactable.View
       style={{
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        backgroundColor: '#fff',
         position: 'absolute',
-        transform: [{translateX}, {translateY}, {rotate}, {scale}]
-      }}>
-
-
-    </Animated.View>
+        width: size, height: size,
+        backgroundColor: 'blue'
+      }}
+      boundaries={{
+        // left: -width/2, right: width/2,
+        // top: -height/2, bottom: height/2
+      }}
+      snapPoints={getPoints(size, 20, width, height)}>
+      <View style={{width: size, height: size, backgroundColor: 'red', borderRadius: size/2}}>
+        <Button title={"te"} onPress={() => {
+        }}/>
+      </View>
+    </Interactable.View>
   }
 }

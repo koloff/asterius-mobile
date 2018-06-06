@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-interactable')
     compile project(':react-native-blur')
     implementation project(':react-native-blur')
     implementation project(':react-native-iap')

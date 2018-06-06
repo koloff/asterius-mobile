@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "start": "react-native run-ios",
     "startandroid": "react-native run-android",
     "startios": "react-native run-ios && ./watch-ios-logs.js",
     "test": "jest",
@@ -28,6 +29,7 @@
     "react-native-calendars": "^1.19.3",
     "react-native-firebase": "^4.2.0",
     "react-native-iap": "^1.0.5",
+    "react-native-interactable": "^0.1.10",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-root-toast": "^3.0.1",

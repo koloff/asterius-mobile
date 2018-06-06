@@ -24,7 +24,7 @@ export default class App extends Component {
     await authStore.init();
     await userParametersStore.init();
     this.setState({isReady: true});
-    subscriptionsStore.callCloudFunction();
+    // subscriptionsStore.callCloudFunction();
   }
 
   render() {

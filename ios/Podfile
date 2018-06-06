@@ -24,7 +24,7 @@ target 'Asterius-tvOS' do
 
   # Pods for Asterius-tvOS
 
-  target 'Asterius-tvOSTests' dob
+  target 'Asterius-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
