@@ -25,8 +25,8 @@ import OfflineModal from "./components/modals/OfflineModal";
 
 
 const MainTabNavigator = TabNavigator({
-  Workouts: {screen: WorkoutsScreen},
   Weight: {screen: WeightScreen},
+  Workouts: {screen: WorkoutsScreen},
   Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {

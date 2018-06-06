@@ -1,7 +1,10 @@
 import {observable} from 'mobx';
 import {Platform} from 'react-native'
-
 import * as RNIap from 'react-native-iap';
+import firebase from 'react-native-firebase';
+
+const httpsCallable = firebase.functions().httpsCallable('myFooBarFn');
+
 
 class SubscriptionStore {
   @observable isSubscribed;
@@ -52,8 +55,6 @@ class SubscriptionStore {
 
 
   async subscribe(period) {
-
-
     return RNIap.buyProduct('0001')
       .then((purchase) => {
         console.log(purchase);
@@ -61,7 +62,19 @@ class SubscriptionStore {
       .catch((err) => {
         console.log(err);
       })
+  }
 
+
+  callCloudFunction() {
+    httpsCallable({ some: 'args' })
+      .then(({ data }) => {
+        console.log(data); // hello world
+      })
+      .catch(httpsError => {
+        console.log(httpsError.code); // invalid-argument
+        console.log(httpsError.message); // Your error message goes here
+        console.log(httpsError.details); // bar
+      })
   }
 
 

@@ -1,12 +1,12 @@
-package com.asterius;
+package com.asterius.android;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.horcrux.svg.SvgPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
@@ -15,7 +15,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.cmcewen.blurview.BlurViewPackage;
 
+import io.invertase.firebase.functions.RNFirebaseFunctionsPackage; // <-- Add this line
 import com.BV.LinearGradient.LinearGradientPackage; // <--- This!
 
 import java.util.Arrays;
@@ -33,14 +35,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNIapPackage(),
-          new SplashScreenReactPackage(),
+          new RNFirebasePackage(),
+          new RNIapPackage(),
           new SvgPackage(),
           new VectorIconsPackage(),
-          new RNFirebasePackage(),
           new RNFirebaseAuthPackage(),
           new LinearGradientPackage(),
-          new RNFirebaseDatabasePackage()
+          new RNFirebaseDatabasePackage(),
+          new RNFirebaseFunctionsPackage(),
+          new BlurViewPackage()
       );
     }
 

@@ -37,7 +37,6 @@ export default class WorkoutLog extends React.Component {
 
     let promises = this.exercises.map((exerciseTemplateStore) => {
       let exerciseLogStore = exercisesLogsStore.getExerciseLogs(exerciseTemplateStore.id);
-      console.log('loaded', exerciseTemplateStore.id);
       return exerciseLogStore.loadExerciseLogs();
     });
     await Promise.all(promises)

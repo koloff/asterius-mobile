@@ -19,14 +19,19 @@ export default class EatPremium extends React.Component {
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      <BlurView
-        style={{
-          position: "absolute",
-          top: 0, left: 0, bottom: 0, right: 0,
+
+      <View
+        ref={(ref) => {
+          this.blurRef = ref;
         }}
-        blurType="dark"
-        blurAmount={5}
-      />
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%', top: 0, left: 0, bottom: 0, right: 0,
+          backgroundColor: 'rgba(0,0,0,0.9)'
+        }}></View>
+
+
       <MaterialCommunityIcons name={'food-fork-drink'} color={'#fff'} size={55} style={{marginBottom: 0}}/>
       <Text style={[gs.text, gs.shadow, {textAlign: 'center', fontSize: 25, color: '#ddd'}]}>
         Nutrition{'\n'}

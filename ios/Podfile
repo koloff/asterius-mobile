@@ -9,8 +9,7 @@ target 'Asterius' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
-  pod 'Firebase/AdMob'
-
+  pod 'Firebase/Functions'
 
   target 'AsteriusTests' do
     inherit! :search_paths
@@ -25,7 +24,7 @@ target 'Asterius-tvOS' do
 
   # Pods for Asterius-tvOS
 
-  target 'Asterius-tvOSTests' do
+  target 'Asterius-tvOSTests' dob
     inherit! :search_paths
     # Pods for testing
   end
