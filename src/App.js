@@ -10,6 +10,8 @@ import authStore from './store/authStore';
 import connectionStore from './store/connectionStore';
 import userParametersStore from "./store/userParametersStore";
 import subscriptionsStore from "./store/subscriptionsStore";
+import TipsDemo from "./components/TipsDemo";
+import TipsCircle from "./components/tips/TipsCircle";
 
 export default class App extends Component {
   state = {
@@ -36,7 +38,9 @@ export default class App extends Component {
             backgroundColor="#000"
             barStyle="light-content"
           />
-          <Router/>
+          <TipsDemo />
+          <TipsCircle />
+          {/*<Router/>*/}
         </SafeAreaView>
       </View>
     );
