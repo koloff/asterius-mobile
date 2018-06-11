@@ -4,6 +4,7 @@ import {
   StatusBar,
   View, YellowBox, SafeAreaView
 } from 'react-native';
+import {observer} from 'mobx-react';
 import Router from './Router';
 
 import authStore from './store/authStore';
@@ -12,7 +13,9 @@ import userParametersStore from "./store/userParametersStore";
 import subscriptionsStore from "./store/subscriptionsStore";
 import TipsDemo from "./components/TipsDemo";
 import TipsCircle from "./components/tips/TipsCircle";
+import TipsWindow from "./components/tips/TipsWindow";
 
+@observer
 export default class App extends Component {
   state = {
     isReady: false
@@ -29,7 +32,7 @@ export default class App extends Component {
 
   render() {
     if (!this.state.isReady) {
-      return <View style={[styles.container, {backgroundColor: '#fff'}]}/>
+      return <View></View>;
     }
     return (
       <View style={styles.container}>
@@ -40,6 +43,7 @@ export default class App extends Component {
           />
           <TipsDemo />
           <TipsCircle />
+          <TipsWindow />
           {/*<Router/>*/}
         </SafeAreaView>
       </View>

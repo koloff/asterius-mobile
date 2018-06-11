@@ -18,6 +18,14 @@ export let gs = StyleSheet.create({
     fontFamily: 'Montserrat-Regular'
   },
 
+  longText: {
+    fontFamily: 'EncodeSansSemiExpanded-Regular'
+  },
+
+  longTextBold: {
+    fontFamily: 'EncodeSansSemiExpanded-SemiBold'
+  },
+
   shadow: {
     textShadowColor: 'rgba(0,0,0,0.5)',
     textShadowRadius: 7,
