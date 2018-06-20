@@ -8,13 +8,6 @@ import tipsStore from '../../store/tipsStore';
 
 @observer
 export default class TipsWindow extends React.Component {
-
-  componentDidMount() {
-    reaction(() => tipsStore.modalOpened, (modalOpened) => {
-      console.log(modalOpened);
-    })
-  }
-
   closeModal() {
     tipsStore.closeTipsModal();
   }

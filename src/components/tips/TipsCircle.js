@@ -1,8 +1,9 @@
 import {gs} from "../../globals";
 import * as React from "react";
-import {PanResponder, Button, Animated, Dimensions, Text, TouchableWithoutFeedback, View} from "react-native";
+import {PanResponder, Easing, Animated, Dimensions, Text, TouchableWithoutFeedback, View, Image} from "react-native";
 import Interactable from 'react-native-interactable';
 import {observer} from 'mobx-react';
+import {autorun} from 'mobx';
 import ElevatedView from "../ElevatedView";
 
 import tipsStore from '../../store/tipsStore';
@@ -30,15 +31,53 @@ export default class TipsCircle extends React.Component {
 
   state = {
     isDragging: false,
-    scale: new Animated.Value(1)
+    scale: new Animated.Value(1),
+    bounce: new Animated.Value(0),
+    ringing: false
   };
+
+  componentDidMount() {
+    autorun(() => {
+      if (tipsStore.isRinging) {
+        this.setState({ringing: true});
+        this.bounce();
+      } else {
+        this.setState({ringing: false});
+      }
+    })
+
+  }
+
+  bounce() {
+    if (this.state.ringing) {
+      return;
+    }
+
+    let up = true;
+    let loop = () => {
+      Animated.timing(this.state.bounce, {
+        toValue: up ? 1.05 : 1,
+        duration: 300,
+        easing: Easing.quad
+      }).start(() => {
+        up = !up;
+        if (this.state.ringing) {
+          loop();
+        }
+        if (!this.state.ringing && !up) {
+          loop();
+        }
+      });
+    };
+    loop();
+  }
 
 
   render() {
     let {height, width} = Dimensions.get('window');
     const size = 65;
     const outerCircleSize = size - 8;
-    const innerCircleSize = outerCircleSize - 5;
+    const innerCircleSize = outerCircleSize - 4;
 
     return <Interactable.View
       style={{
@@ -64,7 +103,7 @@ export default class TipsCircle extends React.Component {
 
       <Animated.View
         style={{
-          transform: [{scale: this.state.scale}],
+          transform: [{scale: this.state.scale}, {scale: this.state.bounce}],
           width: size,
           height: size,
           borderRadius: size / 2,
@@ -78,7 +117,7 @@ export default class TipsCircle extends React.Component {
           style={{
             width: outerCircleSize,
             height: outerCircleSize,
-            backgroundColor: 'rgba(255,255,255, 0.7)',
+            backgroundColor: 'rgba(255,255,255, 1)',
             borderRadius: outerCircleSize / 2,
             alignItems: 'center',
             justifyContent: 'center'
@@ -90,7 +129,7 @@ export default class TipsCircle extends React.Component {
             style={{
               width: innerCircleSize,
               height: innerCircleSize,
-              backgroundColor: '#FFA000',
+              backgroundColor: '#FB8C00',
               borderRadius: innerCircleSize / 2,
               alignItems: 'center',
               justifyContent: 'center'
@@ -98,10 +137,8 @@ export default class TipsCircle extends React.Component {
           >
             <TouchableWithoutFeedback
               onPress={() => {
-                if (tipsStore.currentTips.count === 3) {
-                  tipsStore.setTips(tipsStore.tips.demo2)
-                } else {
-                  tipsStore.setTips(tipsStore.tips.demo)
+                if (tipsStore.isRinging) {
+                  tipsStore.stopRinging();
                 }
                 tipsStore.openTipsModal();
               }}
@@ -113,7 +150,25 @@ export default class TipsCircle extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: innerCircleSize / 2
-              }}><Text style={[gs.text]}>{tipsStore.currentTips.count}</Text></View>
+              }}>
+
+                <Image
+                  style={{
+                    width: 45,
+                    height: 45,
+                    top: 5
+                  }}
+                  source={require('../../assets/icon-man.png')}
+                />
+
+                <Text style={[gs.longTextBold, gs.shadow, {
+                  top: -6,
+                  color: '#fff',
+                  textAlign: 'center'
+                }]}>{tipsStore.currentTips.count}</Text>
+
+
+              </View>
 
             </TouchableWithoutFeedback>
 

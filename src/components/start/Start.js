@@ -12,6 +12,7 @@ import Register from './Register';
 import Generate from '../generate/Generate';
 import Login from './Login';
 import generateStore from "../../store/generateStore";
+import tipsStore from "../../store/tipsStore";
 
 let {height, width} = Dimensions.get('window');
 
@@ -32,6 +33,10 @@ export default class Start extends React.Component {
   };
 
   componentDidMount() {
+    setTimeout(() => {
+      tipsStore.setTips(tipsStore.tips.demo2);
+      tipsStore.startRinging();
+    }, 200);
     BackHandler.addEventListener('hardwareBackPress', () => {
       this.goBack();
       return true;

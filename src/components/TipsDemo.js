@@ -1,12 +1,16 @@
 import {gs} from "../globals";
 import * as React from "react";
 import {TouchableOpacity, Text, View, Button} from "react-native";
+import tipsStore from "../store/tipsStore";
+import {observer} from 'mobx-react';
 
+@observer
 export default class TipsDemo extends React.Component {
 
 
   componentDidMount() {
-
+    tipsStore.startRinging();
+    tipsStore.setTips(tipsStore.tips.demo2);
   }
 
   render() {
@@ -26,7 +30,8 @@ export default class TipsDemo extends React.Component {
         sadsadsa ssa sa sd asd sa sad {'\n'}
         sadsadsa ssa sa sd asd sa sad {'\n'}
         sadsadsa ssa sa sd asd sa sad {'\n'}
-        <Button title={"click me"} onPress={() => {}} />
+        <Button title={"click me"} onPress={() => {
+        }}/>
         sadsadsa s sad {'\n'}
         sadsadsa s sad {'\n'}
         sadsadsa s sad {'\n'}

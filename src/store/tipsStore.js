@@ -7,7 +7,7 @@ class TipsStore {
 
   tips = {
     demo: {
-      count: 3,
+      count: 35,
       component: tips.Demo
     },
     demo2: {
@@ -18,6 +18,7 @@ class TipsStore {
 
   @observable currentTips = this.tips.demo;
   @observable modalOpened = false;
+  @observable isRinging = false;
 
   openTipsModal() {
     this.modalOpened = true;
@@ -30,6 +31,21 @@ class TipsStore {
 
   setTips(tips) {
     this.currentTips = tips
+  }
+
+  // CALL THIS METHOD AT LEAST ONECE
+  // TO SHOW THE BALL
+  startRinging() {
+    console.log('start ringing');
+    this.isRinging = true;
+  }
+
+  stopRinging() {
+    this.isRinging = false;
+  }
+
+  shortRing() {
+
   }
 }
 

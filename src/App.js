@@ -41,10 +41,10 @@ export default class App extends Component {
             backgroundColor="#000"
             barStyle="light-content"
           />
-          <TipsDemo />
+          {/*<TipsDemo />*/}
+          <Router/>
           <TipsCircle />
           <TipsWindow />
-          {/*<Router/>*/}
         </SafeAreaView>
       </View>
     );
