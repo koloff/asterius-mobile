@@ -8,7 +8,7 @@ import ElevatedView from "../ElevatedView";
 
 import tipsStore from '../../store/tipsStore';
 
-const offset = 15;
+const offset = 17;
 const topMax = 50;
 
 function getPoints(length, count, windowWidth, windowHeight) {
@@ -38,8 +38,9 @@ export default class TipsCircle extends React.Component {
 
   componentDidMount() {
     autorun(() => {
-      if (tipsStore.isRinging) {
+      if (tipsStore.isRinging || tipsStore.firstLoad) {
         this.setState({ringing: true});
+        // tipsStore.firstLoad = false;
         this.bounce();
       } else {
         this.setState({ringing: false});
@@ -56,7 +57,7 @@ export default class TipsCircle extends React.Component {
     let up = true;
     let loop = () => {
       Animated.timing(this.state.bounce, {
-        toValue: up ? 1.05 : 1,
+        toValue: up ? 1.06 : 1,
         duration: 300,
         easing: Easing.quad
       }).start(() => {
@@ -67,6 +68,8 @@ export default class TipsCircle extends React.Component {
         if (!this.state.ringing && !up) {
           loop();
         }
+
+        tipsStore.firstLoad = false;
       });
     };
     loop();
@@ -94,7 +97,7 @@ export default class TipsCircle extends React.Component {
           Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
         }
       }}
-      initialPosition={{x: -offset, y: 0}}
+      initialPosition={{x: (width - size) + offset, y: 130}}
       boundaries={{
         top: topMax,
         bottom: height - size
@@ -138,7 +141,7 @@ export default class TipsCircle extends React.Component {
             <TouchableWithoutFeedback
               onPress={() => {
                 if (tipsStore.isRinging) {
-                  tipsStore.stopRinging();
+                  tipsStore.stopRinging(tipsStore.currentTips.id);
                 }
                 tipsStore.openTipsModal();
               }}

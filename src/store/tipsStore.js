@@ -1,22 +1,13 @@
 import {computed, action, observable, extendObservable} from 'mobx';
+import {AsyncStorage} from 'react-native';
 import * as tips from '../components/tips/tips';
 
 
-
 class TipsStore {
+  tips = tips;
 
-  tips = {
-    demo: {
-      count: 35,
-      component: tips.Demo
-    },
-    demo2: {
-      count: 1,
-      component: tips.Demo2
-    }
-  };
-
-  @observable currentTips = this.tips.demo;
+  @observable firstLoad = true;
+  @observable currentTips = this.tips.start;
   @observable modalOpened = false;
   @observable isRinging = false;
 
@@ -29,23 +20,26 @@ class TipsStore {
     this.modalOpened = false;
   }
 
-  setTips(tips) {
+  async setTips(tips) {
+    const ringed = await AsyncStorage.getItem(tips.id);
+    if (ringed === null) {
+      this.startRinging();
+    } else {
+      this.isRinging = false;
+    }
+
     this.currentTips = tips
   }
 
-  // CALL THIS METHOD AT LEAST ONECE
+  // CALL THIS METHOD AT LEAST ONCE
   // TO SHOW THE BALL
   startRinging() {
-    console.log('start ringing');
     this.isRinging = true;
   }
 
-  stopRinging() {
+  async stopRinging(id) {
+    await AsyncStorage.setItem(id, '1');
     this.isRinging = false;
-  }
-
-  shortRing() {
-
   }
 }
 

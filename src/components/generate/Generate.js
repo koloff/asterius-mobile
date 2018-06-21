@@ -28,6 +28,7 @@ import MiniWorkoutGenerated from "../workouts/MiniWorkoutGenerated";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import {withNavigation} from "react-navigation";
+import tipsStore from "../../store/tipsStore";
 
 // todo change opacity to fromstart prop
 
@@ -74,6 +75,13 @@ export default class Generate extends React.Component {
     }
   }
 
+  onSlideChanged(index) {
+    Keyboard.dismiss();
+    this.setState({slide: index});
+    generateStore.slide = index;
+    tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
+  }
+
   getExperienceColor() {
     switch (userParametersStore.parameters.experience) {
       case 1:
@@ -94,9 +102,9 @@ export default class Generate extends React.Component {
       case 2:
         return ['BEGINNER', 'Have some experience with weight training'];
       case 3:
-        return ['ADVANCED', 'Have good weight training experience'];
+        return ['TRAINED', 'Have good weight training experience'];
       case 4:
-        return ['PROFESSIONAL', 'Have trained seriously for years'];
+        return ['ADVANCED', 'Have trained seriously for years'];
     }
   }
 
@@ -125,7 +133,8 @@ export default class Generate extends React.Component {
     generateStore.generating = true;
     this._swiper.scrollBy(1);
     try {
-      await generateStore.generateWorkouts();
+      await
+        generateStore.generateWorkouts();
       setTimeout(() => {
         generateStore.generating = false;
         generateStore.generated = true;
@@ -209,8 +218,7 @@ export default class Generate extends React.Component {
           showsButtons={true}
           autoplayDirection={false}
           onIndexChanged={(index) => {
-            Keyboard.dismiss();
-            this.setState({slide: index})
+            this.onSlideChanged(index);
           }}
           onMomentumScrollEnd={(e, state) => {
             let index = this.state.slide;
@@ -398,13 +406,13 @@ const Slide3 = observer((props) => {
 
       <View value={3}>
         <Text style={[gs.text, gs.shadow, {fontSize: 12, textAlign: 'center'}]}>
-          Advanced
+          Trained
         </Text>
       </View>
 
       <View value={4}>
         <Text style={[gs.text, gs.shadow, {fontSize: 12, textAlign: 'center'}]}>
-          Pro
+          Advanced
         </Text>
       </View>
     </RadioButtons>

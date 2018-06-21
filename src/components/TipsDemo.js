@@ -9,8 +9,6 @@ export default class TipsDemo extends React.Component {
 
 
   componentDidMount() {
-    tipsStore.startRinging();
-    tipsStore.setTips(tipsStore.tips.demo2);
   }
 
   render() {

@@ -34,8 +34,7 @@ export default class Start extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      tipsStore.setTips(tipsStore.tips.demo2);
-      tipsStore.startRinging();
+      tipsStore.setTips(tipsStore.tips.start);
     }, 200);
     BackHandler.addEventListener('hardwareBackPress', () => {
       this.goBack();
@@ -56,8 +55,17 @@ export default class Start extends React.Component {
   }
 
   onTransition(view) {
-    generateStore.registerFocused = this.state.view === 'Generate' && view === 'Register';
+    if (view === 'Welcome') {
+      tipsStore.setTips(tipsStore.tips.start);
+    } else if (view === 'Generate') {
+      tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
+    } else if (view === 'Login') {
+      tipsStore.setTips(tipsStore.tips.start);
+    } else if (view === 'Register') {
+      tipsStore.setTips(tipsStore.tips.start);
+    }
 
+    generateStore.registerFocused = this.state.view === 'Generate' && view === 'Register';
     this.setState({view});
 
 

@@ -54,7 +54,7 @@ export default class Login extends React.Component {
                 width: '100%',
                 height: 45,
                 paddingLeft: 10,
-                backgroundColor: 'rgba(51,51,51, 0.4)',
+                backgroundColor: 'rgba(51,51,51, 0.6)',
                 color: '#fff',
                 borderRadius: 5
               }]}
@@ -73,7 +73,7 @@ export default class Login extends React.Component {
                 paddingLeft: 10,
                 marginBottom: 14,
                 marginTop: 7,
-                backgroundColor: 'rgba(51,51,51, 0.4)',
+                backgroundColor: 'rgba(51,51,51, 0.6)',
                 color: '#fff',
                 borderRadius: 5
               }]}

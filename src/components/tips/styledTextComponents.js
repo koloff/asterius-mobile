@@ -37,7 +37,8 @@ export class P extends React.Component {
       style={[gs.longText, {
         fontSize: 12,
         color: '#333',
-        marginTop: 6
+        marginTop: 6,
+        textAlign: 'justify'
       }]}>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.children}
     </Text>
@@ -52,15 +53,22 @@ export class B extends React.Component {
 
 export class Li extends React.Component {
   render() {
-    return <View style={{flexDirection: 'row', paddingRight: 3, paddingTop: 2, paddingLeft: 0}}>
+    return <View style={{flexDirection: 'row', backgroundColor: 'transparent', paddingTop: 2, paddingLeft: 0}}>
       <Feather size={12} name={'check-circle'} style={{top: 3, marginRight: 4}}/>
-      <Text
-        style={[gs.longText, {
-          color: '#333',
-          fontSize: 12,
-        }]}>
-        {this.props.children}
-      </Text>
+      <View style={{
+        marginRight: 18,
+        backgroundColor: 'transparent'
+      }}>
+        <Text
+          style={[gs.longText, {
+            textAlign: 'justify',
+            color: '#333',
+            fontSize: 12
+          }]}>
+          {this.props.children}
+        </Text>
+      </View>
+
     </View>
   }
 }

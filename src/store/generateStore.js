@@ -16,6 +16,7 @@ class GenerateStore {
   workoutsTemplatesStore;
 
 
+  @observable slide = 0;
   @observable generating = false;
   @observable generated = false;
   @observable registerFocused = false;
@@ -28,6 +29,7 @@ class GenerateStore {
 
     // RESET
     extendObservable(this, {
+      slide: 0,
       workouts: [],
       generating: false,
       generated: false
