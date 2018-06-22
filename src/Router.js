@@ -25,8 +25,8 @@ import OfflineModal from "./components/modals/OfflineModal";
 
 
 const MainTabNavigator = TabNavigator({
-  Weight: {screen: WeightScreen},
   Workouts: {screen: WorkoutsScreen},
+  Weight: {screen: WeightScreen},
   Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {
@@ -128,7 +128,7 @@ class MainTabNavigatorWithBackground extends React.Component {
       }}/>
       <MainTabNavigator navigation={this.props.navigation}/>
       {authStore.newUser && <NewUserModal navigation={this.props.navigation}/>}
-      {subscriptionsStore.isSubscribed === false && connectionStore.connected === false && <OfflineModal />}
+      {subscriptionsStore.isSubscribed === false && connectionStore.connected === false && <OfflineModal/>}
     </View>;
   }
 }

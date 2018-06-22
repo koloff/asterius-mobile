@@ -16,7 +16,7 @@ class SubscriptionStore {
   async init() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        this.isSubscribed = false;
+        this.isSubscribed = true;
         return resolve();
       }, 200)
     })

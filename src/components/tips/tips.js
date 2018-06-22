@@ -182,7 +182,7 @@ export let slide4 = {
         </Box>
         <Box>
           <Title><Text style={{color: '#e74c3c'}}>Be wise!</Text></Title>
-          <P>If you are man you probably want biceps, triceps, chest, back, abs, legs, <B>EVERTYTHING</B>! If you are
+          <P>If you are man you probably want biceps, triceps, chest, back, abs, legs, and so on! If you are
             woman,
             you may want glutes, legs, abs, chest and so on… But as you can imagine there is <B>no point</B> in
             performing <B>ONLY
@@ -292,6 +292,99 @@ export let slide5 = {
           <P>You can <B>edit your workouts by pressing</B> on them. You can adjust your working volume for every muscle.
             You
             can easily and reorder the exercises in the workouts.</P>
+        </Box>
+      </View>
+    }
+  }
+};
+
+export let login = {
+  id: 'login',
+  count: 1,
+  component: class Login extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Login</Title>
+          <P>Log into your account to synchronize your data.</P>
+        </Box>
+      </View>
+    }
+  }
+};
+
+export let register = {
+  id: 'register',
+  count: 1,
+  component: class Register extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Register</Title>
+          <P>By creating your account, you will be able to save and synchronize your data everywhere. Even if you
+            reinstall the app or go offline, it will work just as before!</P>
+        </Box>
+      </View>
+    }
+  }
+};
+
+
+export let tweaker = {
+  id: 'tweaker',
+  count: 4,
+  component: class Tweaker extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>One complex machine</Title>
+          <P>Our body is a complex machine. This machine can do <B>many tasks</B> like pushing, pulling and lifting. It
+            is
+            made of <B>many parts</B> that <B>work together in groups</B>. These parts are <B>our muscles</B>.</P>
+          <P>Every exercise targets <B>different muscles at different rate</B>. If we bench press, we are using the
+            muscles of
+            our chest, shoulders and triceps. But if we want to <B>isolate</B> our triceps, we can do triceps pushdown.
+            We can
+            perform the bench press with <B>more weight</B> than the triceps pushdown, because the bench press
+            activates <B>more
+              muscles at once</B>.</P>
+          <P>Let’s say that the triceps is doing <B>1/3 of the work</B> for the bench press. And the triceps does all
+            the work
+            for the triceps pushdown. That means, one set of well performed pushdowns is equal to the <B>work of 3
+              sets</B> of
+            bench presses for the triceps.</P>
+        </Box>
+        <Box>
+          <Title>Workout volume</Title>
+          <P>The <B>most important factor</B> that determines our muscle growth is the overall <B>workout volume</B>. It
+            can be measured by the
+            <B> amount of sets per muscle group</B>. But keep in mind that most exercises train <B>multiple muscles at
+              once</B>.</P>
+          <P>If we don’t do enough volume, our muscles won’t have enough stimulus to grow. But if we do too much sets,
+            we will <B>overtrain</B> our muscles which will stop the progress and might even injure us. We need to <B>avoid
+              injuries</B> at all cost, because they are the biggest setback.</P>
+        </Box>
+        <Box>
+          <Title>The exercises</Title>
+          <P>The <B>body model</B> shows all muscles that can be targeted with exercises. The <B>brighter</B> the
+            muscle, the <B>more
+              volume</B> it will get. If you <B>press on a muscle</B>, you will see all exercises that train it.</P>
+          <P>You can see all the <B>major muscles</B> that the exercise targets. Every muscle is active at different
+            rate for
+            the different exercises.</P>
+          <P>If you <B>press on the exercise name</B>, YouTube will be opened with the best <B>explanatory videos</B> on
+            how to
+            perform it.</P>
+        </Box>
+        <Box>
+          <Title>Edit the volume</Title>
+          <P>Keep in mind that <B>some muscles are bigger</B> than others and <B>need more volume</B>. If you see muscle
+            getting <B>fully
+              bright</B>, <B>do not</B> add more volume to it. Try <B>not to</B> make your workouts much <B>longer than
+              hour and a half</B>.</P>
+          <Li>You can use the <B>scrollbar</B> below every exercise to <B>edit the amount of sets</B>.</Li>
+          <Li>If you want to <B>remove</B> particular exercise, make its sets 0.</Li>
+          <Li>If you want to <B>reorder</B>, press on <B>view workout</B> and use the <B>arrows</B>.</Li>
         </Box>
       </View>
     }

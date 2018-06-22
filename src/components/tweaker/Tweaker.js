@@ -26,6 +26,7 @@ import DarkModal from "../DarkModal";
 import Entypo from "react-native-vector-icons/Entypo";
 import subscriptionsStore from "../../store/subscriptionsStore";
 import authStore from "../../store/authStore";
+import tipsStore from "../../store/tipsStore";
 
 @withNavigation
 @observer
@@ -45,6 +46,7 @@ export default class Tweaker extends Component {
   }
 
   componentDidMount() {
+    tipsStore.setTips(tipsStore.tips.tweaker);
     setTimeout(() => {
       this.setState({renderMain: true})
     });

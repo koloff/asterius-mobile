@@ -60,9 +60,9 @@ export default class Start extends React.Component {
     } else if (view === 'Generate') {
       tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
     } else if (view === 'Login') {
-      tipsStore.setTips(tipsStore.tips.start);
+      tipsStore.setTips(tipsStore.tips.login);
     } else if (view === 'Register') {
-      tipsStore.setTips(tipsStore.tips.start);
+      tipsStore.setTips(tipsStore.tips.register);
     }
 
     generateStore.registerFocused = this.state.view === 'Generate' && view === 'Register';
