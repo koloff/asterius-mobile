@@ -14,6 +14,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AnimatedLoading from "../AnimatedLoading";
 import WeightPremium from "./WeightPremium";
 import subscriptionsStore from "../../store/subscriptionsStore";
+import tipsStore from "../../store/tipsStore";
 
 @observer
 export default class WeightScreen extends React.Component {
@@ -223,7 +224,6 @@ export default class WeightScreen extends React.Component {
               }
             )}
           </ScrollView>
-
 
 
         </Animated.View>

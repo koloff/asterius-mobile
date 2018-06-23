@@ -20,6 +20,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import exercisesLogsStore from "../../store/exercisesLogsStore";
 import AnimatedLoading from "../AnimatedLoading";
+import tipsStore from "../../store/tipsStore";
 
 @observer
 export default class WorkoutsScreen extends React.Component {
@@ -30,6 +31,7 @@ export default class WorkoutsScreen extends React.Component {
   async componentDidMount() {
     await workoutsLogsStore.init();
     // todo remove
+    tipsStore.setTips(tipsStore.tips.workoutsScreen);
     exercisesLogsStore.init();
     Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 333}).start();
   }

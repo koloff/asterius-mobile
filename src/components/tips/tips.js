@@ -391,6 +391,214 @@ export let tweaker = {
   }
 };
 
+export let workoutsScreen = {
+  id: 'workoutsScreen',
+  count: 3,
+  component: class WorkoutsScreenTips extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Log workouts</Title>
+          <P>You can <B>select any date up to today</B> on the <B>calendar</B>. On the bottom you can see <B>all of your
+            workouts</B>. If you press the
+            <B> play button</B>, you will <B>start logging</B> that workout on the selected date. The first time you hit
+            the gym log
+            Workout A. Next time log Workout B and so on. Simply <B>cycle trough your routine</B>.</P>
+          <P>If you press on the workout, you will open it for <B>editing</B>.</P>
+        </Box>
+        <Box>
+          <Title>Generate new routine</Title>
+          <P>By pressing the generate button you will be able to generate new routine, just like you did in the
+            beginning. The new workouts will be added in the beginning of your workouts list.</P>
+        </Box>
+        <Box>
+          <Title>Custom workouts</Title>
+          <P>You can make your custom workout from scratch by pressing on the custom button.</P>
+        </Box>
+      </View>
+    }
+  }
+};
+
+export let weight = {
+  id: 'weight',
+  count: 3,
+  component: class WeightTips extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Weight logging</Title>
+          <P>Good way to track your progress is by tracking your weight. Asterius keeps your results and <B>regulates
+            your
+            nutrition</B> based on your weight.</P>
+          <P>The graphic represents the <B>changes in your weight</B> for the <B>selected period</B> of time.</P>
+          <P>For best results measure your weight <B>as often as possible</B>. One good approach is to:</P>
+          <Li>Measure your weight in the morning after you had been to the toilet</Li>
+          <Li>Measure your weight before going to bed</Li>
+          <Li>Sometimes, if you are at home, you can weight yourself in the middle of the day</Li>
+        </Box>
+        <Box>
+          <Title>Your weight is not constant</Title>
+          <P>Some days we will be <B>lighter</B>, others – <B>heavier</B>. Our weight is <B>changing</B> even throughout
+            the day. If we eat
+            more or drink more water, we will be heavier. If we have been out partying, we will be <B>dehydrated</B> and
+            lighter.</P>
+          <P><B>Women</B> are even more prone to changes in weight due to their periods.</P>
+          <P>Asterius estimates the <B>average value</B> of your weight for the week to <B>regulate the nutrition</B>.
+            That’s why you
+            need to try to measure your weight more <B>frequently</B>.</P>
+        </Box>
+        <Box>
+          <Title>Reference</Title>
+          <Li>Orsama AL, Mattila E, Ermes M, van Gils M, Wansink B, Korhonen I. Weight
+            rhythms: weight increases during weekends and decreases during weekdays. Obes
+            Facts. 2014
+          </Li>
+        </Box>
+      </View>
+    }
+  }
+};
+
+export let nutrition = {
+  id: 'nutrition',
+  count: 4,
+  component: class Nutrition extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Nutrition</Title>
+          <P>What you eat is <B>essential</B> for accomplishing your fitness goals. Following a <B>strict and rigid diet
+            is NOT
+            needed</B>. It is a <B>myth</B> that some foods build muscles, other makes you lose fat and so on. Research
+            shows that
+            the most important factor is the <B>overall calories and macronutrients</B> (proteins, fats, carbohydrates).
+            This
+            approach is way more easier and less exhausting.</P>
+        </Box>
+        <Box>
+          <Title>Calories</Title>
+          <P>Our bodies need <B>energy</B> to survive. That energy comes from food in the form
+            of <B>calories</B> (kCal). The calories
+            needed to keep our body functions working and to maintain our weight is called <B>TDEE</B> (Total Daily
+            Energy Expenditure).</P>
+          <P>Asterius calculates your BMR (Basal Metabolic Rate) by using formula called The Mifflin St Jeor Equation.
+            It uses your age, weight and height to estimate how much calories your body is burning at rest.</P>
+          <P>But we are constantly doing something. Working out, walking, playing games and even staying up burns
+            additional calories. That’s why the TDEE is calculated by using your BMR and your activity level
+            (lifestyle). This is the number of calories you need to eat to keep your weight the same.</P>
+          <P>Each one of us has different goals. Some people want to lose more fat, others want to build more muscle.
+            Asterius gives you the option to <B>choose your goal</B>. Base on that your calories are either <B>increased
+              for
+              weight gain</B>, or <B>reduced for weight loss</B>.</P>
+
+        </Box>
+        <Box>
+          <Title>Macronutrients</Title>
+          <P><B>Protein is essential</B> for our bodies. It provides <B>building blocks of our muscles</B> – the amino
+            acids. Research
+            suggests that <B>1.8 gr of protein per kg body mass</B> is beneficial for our muscle gains. If we are in <B>caloric
+              deficit</B> (eating less calories to lose weight), it would be better to <B>eat 2 or more gr of protein
+              per kg body
+              mass</B>.</P>
+          <P><B>Fat is essential</B> for our <B>hormones and health</B>. Different sources suggests
+            that <B>15-30%</B> of our calories
+            must be consumed in the form of fats. Fats are very important for the work of the nervous system, that’s why
+            Asterius estimates 30% of your calories in the form of fats.</P>
+          <P><B>Carbohydrates are the main source of energy</B>. They can be useful for our <B>workouts performance</B>.
+            But carbs are
+            <B>not essential</B>. Humans <B>can live without</B> consuming any carbohydrates. After calculating the
+            basic amounts of
+            protein and fats, Asterius calculates the rest of the calories in the form of carbs.</P>
+          <P>This is how many calories each one of the macronutrients provides:</P>
+          <Li>1 gr protein = 4 kCal</Li>
+          <Li>1 gr fat = 9 kCal</Li>
+          <Li>1 gr carbs = 4 kCal</Li>
+        </Box>
+        <Box>
+          <Title>Supplements</Title>
+          <P>You have seen that everyone in the <B>fitness industry</B> is <B>trying to sell you supplements</B>. Have
+            you ever
+            wondered why? People <B>want to believe</B> that taking a <B>magical pill</B> will solve their problems.
+            Well, that is <B>NOT
+              the case</B>. There are no shortcuts. If we want something, it will come to us. But we need to work hard,
+            smart
+            and consistently for it. Most of the substances in most supplements are not proven to have any effects at
+            all. It is simple <B>marketing</B>.</P>
+          <P>Even though the results may not be magical, there are some supplements that <B>might be beneficial</B> for
+            your
+            results and your overall health. </P>
+          <Li>Creatine - 5 gr per day is shown to improve overall strength.</Li>
+          <Li>Omega 3 is form of essential fatty acids. Western diets do not provide enough omega 3. Supplementing with
+            it is beneficial for the health, nervous system and can even help build muscle.</Li>
+          <Li>Magnesium – this mineral is very important for our nervous system and recovery. Western diet might not be
+            able to provide enough magnesium to our bodies. </Li>
+          <Li>Caffeine – cup of coffee contains 80-100 mg of caffeine. If you don’t drink coffee you can buy caffeine
+            capsules. 100-200 mg of caffeine before workout will increases energy, focus and endurance.</Li>
+          <Li>Citrulline malate – 6-8 gr of this supplement half an hour before workout improves athletic performance.
+            It increases the blood flow to the muscles, causing metabolic stress. This is also known as “muscle
+            pump”.</Li>
+          <Li>Vitamin D – we make vitamin D when we go out during the sunny days. But in the winter in some countries
+            there is not enough sunlight. That’s why it may be beneficial to supplement vitamin D in the winter.</Li>
+          <P>We recommend <B>researching these supplements yourself</B>. There are tons of great posts and articles
+            about them
+            on <B>Reddit, Quora and other sites</B>.</P>
+        </Box>
+        <Box>
+          <Title>Our advice</Title>
+          <P>Our nutrition is important not only for our fitness, but for the overall health and wellbeing. It is <B>vast
+            and complex topic</B> that is highly <B>researched</B>. Asterius can calculate the needed macronutrients.
+            But the food
+            provides <B>micronutrients too – vitamins and minerals</B>. We highly recommend <B>eating whole foods and
+              healthy
+              foods</B> – vegetables, fruits, salads, meats, fish, eggs and dairy.</P>
+          <P><B>Processed sugars, simple carbohydrates</B> (bread, pasta, cookies, juices, soda) and fast food are <B>bad
+            for your
+            body</B>. Try to avoid them as much as possible. We know that eating these foods is <B>very addictive</B>.
+            This is
+            because they raise the levels of dopamine in the brain just like some drugs do. But if we stick to better
+            quality food for a while, our <B>body will adapt</B> to it and the <B>cravings will stop</B>.</P>
+          <P><B>Every person is different</B> with different genes and metabolism. We cannot
+            cover every aspect of the nutrition. But our experience has shown us that having <B>caloric and
+              macronutrient guidance is
+              very beneficial</B>. Combining it with <B>eating high quality whole foods and supplements can do
+              wonders</B>!</P>
+          <P>There are <B>many diets out there</B>. Ketogenic, paleo, vegan and others are examples. There are
+            techniques for fat loss and appetite suppression like intermittent fasting. These are topics that we may
+            cover in the future with new features of the Asterius app. For now, we recommend you do your own research
+            and
+            <B>try what works for you</B>. Fueling our bodies with <B>good food</B> is important for our physique,
+            our brains and for being healthy and <B>awesome</B>!</P>
+        </Box>
+        <Box>
+          <Title>Reference</Title>
+          <Li>Stanhope KL. Sugar consumption, metabolic disease and obesity: The state of
+            the controversy. Crit Rev Clin Lab Sci. 2016
+          </Li>
+          <Li>Phillips SM, Van Loon LJ. Dietary protein for athletes: from requirements to optimum adaptation. J Sports
+            Sci. 2011</Li>
+          <Li>Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest
+            preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014 May 12</Li>
+          <Li>Stewart TM, Williamson DA, White MA. Rigid vs. flexible dieting: association with eating disorder symptoms
+            in nonobese women. Appetite. 2002 Feb
+          </Li>
+          <Li>Alshahrani F, Aljohani N. Vitamin D: deficiency, sufficiency and toxicity. Nutrients. 2013 Sep 13</Li>
+          <Li>Pérez-Guisado J, Jakeman PM. Citrulline malate enhances athletic anaerobic
+            performance and relieves muscle soreness. J Strength Cond Res. 2010
+            May
+          </Li>
+          <Li> Bemben MG, Lamont HS. Creatine supplementation and exercise performance:
+            recent findings. Sports Med. 2005
+          </Li>
+          <Li>Swanson D, Block R, Mousa SA. Omega-3 fatty acids EPA and DHA: health benefits
+            throughout life. Adv Nutr. 2012 Jan
+          </Li>
+        </Box>
+      </View>
+    }
+  }
+};
+
 export let name = {
   id: '',
   count: 0,

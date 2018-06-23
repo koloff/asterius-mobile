@@ -14,6 +14,7 @@ import userParametersStore from "../../store/userParametersStore";
 import RadioButtons from "../RadioButtons";
 import EatPremium from "./EatPremium";
 import subscriptionsStore from "../../store/subscriptionsStore";
+import tipsStore from "../../store/tipsStore";
 
 const goals = [
   'Loose the most fat\nRisk the most muscle',
@@ -49,6 +50,8 @@ export default class EatScreen extends React.Component {
   }
 
   componentDidMount() {
+    // todo remove
+    tipsStore.setTips(tipsStore.tips.nutrition);
     setTimeout(() => {
       Animated.timing(this.state.animation, {
         toValue: 1,

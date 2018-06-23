@@ -22,12 +22,14 @@ import Principles from './components/principles/Principles';
 import PremiumScreen from './components/settings/PremiumScreen';
 import NewUserModal from './components/modals/NewUserModal';
 import OfflineModal from "./components/modals/OfflineModal";
+import tipsStore from "./store/tipsStore";
+import generateStore from "./store/generateStore";
 
 
 const MainTabNavigator = TabNavigator({
+  Eat: {screen: EatScreen},
   Workouts: {screen: WorkoutsScreen},
   Weight: {screen: WeightScreen},
-  Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {
   navigationOptions: ({navigation}) => ({
@@ -126,7 +128,8 @@ class MainTabNavigatorWithBackground extends React.Component {
         height: '100%',
         backgroundColor: '#000'
       }}/>
-      <MainTabNavigator navigation={this.props.navigation}/>
+      <MainTabNavigator
+        navigation={this.props.navigation}/>
       {authStore.newUser && <NewUserModal navigation={this.props.navigation}/>}
       {subscriptionsStore.isSubscribed === false && connectionStore.connected === false && <OfflineModal/>}
     </View>;
@@ -182,7 +185,35 @@ export default class Router extends React.Component {
     if (!authStore.logged) {
       return <StartNavigator/>
     } else {
-      return <MainNavigator/>;
+      return <MainNavigator
+        onNavigationStateChange={(prevState, currentState) => {
+          // TODO
+          console.log(currentState.routes[0]);
+          console.log(currentState.routes[1]);
+          if (currentState.routes[1]) {
+            // second level navigation
+            let routeName = currentState.routes[1].routeName;
+            if (routeName === 'Tweaker') {
+              tipsStore.setTips(tipsStore.tips.tweaker);
+            } else if (routeName === 'Generate') {
+              tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
+            } else {
+              // todo
+            }
+          } else {
+            // main tab navigation
+            switch (currentState.routes[0].index) {
+              case 0:
+                return tipsStore.setTips(tipsStore.tips.workoutsScreen);
+              case 1:
+                return tipsStore.setTips(tipsStore.tips.weight);
+              case 2:
+                return tipsStore.setTips(tipsStore.tips.nutrition);
+              // case 3  ;
+            }
+          }
+
+        }}/>;
     }
   }
 }
