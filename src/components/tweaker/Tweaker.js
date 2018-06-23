@@ -158,7 +158,7 @@ export default class Tweaker extends Component {
           onModalClose={() => {
             this.setState({modalVisible: false})
           }}>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{flex: 1, position: 'absolute', alignItems: 'center'}}>
             <Text style={[gs.text, gs.shadow]}>Delete {this.workoutTemplateStore.name}?</Text>
             <View style={{flexDirection: 'row', paddingTop: 10}}>
               <View style={{marginRight: 10}}><Button

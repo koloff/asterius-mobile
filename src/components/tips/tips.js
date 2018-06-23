@@ -599,6 +599,137 @@ export let nutrition = {
   }
 };
 
+export let workoutLog = {
+  id: 'workoutLog',
+  count: 6,
+  component: class WorkoutLogTips extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Our muscles</Title>
+          <P>Our muscles are made of <B>two fiber types.</B></P>
+          <P><B>Type 2 or “Fast”</B> fibers are <B>stronger and bigger</B>. They generate <B>bigger power output in
+            heavy lifts</B> but get
+            <B>exhausted first</B>. That is why our first sets should be the heaviest.</P>
+          <P><B>Type 1 or “Slow”</B> fibers are <B>ess powerful and smaller</B>l. These fibers generate <B>less power,
+            but for longer
+            periods</B>. They become more active when we lift lighter for more reps.</P>
+          <P>Research shows that most muscle growth can be made around the <B>8-12 repetitions range</B>. Our first sets
+            must
+            be performed with the heaviest weight. In the 6-7-8 reps range. Then we can slowly reduce the weight and
+            increase the weight for the next sets. This approach gives few benefits:</P>
+          <P>When performing the <B>first sets of the exercise</B> our nervous system and type 2 fibers are not
+            exhausted. We are able to lift <B>heavy weights</B>
+            thus adopting our bodies to bigger loads and volume.</P>
+          <P>After perform the heavy lifts, our fast fibers get exhausted and the work gets transferred to the slow
+            fibers. By reducing the weight and increasing the reps in the following sets, we will be able to focus more
+            on the
+            <B>form of the exercise</B>. It is safer to <B>lift lighter weight when fatigued</B>. Also doing reps in the
+            upper range (10-14 reps) increases the blood flow to the muscles and creates <B>“muscle pump”</B>.</P>
+        </Box>
+        <Box>
+          <Title>Warm-up sets</Title>
+          <P>
+            If you perform hard compound exercise that involves a lot of muscles, you can do warm-up set. It
+            will <B>prepare, stretch the muscles and focus you on the movement</B>. It is important to focus your
+            attention on
+            the <B>form</B> of the exercise and to <B>think about the muscles you train</B>. If you decide to do warm-up
+            set, select
+            <B>light weight and do 15-20 reps</B>. You <B>don’t have to log it</B>, because it is not crucial for main
+            workout volume.
+          </P>
+        </Box>
+        <Box>
+          <Title>What reps and weight?</Title>
+          <P><B>Stop your first sets at least one rep before failure!</B> Research shows that training to <B>failure is
+            not
+            necessary</B>. It can exhaust you and even injure you. By saving your energy, you will be able to do more
+            work in
+            the next sets and generate more overall volume.</P>
+          <P>Let’s use the bench press for an <B>example</B>. Here it is one way of structuring the sets:</P>
+          <Li>Set 1: 6 reps x 100 kg (220 lbs)</Li>
+          <Li>Set 2: 8 reps x 90 kg (200 lbs)</Li>
+          <Li>Set 3: 10 reps x 80 kg (176 lbs)</Li>
+          <Li>Set 4: 13 reps x 73 kg (160 lbs) – the last set uses lighter weights and can be performed to failure</Li>
+          Of course, your values will not be the same. But the idea is to start with the heavier weight and lower reps.
+          Then increase the sets and reduce the weight. Try to stay around the 8-12 reps range.
+        </Box>
+        <Box>
+          <Title>Logging and progressing</Title>
+          <P>For every exercise in your workout you should <B>log the performed sets</B>. Every set will <B>appear on
+            the graphic</B> as you log it.
+            The <B>more weight you lift, the higher the box</B> of the set will appear. <B>The more reps you do, the
+              bigger the
+              box</B> will
+            be. This is very easy and innovative way to track your progress. All performed sets will appear on the
+            graphic. And you can press on it to open previous workouts where you had done this exercise.</P>
+          <P>By performing resistance training <B>the muscles adapt to the intensity.</B> For progress to take place,
+            the workout <B>intensity has to grow steadily</B>. Try to <B>increase the weight across all sets slowly</B>,
+            workout
+            after workout. You
+            can also <B>increase the reps for particular set</B>. But keep in mind the <B>principles above</B>. Focus
+            on <B>heavy weight
+              in the first sets</B> and focus on <B>repetitions in the final ones</B>.</P>
+          <P>The process of lifting heavier weights every workout is called <B>progressive overload</B>.</P>
+        </Box>
+        <Box>
+          <Title>Rest intervals</Title>
+          <P>
+            Research has not yet found a clear winner between smaller and bigger rest interval Since the most <B>important
+            factors are the overall workout volume and the progressive overload</B>, we recommend <B>resting as much as
+            it is
+            needed</B>. If you don’t rest enough, you might not be able to perform the needed reps for progress. And if
+            you
+            rest too much, you are just wasting your time. So <B>just rest until you recover your breath and feel ready
+            to
+            perform</B> the next set. Try to lift more every workout and don’t worry about the rest.
+          </P>
+        </Box>
+        <Box>
+          <Title>Reference</Title>
+          <Li>Nóbrega SR, Libardi CA. Is Resistance Training to Muscular Failure Necessary? Frontiers in Physiology.
+            2016</Li>
+          <Li>BJ, Ratamess NA, Peterson MD, Contreras B, Sonmez GT, Alvar BA.
+            Effects of different volume-equated resistance training loading strategies on muscular adaptations in
+            well-trained men. J Strength Cond Res. 2014 Oct
+          </Li>
+          <Li> Wilson JM, Loenneke JP, Jo E, Wilson GJ, Zourdos MC, Kim JS. The effects of
+            endurance, strength, and power training on muscle fiber type shifting. J Strength
+            Cond Res. 2012 Jun
+          </Li>
+          <Li>Calatayud J, Vinstrup J, Jakobsen MD, Sundstrup E, Brandt M, Jay K, Colado JC,
+            Andersen LL. Importance of mind-muscle connection during progressive resistance
+            training. Eur J Appl Physiol. 2016 Mar
+          </Li>
+          <Li>De Freitas MC, Gerosa-Neto J, Zanchi NE, Lira FS, Rossi FE. Role of metabolic stress for enhancing muscle
+            adaptations: Practical applications. World Journal of Methodology. 2017</Li>
+          <Li>Mangine GT, Hoffman JR, Gonzalez AM, et al. The effect of training volume and intensity on improvements in
+            muscular strength and size in resistance-trained men. Physiological Reports. 2015</Li>
+        </Box>
+      </View>
+    }
+  }
+};
+
+export let settings = {
+  id: 'settings',
+  count: 1,
+  component: class Settings extends Component {
+    render() {
+      return <View>
+        <Box>
+          <Title>Contact us</Title>
+          <P>Fitness is complex but amazing sport. It will help you develop your body, mind and confidence. You probably
+            have a lot of questions. You can <B>ask us anything</B>. We will be glad to help you and we will consider
+            your
+            <B> features request</B> for the <B>future versions of Asterius</B>.</P>
+          <P><B>Let’s make the fitness industry better together!</B></P>
+        </Box>
+      </View>
+    }
+  }
+};
+
 export let name = {
   id: '',
   count: 0,

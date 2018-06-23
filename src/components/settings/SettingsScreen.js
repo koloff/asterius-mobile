@@ -32,112 +32,112 @@ export default class SettingsScreen extends React.Component {
       }}>
 
 
-        <ElevatedView elevation={3} style={{
-          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
-          borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth
-        }}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              borderRadius: 5,
-              padding: 15,
-              justifyContent: 'center'
-            }}
-            onPress={async () => {
-              this.props.navigation.navigate('Principles');
-            }}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                <MaterialCommunityIcons color={'#fff'} size={21} name={'dumbbell'}/> &nbsp;&nbsp;
-              </Text>
-              <View>
-                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                  Principles
-                </Text>
-                <Text style={[gs.text, gs.shadow, {
-                  textAlign: 'left',
-                  color: '#999',
-                  fontSize: 14
-                }]}>Learn the most important aspects</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </ElevatedView>
+        {/*<ElevatedView elevation={3} style={{*/}
+        {/*width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',*/}
+        {/*borderColor: '#222',*/}
+        {/*borderWidth: StyleSheet.hairlineWidth*/}
+        {/*}}>*/}
+        {/*<TouchableOpacity*/}
+        {/*style={{*/}
+        {/*flex: 1,*/}
+        {/*borderRadius: 5,*/}
+        {/*padding: 15,*/}
+        {/*justifyContent: 'center'*/}
+        {/*}}*/}
+        {/*onPress={async () => {*/}
+        {/*this.props.navigation.navigate('Principles');*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*<View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*<MaterialCommunityIcons color={'#fff'} size={21} name={'dumbbell'}/> &nbsp;&nbsp;*/}
+        {/*</Text>*/}
+        {/*<View>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*Principles*/}
+        {/*</Text>*/}
+        {/*<Text style={[gs.text, gs.shadow, {*/}
+        {/*textAlign: 'left',*/}
+        {/*color: '#999',*/}
+        {/*fontSize: 14*/}
+        {/*}]}>Learn the most important aspects</Text>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</TouchableOpacity>*/}
+        {/*</ElevatedView>*/}
 
 
-        <ElevatedView elevation={3} style={{
-          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
-          borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth
-        }}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              borderRadius: 5,
-              padding: 15,
-              justifyContent: 'center'
-            }}
-            onPress={() => {
-              this.props.navigation.navigate('PremiumScreen');
-            }}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                <FontAwesome color={'#fff'} size={21} name={'star'}/> &nbsp;&nbsp;
-              </Text>
-              <View>
-                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                  Asterius Premium
-                </Text>
-                <Text style={[gs.text, gs.shadow, {
-                  textAlign: 'left',
-                  color: '#999',
-                  fontSize: 14
-                }]}>Get to the next level</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </ElevatedView>
+        {/*<ElevatedView elevation={3} style={{*/}
+        {/*width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',*/}
+        {/*borderColor: '#222',*/}
+        {/*borderWidth: StyleSheet.hairlineWidth*/}
+        {/*}}>*/}
+        {/*<TouchableOpacity*/}
+        {/*style={{*/}
+        {/*flex: 1,*/}
+        {/*borderRadius: 5,*/}
+        {/*padding: 15,*/}
+        {/*justifyContent: 'center'*/}
+        {/*}}*/}
+        {/*onPress={() => {*/}
+        {/*this.props.navigation.navigate('PremiumScreen');*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*<View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*<FontAwesome color={'#fff'} size={21} name={'star'}/> &nbsp;&nbsp;*/}
+        {/*</Text>*/}
+        {/*<View>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*Asterius Premium*/}
+        {/*</Text>*/}
+        {/*<Text style={[gs.text, gs.shadow, {*/}
+        {/*textAlign: 'left',*/}
+        {/*color: '#999',*/}
+        {/*fontSize: 14*/}
+        {/*}]}>Get to the next level</Text>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</TouchableOpacity>*/}
+        {/*</ElevatedView>*/}
 
-        <ElevatedView elevation={3} style={{
-          width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
-          borderColor: '#222',
-          borderWidth: StyleSheet.hairlineWidth
-        }}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              borderRadius: 5,
-              padding: 15,
-              justifyContent: 'center'
-            }}
-            onPress={() => {
-              if (subscriptionsStore.isSubscribed) {
-                Linking.openURL('mailto:asteriusguidance@gmail.com');
-              } else {
-                this.props.navigation.navigate('PremiumScreen');
-              }
-            }}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                <Entypo color={'#fff'} size={21} name={'chat'}/> &nbsp;&nbsp;
-              </Text>
-              <View>
-                <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                  Fitness guidance
-                </Text>
-                <Text style={[gs.text, gs.shadow, {
-                  textAlign: 'left',
-                  color: '#999',
-                  fontSize: 14
-                }]}>Personal fitness support</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </ElevatedView>
+        {/*<ElevatedView elevation={3} style={{*/}
+        {/*width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',*/}
+        {/*borderColor: '#222',*/}
+        {/*borderWidth: StyleSheet.hairlineWidth*/}
+        {/*}}>*/}
+        {/*<TouchableOpacity*/}
+        {/*style={{*/}
+        {/*flex: 1,*/}
+        {/*borderRadius: 5,*/}
+        {/*padding: 15,*/}
+        {/*justifyContent: 'center'*/}
+        {/*}}*/}
+        {/*onPress={() => {*/}
+        {/*if (subscriptionsStore.isSubscribed) {*/}
+        {/*Linking.openURL('mailto:asteriusguidance@gmail.com');*/}
+        {/*} else {*/}
+        {/*this.props.navigation.navigate('PremiumScreen');*/}
+        {/*}*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*<View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*<Entypo color={'#fff'} size={21} name={'chat'}/> &nbsp;&nbsp;*/}
+        {/*</Text>*/}
+        {/*<View>*/}
+        {/*<Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>*/}
+        {/*Fitness guidance*/}
+        {/*</Text>*/}
+        {/*<Text style={[gs.text, gs.shadow, {*/}
+        {/*textAlign: 'left',*/}
+        {/*color: '#999',*/}
+        {/*fontSize: 14*/}
+        {/*}]}>Personal fitness support</Text>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</TouchableOpacity>*/}
+        {/*</ElevatedView>*/}
 
         <ElevatedView elevation={3} style={{
           width: '100%', height: 80, marginBottom: 15, borderRadius: 5, backgroundColor: '#151515',
@@ -157,7 +157,7 @@ export default class SettingsScreen extends React.Component {
           >
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
-                <Foundation color={'#fff'} size={21} name={'mail'}/> &nbsp;&nbsp;
+                <Entypo color={'#fff'} size={21} name={'chat'}/> &nbsp;&nbsp;
               </Text>
               <View>
                 <Text style={[gs.text, gs.shadow, {fontSize: 21, textAlign: 'left', color: '#ddd'}]}>
@@ -167,7 +167,7 @@ export default class SettingsScreen extends React.Component {
                   textAlign: 'left',
                   color: '#999',
                   fontSize: 14
-                }]}>Questions and bug reports</Text>
+                }]}>Ask us anything, request features</Text>
               </View>
             </View>
           </TouchableOpacity>

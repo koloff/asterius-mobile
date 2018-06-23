@@ -15,6 +15,7 @@ import authStore from '../../store/authStore';
 import ElevatedView from "../ElevatedView";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import generateStore from "../../store/generateStore";
+import KeyboardPadding from "../KeyboardPadding";
 
 @observer
 export default class Register extends React.Component {
@@ -39,7 +40,7 @@ export default class Register extends React.Component {
         opacity: this.props.opacity || 1,
       }]}>
 
-        <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
+        <KeyboardPadding style={{flex: 1}}>
           <View style={{
             position: 'absolute',
             padding: 25,
@@ -168,7 +169,7 @@ export default class Register extends React.Component {
             </View>
 
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardPadding>
       </Animated.View>
     )
   }

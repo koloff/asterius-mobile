@@ -29,6 +29,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import {withNavigation} from "react-navigation";
 import tipsStore from "../../store/tipsStore";
+import KeyboardPadding from "../KeyboardPadding";
 
 // todo change opacity to fromstart prop
 
@@ -76,6 +77,7 @@ export default class Generate extends React.Component {
   }
 
   onSlideChanged(index) {
+    console.log('slide changed');
     Keyboard.dismiss();
     this.setState({slide: index});
     generateStore.slide = index;
@@ -161,25 +163,25 @@ export default class Generate extends React.Component {
     if (this.state.slide === 5) {
       return <View></View>;
     }
-    return <View style={{padding: 12, paddingLeft: 15}}>
+    return <KeyboardPadding><View style={{padding: 12, paddingLeft: 15}}>
       <Text style={[gs.text, gs.shadow, {
         fontSize: 17,
         color: 'rgba(255,143,0 ,1)'
       }]}>Back</Text>
-    </View>
+    </View></KeyboardPadding>
   }
 
   renderNextButton() {
     if (this.state.slide === 4 && !generateStore.generated) {
       return <View></View>;
     }
-    return <View style={{padding: 12, paddingRight: 15}}>
+    return <KeyboardPadding><View style={{padding: 12, paddingRight: 15}}>
       <Text style={[gs.text, gs.shadow, {
         textAlign: 'center',
         fontSize: 17,
         color: this.canChangeSlide() ? 'rgba(255,143,0 ,1)' : 'rgba(255,255,255 ,0.1)'
       }]}>{generateStore.generated && this.state.slide === 4 ? 'Result' : 'Next'}</Text>
-    </View>
+    </View></KeyboardPadding>
   }
 
   @observer
@@ -206,7 +208,6 @@ export default class Generate extends React.Component {
             <Ionicons name={'md-close'} size={37} color={'#888'}/>
           </TouchableOpacity>
         </View>
-
         <Swiper
           scrollEnabled={this.state.slide !== 4}
           index={0}
@@ -233,12 +234,12 @@ export default class Generate extends React.Component {
           }}
           buttonWrapperStyle={{
             alignItems: 'flex-end',
-            paddingBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 240 : 10
+            // paddingBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 240 : 10
           }}
           paginationStyle={{
-            marginBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 230 : 0
+            // marginBottom: Platform.OS === 'ios' && this.state.keyboardOpen ? 230 : 0
           }}
-          dot={<View style={{
+          dot={<KeyboardPadding><View style={{
             backgroundColor: '#555',
             width: 10,
             height: 10,
@@ -247,8 +248,8 @@ export default class Generate extends React.Component {
             marginRight: 5,
             marginTop: 3,
             marginBottom: 3,
-          }}/>}
-          activeDot={<View style={{
+          }}/></KeyboardPadding>}
+          activeDot={<KeyboardPadding><View style={{
             backgroundColor: '#FF8F00',
             width: 10,
             height: 10,
@@ -257,7 +258,7 @@ export default class Generate extends React.Component {
             marginRight: 5,
             marginTop: 3,
             marginBottom: 3,
-          }}/>}
+          }}/></KeyboardPadding>}
           nextButton={this.renderNextButton()}
           prevButton={this.renderPreviousButton()}>
 
@@ -331,53 +332,50 @@ const Slide1 = observer((props) => {
 });
 
 const Slide2 = observer((props) => {
-  return <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
-    <View style={[styles.slide2, {
-      marginTop: 23
-    }]}>
-
-      <Question text={'What are your units?'}/>
-      <RadioButtons
-        selected={userParametersStore.parameters.measuringUnit}
-        onSelectedChange={(value) => {
-          userParametersStore.parameters.measuringUnit = value
-        }}
-        optionStyle={styles.optionStyle}
-        style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
-      >
-        <View value={1}>
-          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-            Metric
-          </Text>
-          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-            CM and KG
-          </Text>
-        </View>
-
-        <View value={2}>
-          <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
-            Imperial
-          </Text>
-          <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
-            IN and LBS
-          </Text>
-        </View>
-      </RadioButtons>
-
-      <Question text={'What are your measurements?'}/>
-      <View style={{flexDirection: 'row'}}>
-        <ParameterInputNumber title={'Age'} unit={'YEARS'} value={userParametersStore.parameters.age} onChangeText={(val) => {
-          userParametersStore.parameters.age = val;
-        }}/>
-        <ParameterInputNumber title={'Height'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'CM' : 'IN'} value={userParametersStore.parameters.height} onChangeText={(val) => {
-          userParametersStore.parameters.height = val;
-        }}/>
-        <ParameterInputNumber title={'Weight'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={userParametersStore.parameters.weight} onChangeText={(val) => {
-          userParametersStore.parameters.weight = val;
-        }}/>
+  return <KeyboardPadding style={{flex: 1}}><View style={[styles.slide2, {
+    marginTop: 23
+  }]}>
+    <Question text={'What are your units?'}/>
+    <RadioButtons
+      selected={userParametersStore.parameters.measuringUnit}
+      onSelectedChange={(value) => {
+        userParametersStore.parameters.measuringUnit = value
+      }}
+      optionStyle={styles.optionStyle}
+      style={{maxHeight: 80, flexDirection: 'row', marginBottom: 10}}
+    >
+      <View value={1}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+          Metric
+        </Text>
+        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+          CM and KG
+        </Text>
       </View>
+
+      <View value={2}>
+        <Text style={[gs.text, gs.shadow, {fontSize: 15, textAlign: 'center'}]}>
+          Imperial
+        </Text>
+        <Text style={[gs.text, gs.shadow, {fontSize: 11}]}>
+          IN and LBS
+        </Text>
+      </View>
+    </RadioButtons>
+
+    <Question text={'What are your measurements?'}/>
+    <View style={{flexDirection: 'row'}}>
+      <ParameterInputNumber title={'Age'} unit={'YEARS'} value={userParametersStore.parameters.age} onChangeText={(val) => {
+        userParametersStore.parameters.age = val;
+      }}/>
+      <ParameterInputNumber title={'Height'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'CM' : 'IN'} value={userParametersStore.parameters.height} onChangeText={(val) => {
+        userParametersStore.parameters.height = val;
+      }}/>
+      <ParameterInputNumber title={'Weight'} unit={userParametersStore.parameters.measuringUnit === 1 ? 'KG' : 'LBS'} value={userParametersStore.parameters.weight} onChangeText={(val) => {
+        userParametersStore.parameters.weight = val;
+      }}/>
     </View>
-  </KeyboardAvoidingView>
+  </View></KeyboardPadding>
 });
 
 const Slide3 = observer((props) => {

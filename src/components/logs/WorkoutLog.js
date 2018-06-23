@@ -210,7 +210,7 @@ export default class WorkoutLog extends React.Component {
           this.setState({modalVisible: false})
         }}
       >
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flex: 1, position: 'absolute', alignItems: 'center'}}>
           <Text style={[gs.text, gs.shadow]}>Delete this workout log?</Text>
           <View style={{flexDirection: 'row', paddingTop: 10}}>
             <View style={{marginRight: 10}}><Button

@@ -85,7 +85,9 @@ export default class TipsCircle extends React.Component {
     return <Interactable.View
       style={{
         position: 'absolute',
-        width: size, height: size
+        width: size + 7, height: size + 7,
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
       onDrag={() => {
         if (!this.state.isDragging) {

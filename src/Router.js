@@ -27,9 +27,9 @@ import generateStore from "./store/generateStore";
 
 
 const MainTabNavigator = TabNavigator({
-  Eat: {screen: EatScreen},
   Workouts: {screen: WorkoutsScreen},
   Weight: {screen: WeightScreen},
+  Eat: {screen: EatScreen},
   Settings: {screen: SettingsScreen},
 }, {
   navigationOptions: ({navigation}) => ({
@@ -193,12 +193,13 @@ export default class Router extends React.Component {
           if (currentState.routes[1]) {
             // second level navigation
             let routeName = currentState.routes[1].routeName;
+            console.log(routeName);
             if (routeName === 'Tweaker') {
               tipsStore.setTips(tipsStore.tips.tweaker);
             } else if (routeName === 'Generate') {
               tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
-            } else {
-              // todo
+            } else if (routeName === 'WorkoutLog') {
+              tipsStore.setTips(tipsStore.tips.workoutLog);
             }
           } else {
             // main tab navigation
@@ -209,7 +210,8 @@ export default class Router extends React.Component {
                 return tipsStore.setTips(tipsStore.tips.weight);
               case 2:
                 return tipsStore.setTips(tipsStore.tips.nutrition);
-              // case 3  ;
+              case 3:
+                return tipsStore.setTips(tipsStore.tips.settings);
             }
           }
 

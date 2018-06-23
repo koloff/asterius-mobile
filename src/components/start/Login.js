@@ -13,6 +13,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 import authStore from '../../store/authStore';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import KeyboardPadding from "../KeyboardPadding";
 
 @observer
 export default class Login extends React.Component {
@@ -28,7 +29,7 @@ export default class Login extends React.Component {
         zIndex: this.props.isActive ? 200 : 1,
         opacity: this.props.opacity || 1,
       }]}>
-        <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
+        <KeyboardPadding style={{flex: 1}}>
           <View style={{
             position: 'absolute',
             padding: 25,
@@ -111,15 +112,15 @@ export default class Login extends React.Component {
                     this.setState({loading: false});
                   }
                 }}>
-                  <Text style={[gs.text, {
-                    fontSize: 21,
-                    textAlign: 'center',
-                    textShadowColor: 'rgba(0,0,0,0.5)',
-                    textShadowRadius: 7,
-                    textShadowOffset: {width: 1, height: 1}
-                  }]}>
-                    <SimpleLineIcons name='login' size={21} color='#fff'/> LOGIN
-                  </Text>
+                <Text style={[gs.text, {
+                  fontSize: 21,
+                  textAlign: 'center',
+                  textShadowColor: 'rgba(0,0,0,0.5)',
+                  textShadowRadius: 7,
+                  textShadowOffset: {width: 1, height: 1}
+                }]}>
+                  <SimpleLineIcons name='login' size={21} color='#fff'/> LOGIN
+                </Text>
               </TouchableOpacity>
               :
               <ActivityIndicator style={{marginTop: 10, padding: 4, height: 40}} size="large" color="#444"/>
@@ -158,7 +159,7 @@ export default class Login extends React.Component {
             </View>
 
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardPadding>
       </Animated.View>
     )
   }
