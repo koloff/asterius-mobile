@@ -5,7 +5,7 @@ import Interactable from 'react-native-interactable';
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 import ElevatedView from "../ElevatedView";
-
+import isClick from '../../utils/isClick';
 import tipsStore from '../../store/tipsStore';
 
 const offset = 17;
@@ -28,13 +28,36 @@ function getPoints(length, count, windowWidth, windowHeight) {
 
 @observer
 export default class TipsCircle extends React.Component {
-
   state = {
-    isDragging: false,
     scale: new Animated.Value(1),
     bounce: new Animated.Value(0),
     ringing: false
   };
+
+  captured = false;
+  time1 = null;
+  time2 = null;
+
+  responder = PanResponder.create({
+    onMoveShouldSetPanResponderCapture: (e, gs) => {
+      console.log('capture-----------------');
+      this.captured = true;
+      this.time1 = new Date();
+      return true;
+    },
+
+    onPanResponderRelease: (e, gs) => {
+      this.time2 = new Date();
+      console.log(this.time2 - this.time1);
+      if (this.time2 - this.time1 < 100) {
+        tipsStore.openTipsModal();
+      }
+      this.time2 = null;
+      this.time1 = null;
+      this.captured = false;
+      console.log('release');
+    },
+  });
 
   componentDidMount() {
     autorun(() => {
@@ -46,7 +69,6 @@ export default class TipsCircle extends React.Component {
         this.setState({ringing: false});
       }
     })
-
   }
 
   bounce() {
@@ -75,80 +97,87 @@ export default class TipsCircle extends React.Component {
     loop();
   }
 
-
   render() {
     let {height, width} = Dimensions.get('window');
     const size = 65;
     const outerCircleSize = size - 8;
     const innerCircleSize = outerCircleSize - 4;
 
-    return <Interactable.View
+    return <Animated.View
+      {...this.responder.panHandlers}
       style={{
         position: 'absolute',
         width: size + 7, height: size + 7,
         alignItems: 'center',
-        justifyContent: 'center'
       }}
-      onDrag={() => {
-        if (!this.state.isDragging) {
-          this.setState({isDragging: true});
-          Animated.spring(this.state.scale, {toValue: 1.2, friction: 3}).start();
-        } else {
-          this.setState({isDragging: false});
+    >
 
-          Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
-        }
-      }}
-      initialPosition={{x: (width - size) + offset, y: 130}}
-      boundaries={{
-        top: topMax,
-        bottom: height - size
-      }}
-      snapPoints={getPoints(size, 20, width, height)}>
-
-      <Animated.View
+      <Interactable.View
         style={{
-          transform: [{scale: this.state.scale}, {scale: this.state.bounce}],
-          width: size,
-          height: size,
-          borderRadius: size / 2,
+          position: 'absolute',
+          width: size + 7, height: size + 7,
           alignItems: 'center',
-          justifyContent: 'center',
-          // backgroundColor: 'red'
+          justifyContent: 'center'
         }}
-      >
-        <ElevatedView
-          elevation={8}
+        animatedNativeDriver={false}
+        onDrag={({state}) => {
+          console.log(state);
+          console.log('onDrag');
+          console.log(this.time1);
+          console.log(this.captured);
+          if (this.time1) {
+            this.time2 = new Date();
+            console.log(this.time2 - this.time1);
+            if (this.time2 - this.time1 < 100) {
+              tipsStore.openTipsModal();
+            }
+            this.time1 = null;
+            this.time2 = null;
+          }
+          this.captured = false;
+          // Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
+        }}
+        initialPosition={{x: (width - size) + offset, y: 130}}
+        boundaries={{
+          top: topMax,
+          bottom: height - size
+        }}
+        snapPoints={getPoints(size, 20, width, height)}>
+
+        <Animated.View
           style={{
-            width: outerCircleSize,
-            height: outerCircleSize,
-            backgroundColor: 'rgba(255,255,255, 1)',
-            borderRadius: outerCircleSize / 2,
+            transform: [{scale: this.state.scale}, {scale: this.state.bounce}],
+            width: size,
+            height: size,
+            borderRadius: size / 2,
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            // backgroundColor: 'red'
           }}
         >
-
           <ElevatedView
-            elevation={2}
+            elevation={8}
             style={{
-              width: innerCircleSize,
-              height: innerCircleSize,
-              backgroundColor: '#FB8C00',
-              borderRadius: innerCircleSize / 2,
+              width: outerCircleSize,
+              height: outerCircleSize,
+              backgroundColor: 'rgba(255,255,255, 1)',
+              borderRadius: outerCircleSize / 2,
               alignItems: 'center',
               justifyContent: 'center'
             }}
           >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                if (tipsStore.isRinging) {
-                  tipsStore.stopRinging(tipsStore.currentTips.id);
-                }
-                tipsStore.openTipsModal();
+
+            <ElevatedView
+              elevation={2}
+              style={{
+                width: innerCircleSize,
+                height: innerCircleSize,
+                backgroundColor: '#FB8C00',
+                borderRadius: innerCircleSize / 2,
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
-
               <View style={{
                 width: '100%',
                 height: '100%',
@@ -171,16 +200,12 @@ export default class TipsCircle extends React.Component {
                   color: '#fff',
                   textAlign: 'center'
                 }]}>{tipsStore.currentTips.count}</Text>
-
-
               </View>
 
-            </TouchableWithoutFeedback>
-
+            </ElevatedView>
           </ElevatedView>
-        </ElevatedView>
-      </Animated.View>
+        </Animated.View>
 
-    </Interactable.View>
+      </Interactable.View></Animated.View>
   }
 }
