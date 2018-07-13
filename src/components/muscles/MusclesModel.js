@@ -145,8 +145,8 @@ export default class MusclesModel extends React.Component {
           }}>
           {this.renderModels()}
           <View style={styles.zoomTextBox}>
-            <Text style={[gs.text, {color: '#555', fontSize: 14}]}>PINCH TO</Text>
-            <Text style={[gs.text, {color: '#555', fontSize: 21}]}>ZOOM</Text>
+            <Text style={[gs.text, {color: '#777', fontSize: 18}]}>PINCH TO</Text>
+            <Text style={[gs.text, {color: '#777', fontSize: 28}]}>ZOOM</Text>
           </View>
         </ZoomView>
       )

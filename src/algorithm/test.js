@@ -48,14 +48,15 @@ function getRandomMuscles(option) {
 for (let i = 0; i < 10; i++) {
   let gender = getRandomGender(getRandomInt(0, 0));
   let days = getRandomDays(getRandomInt(0, 0));
-  let duration = getRandomDuration(getRandomInt(0, 0));
+  let duration = getRandomDuration(getRandomInt(2, 2));
   let fitnessLevel = getRandomFitnessLevel(getRandomInt(2, 2));
-  let preferredMuscles = getRandomMuscles(getRandomInt(0,0));
+  let preferredMuscles = getRandomMuscles(getRandomInt(0,2));
 
   console.log('---------------------');
   console.log(gender, days, duration, fitnessLevel, preferredMuscles);
 
   console.time(`Test ${i}`);
-  generateSplit(gender, days, duration, fitnessLevel, preferredMuscles);
+  let split = generateSplit(gender, days, duration, fitnessLevel, preferredMuscles);
+  console.log(split);
   console.timeEnd(`Test ${i}`);
 }

@@ -1,10 +1,20 @@
 let _ = require('lodash');
 let mc = require('./muscles/muscles-collection');
 let ecIds = require('./exercises/exercises-ids');
-
 let generateVolume = require('./generate-volume');
-let calculateFitnessLevel = require('./calculate-fitness-level');
 let splits = require('./splits');
+
+
+// side case workout
+const sideCaseWorkout = [
+  {id: ecIds.legs.barbellSquat, sets: 4},
+  {id: ecIds.chest.dumbbellBenchPress, sets: 4},
+  {id: ecIds.back.latPulldownWideGrip, sets: 4},
+  {id: ecIds.shoulders.lateralRaise, sets: 2},
+  {id: ecIds.shoulders.reversePecDeck, sets: 2},
+  {id: ecIds.triceps.tricepsPushdown, sets: 2},
+  {id: ecIds.biceps.barbellCurl, sets: 2},
+];
 
 
 function generateSingleWorkout(options) {
@@ -43,19 +53,10 @@ function generateSingleWorkout(options) {
     return workout;
   }
 
-  //  todo move SIDE CASE
   if (options.single) {
-    return [
-      {id: ecIds.legs.barbellSquat, sets: 4},
-      {id: ecIds.chest.dumbbellBenchPress, sets: 4},
-      {id: ecIds.back.latPulldownWideGrip, sets: 4},
-      {id: ecIds.shoulders.lateralRaise, sets: 2},
-      {id: ecIds.shoulders.reversePecDeck, sets: 2},
-      {id: ecIds.triceps.tricepsPushdown, sets: 2},
-      {id: ecIds.biceps.barbellCurl, sets: 2},
-    ]
+    console.log('side case of single workout');
+    return sideCaseWorkout;
   }
-
 
   // if still cannot generate, increase time
   options.sets += 4;
@@ -70,6 +71,8 @@ function generateSingleWorkout(options) {
 }
 
 function generateSplit(gender, days, duration, fitnessLevel, preferredMuscles) {
+  console.log(arguments);
+
   let sets = Math.round((duration - 5) / 2.5);
 
   // At 1-2 training sessions per week generate FULL BODY workouts

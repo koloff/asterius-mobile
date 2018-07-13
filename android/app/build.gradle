@@ -109,6 +109,10 @@ android {
         // Add these lines below the existing config
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
+
+
+        // todo may remove later
+        multiDexEnabled true
     }
     signingConfigs {
        release {

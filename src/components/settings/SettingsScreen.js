@@ -18,7 +18,7 @@ export default class SettingsScreen extends React.Component {
   };
 
   componentDidMount() {
-    Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 333}).start();
+    Animated.timing(this.state.opacity, {toValue: 1, useNativeDriver: true, duration: 200}).start();
   }
 
   render() {

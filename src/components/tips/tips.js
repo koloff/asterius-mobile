@@ -181,7 +181,7 @@ export let slide4 = {
             exercise.</P>
         </Box>
         <Box>
-          <Title><Text style={{color: '#e74c3c'}}>Be wise!</Text></Title>
+          <Title><Text style={{color: '#e74c3c'}}>Preferred muscles!</Text></Title>
           <P>If you are man you probably want biceps, triceps, chest, back, abs, legs, and so on! If you are
             woman,
             you may want glutes, legs, abs, chest and so on… But as you can imagine there is <B>no point</B> in

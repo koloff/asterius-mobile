@@ -202,6 +202,8 @@ export default class Router extends React.Component {
               return tipsStore.setTips(tipsStore.tips.tweaker);
             case 'WorkoutLog':
               return tipsStore.setTips(tipsStore.tips.workoutLog);
+            case 'Generate':
+              return tipsStore.setTips(tipsStore.tips.slide0);
           }
 
         }}/>;

@@ -50,15 +50,13 @@ export default class EatScreen extends React.Component {
   }
 
   componentDidMount() {
-    // todo remove
-    tipsStore.setTips(tipsStore.tips.nutrition);
     setTimeout(() => {
       Animated.timing(this.state.animation, {
         toValue: 1,
         useNativeDriver: true,
-        duration: 333
+        duration: 200
       }).start();
-    }, 100)
+    }, 10)
   }
 
   openOptionModal(option) {

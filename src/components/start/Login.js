@@ -51,6 +51,7 @@ export default class Login extends React.Component {
 
   async loginWithFacebook() {
     try {
+      this.setState({loading: true});
       await authStore.loginWithFacebook();
     } catch (err) {
       console.log(err);
@@ -60,6 +61,7 @@ export default class Login extends React.Component {
           backgroundColor: 'red',
           position: -10,
         });
+        this.setState({loading: false});
       }
     }
   }
@@ -200,11 +202,10 @@ export default class Login extends React.Component {
                 }}
                 onPress={() => {
                   authStore.loginAnonymously();
-                  // todo remove
-                  // if (!userParametersStore.parameters.gender) {
-                  //   this.props.onTransition && this.props.onTransition('Generate');
-                  //   return;
-                  // }
+                  if (!userParametersStore.parameters.gender) {
+                    this.props.onTransition && this.props.onTransition('Generate');
+                    return;
+                  }
                   this.props.onTransition && this.props.onTransition('Register');
                 }}>
                 <Text style={[gs.text, {

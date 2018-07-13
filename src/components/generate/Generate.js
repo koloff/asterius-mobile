@@ -121,9 +121,8 @@ export default class Generate extends React.Component {
     }
 
     if (!generateStore.enoughTimeForIsolation) {
-      this.musclesToast = Toast.show(`Your overall training time might not be enough to include isolation exercises. 
-      Select only the most important muscles or increase the duration or frequency of training.`, {
-        duration: 6000,
+      this.musclesToast = Toast.show(`Too much selected muscles. Please press the helper circle!`, {
+        duration: 2000,
         shadow: true,
         backgroundColor: 'rgba(255,160,0 ,1)',
         position: -10,
@@ -601,7 +600,10 @@ class GeneratedWorkoutsSlide extends React.Component {
   @observer
   render() {
     return <View style={{paddingTop: 0, paddingBottom: 0, flex: 1, height: '100%'}}>
-      <View style={{marginBottom: 60}}>
+      <View style={{marginBottom: 90}}>
+        <View style={{paddingBottom: 10}}>
+        <Text style={[gs.text, {textAlign: 'center', color: '#555'}]}>Press on a workout to edit</Text>
+        </View>
         <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
           {generateStore.workoutsTemplatesStore.workouts.map((workoutRow, index) => {
             return (

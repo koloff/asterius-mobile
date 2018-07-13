@@ -54,7 +54,7 @@ export default class TipsCircle extends React.Component {
     let up = true;
     let loop = () => {
       Animated.timing(this.state.bounce, {
-        toValue: up ? 1.06 : 1,
+        toValue: up ? 1.07 : 1,
         duration: 300,
         easing: Easing.quad,
         useNativeDriver: true
@@ -73,6 +73,13 @@ export default class TipsCircle extends React.Component {
     loop();
   }
 
+  circlePressed() {
+    if (tipsStore.isRinging) {
+      tipsStore.stopRinging(tipsStore.currentTips.id);
+    }
+    tipsStore.openTipsModal();
+  }
+
   render() {
     let {height, width} = Dimensions.get('window');
     const size = 65;
@@ -81,10 +88,7 @@ export default class TipsCircle extends React.Component {
 
     return <TouchableWithoutFeedback
       onPress={() => {
-        if (tipsStore.isRinging) {
-          tipsStore.stopRinging(tipsStore.currentTips.id);
-        }
-        tipsStore.openTipsModal();
+        this.circlePressed();
       }}>
       <Interactable.View
         style={{
@@ -95,11 +99,7 @@ export default class TipsCircle extends React.Component {
         }}
         animatedNativeDriver={false}
         onDrag={() => {
-          if (tipsStore.isRinging) {
-            tipsStore.stopRinging(tipsStore.currentTips.id);
-          }
-          tipsStore.openTipsModal();
-          // Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
+          this.circlePressed();
         }}
         initialPosition={{x: (width - size) + offset, y: 100}}
         boundaries={{

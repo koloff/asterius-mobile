@@ -22,7 +22,6 @@ class GenerateStore {
 
   init() {
     this.musclesModelStore = new MusclesModelStore();
-    console.log(this.musclesModelStore);
     this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
     this.workoutsTemplatesStore.listenChildRemoved();
 

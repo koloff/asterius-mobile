@@ -80,7 +80,6 @@ class UserParametersStore {
 
   async saveUserParameters() {
     this.parameters.fitnessLevel = calculateFitnessLevel(this.parameters);
-    console.log(this.path, this.parameters);
     await database.save(this.path, this.parameters);
   }
 

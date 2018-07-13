@@ -186,7 +186,6 @@ function generateVolume(parameters) {
   // console.log('---------------------------END LOGS---------------------------');
 
   let ordered = orderWorkout(workout);
-  console.log(ordered);
   return ordered;
 }
 
