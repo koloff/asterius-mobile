@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Asterius</string>
+    <string name="facebook_app_id">438518866664055</string>
+    <string name="fb_login_protocol_scheme">fb438518866664055</string>
 </resources>

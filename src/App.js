@@ -2,16 +2,17 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   StatusBar,
-  View, YellowBox, SafeAreaView
+  View, SafeAreaView
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Router from './Router';
+
+import SplashScreen from 'react-native-splash-screen';
 
 import authStore from './store/authStore';
 import connectionStore from './store/connectionStore';
 import userParametersStore from "./store/userParametersStore";
 import subscriptionsStore from "./store/subscriptionsStore";
-import TipsDemo from "./components/TipsDemo";
 import TipsCircle from "./components/tips/TipsCircle";
 import TipsWindow from "./components/tips/TipsWindow";
 
@@ -23,16 +24,17 @@ export default class App extends Component {
 
   async componentWillMount() {
     connectionStore.init();
-    subscriptionsStore.init();
+    // subscriptionsStore.init();
     await authStore.init();
     await userParametersStore.init();
     this.setState({isReady: true});
+    SplashScreen.hide();
     // subscriptionsStore.callCloudFunction();
   }
 
   render() {
     if (!this.state.isReady) {
-      return <View></View>;
+      return <View/>;
     }
     return (
       <View style={styles.container}>
@@ -43,8 +45,8 @@ export default class App extends Component {
           />
           {/*<TipsDemo />*/}
           <Router/>
-          <TipsCircle />
-          <TipsWindow />
+          <TipsCircle/>
+          <TipsWindow/>
         </SafeAreaView>
       </View>
     );

@@ -284,7 +284,7 @@ export default class EatScreen extends React.Component {
         </Modal>
 
 
-        {!subscriptionsStore.isSubscribed && <EatPremium/>}
+        {/*{!subscriptionsStore.isSubscribed && <EatPremium/>}*/}
 
       </Animated.View>
     )

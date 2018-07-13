@@ -98,7 +98,7 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        applicationId "com.asterius.android"
+        applicationId "com.asterius"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 5
@@ -154,12 +154,23 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-svg')
+    compile project(':react-native-splash-screen')
+    compile project(':react-native-linear-gradient')
+    compile project(':react-native-iap')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
+    compile project(':react-native-blur')
+    compile project(':react-native-fbsdk')
     compile project(':react-native-interactable')
     implementation project(':react-native-blur')
     implementation project(':react-native-iap')
     implementation project(':react-native-svg')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-vector-icons')
+    implementation project(':react-native-splash-screen')
     implementation (project(':react-native-firebase')) {
         transitive = false
     }
@@ -173,6 +184,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:15.0.2"
     implementation "com.google.firebase:firebase-database:15.0.0"
     implementation "com.google.firebase:firebase-functions:15.0.0"
+
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
 }
 

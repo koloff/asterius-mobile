@@ -10,10 +10,12 @@ target 'Asterius' do
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
   pod 'Firebase/Functions'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
 
-  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
-
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  #pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+  #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'AsteriusTests' do
     inherit! :search_paths

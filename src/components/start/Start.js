@@ -64,8 +64,6 @@ export default class Start extends React.Component {
     } else if (view === 'Register') {
       tipsStore.setTips(tipsStore.tips.register);
     }
-
-    generateStore.registerFocused = this.state.view === 'Generate' && view === 'Register';
     this.setState({view});
 
 

@@ -80,16 +80,16 @@ export default class ExerciseWithMuscles extends React.Component {
           </View>
         </View>
 
-        {this.state.exercise.premium && !subscriptionsStore.isSubscribed ?
-          <TouchableOpacity
-            style={{marginTop: 10, marginBottom: 5}}
-            onPress={() => {
-              this.props.navigation.navigate('PremiumScreen')
-            }}>
-            <Text style={[gs.text, {fontSize: 12, color: '#777'}]}>PREMIUM</Text>
-          </TouchableOpacity>
-          :
-          <SetCount id={this.props.id}/>}
+        {/*{this.state.exercise.premium && !subscriptionsStore.isSubscribed ?*/}
+        {/*<TouchableOpacity*/}
+        {/*style={{marginTop: 10, marginBottom: 5}}*/}
+        {/*onPress={() => {*/}
+        {/*this.props.navigation.navigate('PremiumScreen')*/}
+        {/*}}>*/}
+        {/*<Text style={[gs.text, {fontSize: 12, color: '#777'}]}>PREMIUM</Text>*/}
+        {/*</TouchableOpacity>*/}
+        {/*:}*/}
+          <SetCount id={this.props.id}/>
 
       </View>
     )

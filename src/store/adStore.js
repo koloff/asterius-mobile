@@ -28,4 +28,3 @@ class AdStore {
 
 export default new AdStore();
 
-

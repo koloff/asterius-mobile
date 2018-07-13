@@ -19,7 +19,6 @@ class GenerateStore {
   @observable slide = 0;
   @observable generating = false;
   @observable generated = false;
-  @observable registerFocused = false;
 
   init() {
     this.musclesModelStore = new MusclesModelStore();

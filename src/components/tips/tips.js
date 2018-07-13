@@ -567,7 +567,7 @@ export let nutrition = {
             techniques for fat loss and appetite suppression like intermittent fasting. These are topics that we may
             cover in the future with new features of the Asterius app. For now, we recommend you do your own research
             and
-            <B>try what works for you</B>. Fueling our bodies with <B>good food</B> is important for our physique,
+            <B> try what works for you</B>. Fueling our bodies with <B>good food</B> is important for our physique,
             our brains and for being healthy and <B>awesome</B>!</P>
         </Box>
         <Box>
@@ -651,8 +651,9 @@ export let workoutLog = {
           <Li>Set 2: 8 reps x 90 kg (200 lbs)</Li>
           <Li>Set 3: 10 reps x 80 kg (176 lbs)</Li>
           <Li>Set 4: 13 reps x 73 kg (160 lbs) – the last set uses lighter weights and can be performed to failure</Li>
-          Of course, your values will not be the same. But the idea is to start with the heavier weight and lower reps.
-          Then increase the sets and reduce the weight. Try to stay around the 8-12 reps range.
+          <P>Of course, your values will not be the same. But the idea is to start with the heavier weight and lower
+            reps.
+            Then increase the sets and reduce the weight. Try to stay around the 8-12 reps range.</P>
         </Box>
         <Box>
           <Title>Logging and progressing</Title>

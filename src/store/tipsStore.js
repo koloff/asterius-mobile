@@ -12,6 +12,7 @@ class TipsStore {
   @observable isRinging = false;
 
   openTipsModal() {
+    this.stopRinging(this.currentTips.id);
     this.modalOpened = true;
   }
 

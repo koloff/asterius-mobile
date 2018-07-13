@@ -332,9 +332,10 @@ let exercises = [
     id: ids.back.dumbbellBentOverRow,
     type: types.compound,
     musclesUsed: {
-      [mc.ids.back.lats]: 50,
+      [mc.ids.back.lats]: 45,
       [mc.ids.back.middleBack]: 25,
-      [mc.ids.shoulders.posteriorHead]: 25,
+      [mc.ids.shoulders.posteriorHead]: 20,
+      [mc.ids.back.rotatorCuff]: 10
     },
     info: {
       name: 'Dumbbell Bent-Over Row',

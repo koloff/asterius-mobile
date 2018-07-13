@@ -1,4 +1,5 @@
 import {computed, action, observable, extendObservable} from 'mobx';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
 
 class AuthStore {
@@ -84,8 +85,37 @@ class AuthStore {
     });
   }
 
+  async registerWithFacebook() {
+    return new Promise(async (resolve, reject) => {
+      const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
 
-  async login(email, password) {
+      if (result.isCancelled) {
+        throw {show: false, message: 'You cancelled the login!'};
+      }
+
+      const data = await AccessToken.getCurrentAccessToken();
+
+      if (!data) {
+        throw {message: 'An error occurred!'};
+      }
+
+      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+
+      firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential).then(async (user) => {
+        console.log("Anonymous account successfully upgraded", user);
+        // link does not trigger onAuthStateChanged
+        this.newUser = true;
+        await this.init();
+        return resolve(user);
+      }, function(error) {
+        console.log("Error upgrading anonymous account", error);
+        return reject({show: true, message: 'This account is already registered! You can login with it.'});
+      });
+    })
+  }
+
+
+  async loginWithEmail(email, password) {
     return new Promise((resolve, reject) => {
       if (!email || !password) {
         return reject({message: 'Provide email and password!'});
@@ -99,6 +129,24 @@ class AuthStore {
           return reject(error);
         });
     });
+  }
+
+
+  async loginWithFacebook() {
+    const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+
+    if (result.isCancelled) {
+      throw {show: false, message: 'You cancelled the login!'};
+    }
+
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw {message: 'An error occurred!'};
+    }
+
+    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+    const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
   }
 
 

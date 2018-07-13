@@ -229,7 +229,7 @@ export default class WeightScreen extends React.Component {
         </Animated.View>
 
 
-        {!subscriptionsStore.isSubscribed && <WeightPremium/>}
+        {/*{!subscriptionsStore.isSubscribed && <WeightPremium/>}*/}
       </View>
     );
 

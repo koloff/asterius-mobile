@@ -34,31 +34,6 @@ export default class TipsCircle extends React.Component {
     ringing: false
   };
 
-  captured = false;
-  time1 = null;
-  time2 = null;
-
-  responder = PanResponder.create({
-    onMoveShouldSetPanResponderCapture: (e, gs) => {
-      console.log('capture-----------------');
-      this.captured = true;
-      this.time1 = new Date();
-      return true;
-    },
-
-    onPanResponderRelease: (e, gs) => {
-      this.time2 = new Date();
-      console.log(this.time2 - this.time1);
-      if (this.time2 - this.time1 < 100) {
-        tipsStore.openTipsModal();
-      }
-      this.time2 = null;
-      this.time1 = null;
-      this.captured = false;
-      console.log('release');
-    },
-  });
-
   componentDidMount() {
     autorun(() => {
       if (tipsStore.isRinging || tipsStore.firstLoad) {
@@ -81,7 +56,8 @@ export default class TipsCircle extends React.Component {
       Animated.timing(this.state.bounce, {
         toValue: up ? 1.06 : 1,
         duration: 300,
-        easing: Easing.quad
+        easing: Easing.quad,
+        useNativeDriver: true
       }).start(() => {
         up = !up;
         if (this.state.ringing) {
@@ -103,15 +79,13 @@ export default class TipsCircle extends React.Component {
     const outerCircleSize = size - 8;
     const innerCircleSize = outerCircleSize - 4;
 
-    return <Animated.View
-      {...this.responder.panHandlers}
-      style={{
-        position: 'absolute',
-        width: size + 7, height: size + 7,
-        alignItems: 'center',
-      }}
-    >
-
+    return <TouchableWithoutFeedback
+      onPress={() => {
+        if (tipsStore.isRinging) {
+          tipsStore.stopRinging(tipsStore.currentTips.id);
+        }
+        tipsStore.openTipsModal();
+      }}>
       <Interactable.View
         style={{
           position: 'absolute',
@@ -120,24 +94,14 @@ export default class TipsCircle extends React.Component {
           justifyContent: 'center'
         }}
         animatedNativeDriver={false}
-        onDrag={({state}) => {
-          console.log(state);
-          console.log('onDrag');
-          console.log(this.time1);
-          console.log(this.captured);
-          if (this.time1) {
-            this.time2 = new Date();
-            console.log(this.time2 - this.time1);
-            if (this.time2 - this.time1 < 100) {
-              tipsStore.openTipsModal();
-            }
-            this.time1 = null;
-            this.time2 = null;
+        onDrag={() => {
+          if (tipsStore.isRinging) {
+            tipsStore.stopRinging(tipsStore.currentTips.id);
           }
-          this.captured = false;
+          tipsStore.openTipsModal();
           // Animated.spring(this.state.scale, {toValue: 1, friction: 3}).start();
         }}
-        initialPosition={{x: (width - size) + offset, y: 130}}
+        initialPosition={{x: (width - size) + offset, y: 100}}
         boundaries={{
           top: topMax,
           bottom: height - size
@@ -206,6 +170,7 @@ export default class TipsCircle extends React.Component {
           </ElevatedView>
         </Animated.View>
 
-      </Interactable.View></Animated.View>
+      </Interactable.View>
+    </TouchableWithoutFeedback>
   }
 }

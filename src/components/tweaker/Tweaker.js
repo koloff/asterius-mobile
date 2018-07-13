@@ -46,6 +46,7 @@ export default class Tweaker extends Component {
   }
 
   componentDidMount() {
+    console.log('tweaker mounter');
     tipsStore.setTips(tipsStore.tips.tweaker);
     setTimeout(() => {
       this.setState({renderMain: true})

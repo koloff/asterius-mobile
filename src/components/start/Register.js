@@ -4,18 +4,13 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Toast from 'react-native-root-toast';
-import {autorun} from 'mobx';
-
 import {gs} from "../../globals";
-
-
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import authStore from '../../store/authStore';
-import ElevatedView from "../ElevatedView";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import generateStore from "../../store/generateStore";
 import KeyboardPadding from "../KeyboardPadding";
+import Entypo from "react-native-vector-icons/Entypo";
 
 @observer
 export default class Register extends React.Component {
@@ -25,12 +20,36 @@ export default class Register extends React.Component {
     loading: false
   };
 
-  componentDidMount() {
-    autorun(() => {
-      if (generateStore.registerFocused) {
-        this.generateEmailRef.focus();
+  async registerWithEmail() {
+    Keyboard.dismiss();
+    this.setState({loading: true});
+    try {
+      let user = await authStore.register(this.state.email, this.state.password);
+      console.log(user);
+    } catch (error) {
+      this.setState({loading: false});
+      console.log(error);
+      let toast = Toast.show(error.message, {
+        shadow: true,
+        position: -10,
+        backgroundColor: 'red'
+      });
+    }
+  }
+
+  async registerWithFacebook() {
+    try {
+      await authStore.registerWithFacebook();
+    } catch (err) {
+      console.log(err);
+      if (err.show) {
+        let toast = Toast.show(err.message, {
+          shadow: true,
+          backgroundColor: 'red',
+          position: -10,
+        });
       }
-    })
+    }
   }
 
   render() {
@@ -108,25 +127,10 @@ export default class Register extends React.Component {
                   padding: 7,
                   paddingLeft: 20,
                   paddingRight: 20,
-                  width: '100%'
+                  width: '100%',
+                  marginBottom: 21
                 }}
-                onPress={async () => {
-                  Keyboard.dismiss();
-                  this.setState({loading: true});
-                  try {
-                    let user = await authStore.register(this.state.email, this.state.password);
-                    console.log(user);
-                  } catch (error) {
-                    this.setState({loading: false});
-                    console.log(error);
-                    let toast = Toast.show(error.message, {
-                      shadow: true,
-                      position: -10,
-                      backgroundColor: 'red'
-                    });
-                  }
-                  // this.setState({loading: false});
-                }}>
+                onPress={() => {this.registerWithEmail();}}>
                 <Text style={[gs.text, {
                   fontSize: 21,
                   textAlign: 'center',
@@ -140,6 +144,33 @@ export default class Register extends React.Component {
               :
               <ActivityIndicator style={{marginTop: 10, padding: 4, height: 40}} size="large" color="#444"/>
             }
+
+            <Text style={[gs.text]}>- Or -</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.registerWithFacebook();
+              }}
+              style={{
+                marginTop: 21,
+                height: 45,
+                justifyContent: 'center',
+                borderRadius: 5,
+                padding: 7,
+                paddingLeft: 20,
+                paddingRight: 20,
+                width: '100%',
+                backgroundColor: '#0288D1'
+              }}>
+              <Text style={[gs.text, {
+                fontSize: 19,
+                textAlign: 'center',
+                textShadowColor: 'rgba(0,0,0,0.5)',
+                textShadowRadius: 7,
+                textShadowOffset: {width: 1, height: 1}
+              }]}>
+                <Entypo name='facebook' size={19} color='#fff'/> Facebook register
+              </Text>
+            </TouchableOpacity>
 
 
             <View style={{
