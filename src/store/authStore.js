@@ -38,14 +38,11 @@ class AuthStore {
   async init() {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(async (user) => {
-        console.log('USER');
         if (user) {
-          console.log(user.uid);
           this.uid = user.uid;
 
           if (user.isAnonymous) {
             this.isAnonymous = true;
-            console.log('ANONYMOUS');
             return resolve(true);
           }
           else {

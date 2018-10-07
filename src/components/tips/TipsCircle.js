@@ -1,11 +1,10 @@
 import {gs} from "../../globals";
 import * as React from "react";
-import {PanResponder, Easing, Animated, Dimensions, Text, TouchableWithoutFeedback, View, Image} from "react-native";
+import {Platform, Easing, Animated, Dimensions, Text, TouchableWithoutFeedback, View, Image} from "react-native";
 import Interactable from 'react-native-interactable';
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 import ElevatedView from "../ElevatedView";
-import isClick from '../../utils/isClick';
 import tipsStore from '../../store/tipsStore';
 
 const offset = 17;
@@ -88,7 +87,9 @@ export default class TipsCircle extends React.Component {
 
     return <TouchableWithoutFeedback
       onPress={() => {
-        this.circlePressed();
+        if (Platform.OS === 'ios') {
+          this.circlePressed();
+        }
       }}>
       <Interactable.View
         style={{
@@ -99,7 +100,9 @@ export default class TipsCircle extends React.Component {
         }}
         animatedNativeDriver={false}
         onDrag={() => {
-          this.circlePressed();
+          if (Platform.OS === 'android') {
+            this.circlePressed();
+          }
         }}
         initialPosition={{x: (width - size) + offset, y: 100}}
         boundaries={{

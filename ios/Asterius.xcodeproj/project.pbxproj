@@ -43,6 +43,7 @@
 		5918D7F720B465AD00AB028F /* libRNIap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5918D7F620B465A800AB028F /* libRNIap.a */; };
 		5978F34420B8689D0062AC5F /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5978F42220B8BC8A0062AC5F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7611965F033439EBA7ACD89 /* libRNFirebase.a */; };
+		597D5CE020FCB9210000D253 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 597D5CDF20FCB9000000D253 /* libSplashScreen.a */; };
 		5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5985940F20B5C5D700C17238 /* libRNBlur.a */; };
 		5990A32720C89A4F00C45952 /* libInteractable.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5990A2FB20C89A4100C45952 /* libInteractable.a */; };
 		59CC4E2020B446FD005833BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */; };
@@ -302,6 +303,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNIap;
 		};
+		597D5CDE20FCB9000000D253 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 597D5CAB20FCB8FF0000D253 /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
+		};
 		5985940E20B5C5D700C17238 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 598593E220B5C5D700C17238 /* RNBlur.xcodeproj */;
@@ -480,6 +488,7 @@
 		4F5770E29793CE279EB70A6B /* Pods-Asterius-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Asterius-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Asterius-tvOSTests/Pods-Asterius-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5918D7E720B4650E00AB028F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5918D7F120B465A800AB028F /* RNIap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
+		597D5CAB20FCB8FF0000D253 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		598593E220B5C5D700C17238 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
 		5990A2F420C89A4100C45952 /* Interactable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Interactable.xcodeproj; path = "../node_modules/react-native-interactable/lib/ios/Interactable.xcodeproj"; sourceTree = "<group>"; };
 		59CC4DEA20B446FD005833BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -536,6 +545,7 @@
 			files = (
 				5978F42220B8BC8A0062AC5F /* libRNFirebase.a in Frameworks */,
 				5990A32720C89A4F00C45952 /* libInteractable.a in Frameworks */,
+				597D5CE020FCB9210000D253 /* libSplashScreen.a in Frameworks */,
 				5985941620B5C5F000C17238 /* libRNBlur.a in Frameworks */,
 				5918D7F720B465AD00AB028F /* libRNIap.a in Frameworks */,
 				5918D7F020B4651B00AB028F /* libRNSVG.a in Frameworks */,
@@ -752,6 +762,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		597D5CAC20FCB8FF0000D253 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				597D5CDF20FCB9000000D253 /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		598593E320B5C5D700C17238 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -843,6 +861,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				597D5CAB20FCB8FF0000D253 /* SplashScreen.xcodeproj */,
 				5990A2F420C89A4100C45952 /* Interactable.xcodeproj */,
 				598593E220B5C5D700C17238 /* RNBlur.xcodeproj */,
 				59DE2E7E20B46C1900BC13B7 /* BVLinearGradient.xcodeproj */,
@@ -1122,6 +1141,10 @@
 					ProductGroup = 5918D7E820B4650E00AB028F /* Products */;
 					ProjectRef = 5918D7E720B4650E00AB028F /* RNSVG.xcodeproj */;
 				},
+				{
+					ProductGroup = 597D5CAC20FCB8FF0000D253 /* Products */;
+					ProjectRef = 597D5CAB20FCB8FF0000D253 /* SplashScreen.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1321,6 +1344,13 @@
 			fileType = archive.ar;
 			path = libRNIap.a;
 			remoteRef = 5918D7F520B465A800AB028F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		597D5CDF20FCB9000000D253 /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = 597D5CDE20FCB9000000D253 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5985940F20B5C5D700C17238 /* libRNBlur.a */ = {
@@ -1811,6 +1841,7 @@
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = Asterius/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1850,6 +1881,7 @@
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
+					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 				);
 				INFOPLIST_FILE = Asterius/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -27,6 +27,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import subscriptionsStore from "../../store/subscriptionsStore";
 import authStore from "../../store/authStore";
 import tipsStore from "../../store/tipsStore";
+import deviceStore from "../../store/deviceStore";
 
 @withNavigation
 @observer
@@ -261,7 +262,7 @@ class TweakerMainView extends React.Component {
       <Animated.View style={{flex: 1, opacity: this.state.mainViewOpacity}}>
         <View style={styles.musclesModelsBox}>
           <MusclesModel
-            height={330}
+            height={deviceStore.height <= 568 ? 250 : 330}
             scalable={true}
             musclesModelStore={this.musclesModelStore}
             onMusclePress={this.onMusclePress.bind(this)}

@@ -37,9 +37,11 @@ class UserParametersStore {
     return new Promise((resolve, reject) => {
 
       autorun(() => {
-        console.log('autorrun');
-        this.path = `/userParameters/${authStore.uid}`;
         this.reset();
+        if (!authStore.uid) {
+          return resolve();
+        }
+        this.path = `/userParameters/${authStore.uid}`;
         database.watch(this.path,
           (snap) => {
             let userParameters = snap.val();
@@ -50,6 +52,7 @@ class UserParametersStore {
             return resolve();
           },
           (err) => {
+            console.log(err);
             return resolve();
           })
       })

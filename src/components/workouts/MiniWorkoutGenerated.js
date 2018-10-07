@@ -11,6 +11,7 @@ import {withNavigation} from "react-navigation";
 import ElevatedView from "../ElevatedView";
 
 import * as Mobx from 'mobx';
+import deviceStore from "../../store/deviceStore";
 
 @observer
 class MiniWorkoutExercise extends React.Component {
@@ -66,7 +67,7 @@ export default class MiniWorkoutGenerated extends React.Component {
               musclesModelStore={this.musclesModelStore}
               touchable={false}
               scalable={false}
-              width={200}
+              width={deviceStore.width <= 320 ? 150 : 200}
             />
             <View style={{flex: 1, paddingLeft: 14}}>
               <Text style={[gs.text, {color: '#ccc'}]}>{this.workoutTemplateStore.name}</Text>

@@ -13,6 +13,7 @@
 #import <React/RCTRootView.h>
 
 #import <Firebase.h>
+#import "SplashScreen.h"
 
 //  AppDelegate.m
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -40,6 +41,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [SplashScreen show];
   return YES;
 }
 

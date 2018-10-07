@@ -1,4 +1,4 @@
-import {observable, extendObservable, computed} from 'mobx';
+import {observable, extendObservable, computed, autorun} from 'mobx';
 import * as Mobx from 'mobx';
 import database from '../database';
 import authStore from './authStore';
@@ -23,7 +23,11 @@ class GenerateStore {
   init() {
     this.musclesModelStore = new MusclesModelStore();
     this.workoutsTemplatesStore = new WorkoutsTemplatesStore();
-    this.workoutsTemplatesStore.listenChildRemoved();
+    autorun(() => {
+      if (authStore.uid) {
+        this.workoutsTemplatesStore.listenChildRemoved();
+      }
+    });
 
     // RESET
     extendObservable(this, {

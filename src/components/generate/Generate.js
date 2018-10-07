@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Animated,
   Platform,
-  ActivityIndicator, ScrollView, KeyboardAvoidingView
+  ActivityIndicator, ScrollView,
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Swiper from 'react-native-swiper';
@@ -16,20 +16,19 @@ import {gs} from "../../globals";
 import generateStore from "../../store/generateStore";
 import userParametersStore from '../../store/userParametersStore';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 import MusclesModel from '../muscles/MusclesModel';
 import ParameterInputNumber from './ParameterInputNumber';
 import RadioButtons from "../RadioButtons";
-import ElevatedView from "../ElevatedView";
 import MiniWorkoutGenerated from "../workouts/MiniWorkoutGenerated";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-root-toast";
 import {withNavigation} from "react-navigation";
 import tipsStore from "../../store/tipsStore";
 import KeyboardPadding from "../KeyboardPadding";
+import deviceStore from "../../store/deviceStore";
 
 // todo change opacity to fromstart prop
 
@@ -534,6 +533,7 @@ const Slide5 = observer((props) => {
     {/*frequently.</Text></View>*/}
 
     <MusclesModel
+      width={deviceStore.width <= 320 ? 315 : undefined}
       musclesModelStore={props.musclesModelStore}
       onMusclePress={props.onMusclePress}
     />

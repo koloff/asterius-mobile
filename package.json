@@ -6,6 +6,7 @@
     "start": "react-native run-ios",
     "startandroid": "react-native run-android",
     "startios": "react-native run-ios && ./watch-ios-logs.js",
+    "startios5s": "react-native run-ios --simulator='iPhone 5s' && ./watch-ios-logs.js",
     "test": "jest",
     "clean-gradle": "cd android && ./gradlew clean",
     "clean-start-android": "cd .. && react-native run-android",

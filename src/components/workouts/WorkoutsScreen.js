@@ -21,6 +21,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import exercisesLogsStore from "../../store/exercisesLogsStore";
 import AnimatedLoading from "../AnimatedLoading";
 import tipsStore from "../../store/tipsStore";
+import deviceStore from "../../store/deviceStore";
 
 @observer
 export default class WorkoutsScreen extends React.Component {
@@ -182,7 +183,11 @@ class MiniWorkoutsList extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', padding: 15, height: 90}}>
+        <View style={{
+          flexDirection: 'row',
+          padding: 15,
+          height: deviceStore.height <= 568 ? 67 : 80
+        }}>
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate('Generate');

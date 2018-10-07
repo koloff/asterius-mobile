@@ -36,16 +36,6 @@ export default class Start extends React.Component {
     setTimeout(() => {
       tipsStore.setTips(tipsStore.tips.start);
     }, 200);
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.goBack();
-      return true;
-    });
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', () => {
-      return true;
-    });
   }
 
   goBack() {
@@ -55,14 +45,14 @@ export default class Start extends React.Component {
   }
 
   onTransition(view) {
-    if (view === 'Welcome') {
-      tipsStore.setTips(tipsStore.tips.start);
-    } else if (view === 'Generate') {
+    if (view === 'Generate') {
       tipsStore.setTips(tipsStore.tips[`slide${generateStore.slide}`]);
     } else if (view === 'Login') {
       tipsStore.setTips(tipsStore.tips.login);
     } else if (view === 'Register') {
       tipsStore.setTips(tipsStore.tips.register);
+    } else if (view === 'Welcome') {
+      tipsStore.setTips(tipsStore.tips.start);
     }
     this.setState({view});
 
@@ -105,7 +95,7 @@ export default class Start extends React.Component {
 
     this.translateY = this.state.transitions[0].value.interpolate({
       inputRange: [0, 1],
-      outputRange: [21, (height / 2) + 130]
+      outputRange: [21, (height / 2) + 100]
     });
 
     this.darkOpacity = this.state.transitions[0].value.interpolate({

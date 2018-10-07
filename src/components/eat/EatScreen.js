@@ -253,7 +253,7 @@ export default class EatScreen extends React.Component {
               {this.state.modalView === 'activity' && <RadioButtons
                 selected={userParametersStore.parameters.activity}
                 onSelectedChange={(value) => {
-                  userParametersStore.parameters.activity = value
+                  userParametersStore.parameters.activity = value;
                   userParametersStore.setParameterFinish('activity', value);
                 }}
                 optionStyle={styles.optionStyle}

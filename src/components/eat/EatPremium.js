@@ -3,7 +3,6 @@ import * as React from "react";
 import {observer} from 'mobx-react';
 import {withNavigation} from 'react-navigation';
 import {TouchableOpacity, Text, View} from "react-native";
-import {BlurView} from "react-native-blur";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ElevatedView from "../ElevatedView";
 import FontAwesome from "react-native-vector-icons/FontAwesome";

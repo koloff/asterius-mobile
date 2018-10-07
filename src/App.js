@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   StatusBar,
-  View, SafeAreaView
+  View, SafeAreaView,
+  Dimensions
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Router from './Router';
@@ -15,6 +16,7 @@ import userParametersStore from "./store/userParametersStore";
 import subscriptionsStore from "./store/subscriptionsStore";
 import TipsCircle from "./components/tips/TipsCircle";
 import TipsWindow from "./components/tips/TipsWindow";
+import deviceStore from "./store/deviceStore";
 
 @observer
 export default class App extends Component {
@@ -23,6 +25,7 @@ export default class App extends Component {
   };
 
   async componentWillMount() {
+    deviceStore.init();
     connectionStore.init();
     // subscriptionsStore.init();
     await authStore.init();

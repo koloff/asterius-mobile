@@ -42,6 +42,7 @@ export default class WorkoutsTemplatesStore {
   }
 
   listenChildRemoved() {
+    console.log('listen child removed', this.path);
     database.childRemoved(this.path, (snap) => {
       let index = this.workouts.findIndex((item) => item.key === snap.key);
       this.workouts.splice(index, 1);
